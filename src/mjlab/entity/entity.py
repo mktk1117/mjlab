@@ -15,6 +15,7 @@ from mjlab.entity.data import EntityData
 from mjlab.utils import spec_config as spec_cfg
 from mjlab.utils.lab_api.string import resolve_matching_names
 from mjlab.utils.mujoco import dof_width, qpos_width
+from mjlab.utils.spec import auto_wrap_fixed_base_mocap
 from mjlab.utils.string import resolve_expr
 
 
@@ -78,6 +79,13 @@ class EntityCfg:
   # Misc.
   debug_vis: bool = False
 
+  def build(self) -> Entity:
+    """Build entity instance from this config.
+
+    Override in subclasses to return custom Entity types.
+    """
+    return Entity(self)
+
 
 @dataclass
 class EntityArticulationInfoCfg:
@@ -117,7 +125,7 @@ class Entity:
 
   def __init__(self, cfg: EntityCfg) -> None:
     self.cfg = cfg
-    self._spec = cfg.spec_fn()
+    self._spec = auto_wrap_fixed_base_mocap(cfg.spec_fn)()
 
     # Identify free joint and articulated joints.
     self._all_joints = self._spec.joints
