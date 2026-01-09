@@ -9,14 +9,15 @@ from typing_extensions import override
 
 from mjlab.utils.noise import noise_model
 
+# Type alias for noise parameters: scalar or per-dimension values.
+NoiseParam = float | tuple[float, ...]
 
-def _ensure_tensor_device(
-  value: torch.Tensor | float, device: torch.device
-) -> torch.Tensor | float:
-  """Ensure tensor is on the correct device, leave scalars unchanged."""
-  if isinstance(value, torch.Tensor):
-    return value.to(device=device)
-  return value
+
+def _to_tensor(value: NoiseParam, device: torch.device) -> torch.Tensor:
+  """Convert a noise parameter to a tensor on the specified device."""
+  if isinstance(value, tuple):
+    return torch.tensor(value, device=device)
+  return torch.tensor(value, device=device)
 
 
 @dataclass(kw_only=True)
@@ -32,39 +33,39 @@ class NoiseCfg(abc.ABC):
 
 @dataclass
 class ConstantNoiseCfg(NoiseCfg):
-  bias: torch.Tensor | float = 0.0
+  bias: NoiseParam = 0.0
 
   @override
   def apply(self, data: torch.Tensor) -> torch.Tensor:
-    self.bias = _ensure_tensor_device(self.bias, data.device)
+    bias = _to_tensor(self.bias, data.device)
 
     if self.operation == "add":
-      return data + self.bias
+      return data + bias
     elif self.operation == "scale":
-      return data * self.bias
+      return data * bias
     elif self.operation == "abs":
-      return torch.zeros_like(data) + self.bias
+      return torch.zeros_like(data) + bias
     else:
       raise ValueError(f"Unsupported noise operation: {self.operation}")
 
 
 @dataclass
 class UniformNoiseCfg(NoiseCfg):
-  n_min: torch.Tensor | float = -1.0
-  n_max: torch.Tensor | float = 1.0
+  n_min: NoiseParam = -1.0
+  n_max: NoiseParam = 1.0
 
   def __post_init__(self):
-    if isinstance(self.n_min, (int, float)) and isinstance(self.n_max, (int, float)):
+    if isinstance(self.n_min, float) and isinstance(self.n_max, float):
       if self.n_min >= self.n_max:
         raise ValueError(f"n_min ({self.n_min}) must be less than n_max ({self.n_max})")
 
   @override
   def apply(self, data: torch.Tensor) -> torch.Tensor:
-    self.n_min = _ensure_tensor_device(self.n_min, data.device)
-    self.n_max = _ensure_tensor_device(self.n_max, data.device)
+    n_min = _to_tensor(self.n_min, data.device)
+    n_max = _to_tensor(self.n_max, data.device)
 
     # Generate uniform noise in [0, 1) and scale to [n_min, n_max).
-    noise = torch.rand_like(data) * (self.n_max - self.n_min) + self.n_min
+    noise = torch.rand_like(data) * (n_max - n_min) + n_min
 
     if self.operation == "add":
       return data + noise
@@ -78,20 +79,20 @@ class UniformNoiseCfg(NoiseCfg):
 
 @dataclass
 class GaussianNoiseCfg(NoiseCfg):
-  mean: torch.Tensor | float = 0.0
-  std: torch.Tensor | float = 1.0
+  mean: NoiseParam = 0.0
+  std: NoiseParam = 1.0
 
   def __post_init__(self):
-    if isinstance(self.std, (int, float)) and self.std <= 0:
+    if isinstance(self.std, float) and self.std <= 0:
       raise ValueError(f"std ({self.std}) must be positive")
 
   @override
   def apply(self, data: torch.Tensor) -> torch.Tensor:
-    self.mean = _ensure_tensor_device(self.mean, data.device)
-    self.std = _ensure_tensor_device(self.std, data.device)
+    mean = _to_tensor(self.mean, data.device)
+    std = _to_tensor(self.std, data.device)
 
     # Generate standard normal noise and scale.
-    noise = self.mean + self.std * torch.randn_like(data)
+    noise = mean + std * torch.randn_like(data)
 
     if self.operation == "add":
       return data + noise
