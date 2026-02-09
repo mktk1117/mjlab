@@ -54,6 +54,39 @@ ROUGH_TERRAINS_CFG = TerrainGeneratorCfg(
   add_lights=True,
 )
 
+STAIRS_TERRAINS_CFG = TerrainGeneratorCfg(
+  size=(8.0, 8.0),
+  border_width=20.0,
+  num_rows=10,
+  num_cols=10,
+  curriculum=True,
+  sub_terrains={
+    "flat": terrain_gen.BoxFlatTerrainCfg(proportion=0.25),
+    "easy_stairs": terrain_gen.BoxPyramidStairsTerrainCfg(
+      proportion=0.35,
+      step_height_range=(0.02, 0.05),
+      step_width=0.40,
+      platform_width=3.0,
+      border_width=1.0,
+    ),
+    "moderate_stairs": terrain_gen.BoxPyramidStairsTerrainCfg(
+      proportion=0.25,
+      step_height_range=(0.05, 0.08),
+      step_width=0.35,
+      platform_width=2.5,
+      border_width=0.8,
+    ),
+    "challenging_stairs": terrain_gen.BoxPyramidStairsTerrainCfg(
+      proportion=0.15,
+      step_height_range=(0.08, 0.10),
+      step_width=0.30,
+      platform_width=2.0,
+      border_width=0.5,
+    ),
+  },
+  add_lights=True,
+)
+
 
 if __name__ == "__main__":
   import mujoco.viewer
@@ -63,7 +96,7 @@ if __name__ == "__main__":
 
   terrain_cfg = TerrainImporterCfg(
     terrain_type="generator",
-    terrain_generator=ROUGH_TERRAINS_CFG,
+    terrain_generator=STAIRS_TERRAINS_CFG,
   )
   terrain = TerrainImporter(terrain_cfg, device=device)
   mujoco.viewer.launch(terrain.spec.compile())

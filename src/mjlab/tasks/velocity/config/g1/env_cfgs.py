@@ -79,7 +79,9 @@ def unitree_g1_rough_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     "asset_cfg"
   ].site_names = site_names
 
-  cfg.events["foot_friction"].params["asset_cfg"].geom_names = geom_names
+  cfg.events["foot_friction_slide"].params["asset_cfg"].geom_names = geom_names
+  cfg.events["foot_friction_spin"].params["asset_cfg"].geom_names = geom_names
+  cfg.events["foot_friction_roll"].params["asset_cfg"].geom_names = geom_names
   cfg.events["base_com"].params["asset_cfg"].body_names = ("torso_link",)
 
   # Rationale for std values:
@@ -195,9 +197,8 @@ def unitree_g1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   del cfg.curriculum["terrain_levels"]
 
   if play:
-    # Disable command curriculum.
-    assert "command_vel" in cfg.curriculum
-    del cfg.curriculum["command_vel"]
+    # Disable command curriculum if present.
+    cfg.curriculum.pop("command_vel", None)
 
     twist_cmd = cfg.commands["twist"]
     assert isinstance(twist_cmd, UniformVelocityCommandCfg)
