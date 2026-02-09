@@ -65,6 +65,7 @@ viz-nan = "mjlab.scripts.nan_viz:main"
 dev = [
   "ipdb>=0.13.13",
   "pre-commit>=4.3.0",
+  "pygame>=2.6.1",
   "pyright>=1.1.408",
   "pytest>=v9.0.2",
   "ruff>=v0.14.14",
@@ -87,6 +88,7 @@ docs = [
 ]
 
 [project.optional-dependencies]
+controllers = ["pygame>=2.6.1"]
 cu128 = ["torch>=2.7.0"]
 
 [tool.uv]
