@@ -146,6 +146,7 @@ class BaseController(ABC):
     # Subprocess state (off main thread only).
     self._proc: multiprocessing.Process | None = None
     self._cmd_queue: multiprocessing.Queue | None = None
+    self._result_queue: multiprocessing.Queue | None = None
     self._shared_axes: Any = None
     self._shared_buttons: Any = None
     self._shared_connected: Any = None
@@ -183,7 +184,7 @@ class BaseController(ABC):
 
   def _connect_subprocess(self) -> bool:
     self._cmd_queue = multiprocessing.Queue()
-    result_queue: multiprocessing.Queue = multiprocessing.Queue()
+    self._result_queue = multiprocessing.Queue()
     self._shared_axes = multiprocessing.Array("d", _MAX_AXES)
     self._shared_buttons = multiprocessing.Array("b", _MAX_BUTTONS)
     self._shared_connected = multiprocessing.Value("b", 0)
@@ -192,7 +193,7 @@ class BaseController(ABC):
       target=_controller_worker,
       args=(
         self._cmd_queue,
-        result_queue,
+        self._result_queue,
         self._shared_axes,
         self._shared_buttons,
         self._shared_connected,
@@ -203,7 +204,7 @@ class BaseController(ABC):
     self._cmd_queue.put({"type": "connect"})
 
     try:
-      result = result_queue.get(timeout=5.0)
+      result = self._result_queue.get(timeout=5.0)
     except Exception:
       print("[WARNING]: Controller subprocess timed out.")
       return False
@@ -230,6 +231,16 @@ class BaseController(ABC):
         if self._proc.is_alive():
           self._proc.kill()
         self._proc = None
+      # Close queues before they're GC'd to avoid malloc errors on macOS.
+      for q in (self._cmd_queue, self._result_queue):
+        if q is not None:
+          q.close()
+          q.join_thread()
+      self._cmd_queue = None
+      self._result_queue = None
+      self._shared_axes = None
+      self._shared_buttons = None
+      self._shared_connected = None
 
   def is_connected(self) -> bool:
     if self._on_main_thread:
