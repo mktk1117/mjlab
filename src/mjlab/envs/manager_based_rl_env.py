@@ -419,6 +419,7 @@ class ManagerBasedRlEnv:
       )
 
   def close(self) -> None:
+    self.command_manager.close()
     if self._offline_renderer is not None:
       self._offline_renderer.close()
 
