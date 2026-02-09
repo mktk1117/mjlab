@@ -13,6 +13,7 @@ from mjlab.envs import ManagerBasedRlEnv
 from mjlab.rl import MjlabOnPolicyRunner, RslRlVecEnvWrapper
 from mjlab.tasks.registry import list_tasks, load_env_cfg, load_rl_cfg, load_runner_cls
 from mjlab.tasks.tracking.mdp import MotionCommandCfg
+from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
 from mjlab.utils.os import get_wandb_checkpoint_path
 from mjlab.utils.torch import configure_torch_backends
 from mjlab.utils.wrappers import VideoRecorder
@@ -36,6 +37,10 @@ class PlayConfig:
   viewer: Literal["auto", "native", "viser"] = "auto"
   no_terminations: bool = False
   """Disable all termination conditions (useful for viewing motions with dummy agents)."""
+  controller: Literal["ps5", "f710"] | None = None
+  """Gamepad type for velocity commands. If None, uses the task's default command."""
+  controller_env_idx: int = 0
+  """Which environment to control with the controller."""
 
   # Internal flag used by demo script.
   _demo_mode: tyro.conf.Suppress[bool] = False
@@ -113,6 +118,30 @@ def run_play(task_id: str, cfg: PlayConfig):
           if art is None:
             raise RuntimeError("No motion artifact found in the run.")
           motion_cmd.motion_file = str(Path(art.download()) / "motion.npz")
+
+  # Swap the velocity command for gamepad input if a controller is specified.
+  is_velocity_task = "twist" in env_cfg.commands and isinstance(
+    env_cfg.commands["twist"], UniformVelocityCommandCfg
+  )
+  if cfg.controller is not None:
+    if not is_velocity_task:
+      raise ValueError("--controller is only supported for velocity tasks")
+    from mjlab.tasks.velocity.mdp import GamepadVelocityCommandCfg
+
+    orig_cmd_cfg = env_cfg.commands["twist"]
+    assert isinstance(orig_cmd_cfg, UniformVelocityCommandCfg)
+    env_cfg.commands["twist"] = GamepadVelocityCommandCfg(
+      entity_name=orig_cmd_cfg.entity_name,
+      resampling_time_range=(1000.0, 1000.0),
+      debug_vis=orig_cmd_cfg.debug_vis,
+      ranges=orig_cmd_cfg.ranges,
+      controller_type=cfg.controller,
+      env_idx=cfg.controller_env_idx,
+    )
+    print(
+      f"[INFO]: Using {cfg.controller} controller for velocity commands"
+      f" (env {cfg.controller_env_idx})"
+    )
 
   log_dir: Path | None = None
   resume_path: Path | None = None
