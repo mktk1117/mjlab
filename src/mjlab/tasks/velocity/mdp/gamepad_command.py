@@ -49,6 +49,9 @@ class GamepadVelocityCommand(UniformVelocityCommand):
         "          Connect a controller and restart to enable manual control."
       )
 
+  def close(self) -> None:
+    self._controller.disconnect()
+
   def _resample_command(self, env_ids: torch.Tensor) -> None:
     del env_ids  # Unused.
 
@@ -57,12 +60,6 @@ class GamepadVelocityCommand(UniformVelocityCommand):
       return
 
     self._controller.update()
-    if not self._controller.is_connected():
-      print("[WARNING]: Controller disconnected. Robot will stop.")
-      self._controller_connected = False
-      self.vel_command_b[self.cfg.env_idx] = 0.0
-      return
-
     lin_x, lin_y, ang_z = self._controller.get_velocity_command()
 
     env_idx = self.cfg.env_idx
