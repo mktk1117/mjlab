@@ -53,6 +53,10 @@ class CommandTerm(ManagerTermBase):
       self.num_envs, device=self.device, dtype=torch.long
     )
 
+  def close(self) -> None:
+    """Clean up resources held by this command term."""
+    pass
+
   def debug_vis(self, visualizer: "DebugVisualizer") -> None:
     if self.cfg.debug_vis:
       self._debug_vis_impl(visualizer)
@@ -136,6 +140,10 @@ class CommandManager(ManagerBase):
     msg += "\n"
     return msg
 
+  def close(self) -> None:
+    for term in self._terms.values():
+      term.close()
+
   def debug_vis(self, visualizer: "DebugVisualizer") -> None:
     for term in self._terms.values():
       term.debug_vis(visualizer)
@@ -204,6 +212,9 @@ class NullCommandManager:
 
   def __repr__(self) -> str:
     return "NullCommandManager()"
+
+  def close(self) -> None:
+    pass
 
   def debug_vis(self, visualizer: "DebugVisualizer") -> None:
     pass
