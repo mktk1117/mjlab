@@ -177,8 +177,6 @@ def run_play(task_id: str, cfg: PlayConfig):
   if cfg.video_width is not None:
     env_cfg.viewer.width = cfg.video_width
 
-  resolve_curriculum_iterations(env_cfg.curriculum, agent_cfg.num_steps_per_env)
-
   render_mode = "rgb_array" if (TRAINED_MODE and cfg.video) else None
   if cfg.video and DUMMY_MODE:
     print(
