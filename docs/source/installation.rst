@@ -101,7 +101,11 @@ install. These options are interchangeable: you can switch at any time.
 
       .. code:: bash
 
-         uv add mjlab
+         uv add mjlab "mujoco-warp @ git+https://github.com/google-deepmind/mujoco_warp@7c20a44bfed722e6415235792a1b247ea6b6a6d3"
+
+      .. note::
+
+        ``mujoco-warp`` must be installed from GitHub since it's not available on PyPI.
 
    .. tab-item:: Source
 
@@ -109,7 +113,11 @@ install. These options are interchangeable: you can switch at any time.
 
       .. code:: bash
 
-         uv add "mjlab @ git+https://github.com/mujocolab/mjlab"
+         uv add "mjlab @ git+https://github.com/mujocolab/mjlab" "mujoco-warp @ git+https://github.com/google-deepmind/mujoco_warp@0828fb0b57d7baf734dd71fa164d092cb17e635b"
+
+      .. note::
+
+        ``mujoco-warp`` must be installed from GitHub since it's not available on PyPI.
 
    .. tab-item:: Local
 
@@ -207,6 +215,7 @@ Install mjlab and dependencies via pip
 
       .. code:: bash
 
+         pip install git+https://github.com/google-deepmind/mujoco_warp@7c20a44bfed722e6415235792a1b247ea6b6a6d3
          pip install mjlab
 
    .. tab-item:: Source
@@ -215,9 +224,17 @@ Install mjlab and dependencies via pip
 
       .. code:: bash
 
+         pip install git+https://github.com/google-deepmind/mujoco_warp@0828fb0b57d7baf734dd71fa164d092cb17e635b
          git clone https://github.com/mujocolab/mjlab.git
          cd mjlab
          pip install -e .
+
+      .. note::
+
+         You must install ``mujoco-warp`` from GitHub before running
+         ``pip install -e .`` since it's not available on PyPI and pip cannot resolve
+         the GitHub dependency specified in ``pyproject.toml`` (which uses uv-specific
+         syntax).
 
 
 Verification

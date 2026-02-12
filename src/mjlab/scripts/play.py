@@ -10,6 +10,7 @@ import torch
 import tyro
 
 from mjlab.envs import ManagerBasedRlEnv
+from mjlab.managers.curriculum_manager import resolve_curriculum_iterations
 from mjlab.rl import MjlabOnPolicyRunner, RslRlVecEnvWrapper
 from mjlab.tasks.registry import list_tasks, load_env_cfg, load_rl_cfg, load_runner_cls
 from mjlab.tasks.tracking.mdp import MotionCommandCfg
@@ -175,6 +176,8 @@ def run_play(task_id: str, cfg: PlayConfig):
     env_cfg.viewer.height = cfg.video_height
   if cfg.video_width is not None:
     env_cfg.viewer.width = cfg.video_width
+
+  resolve_curriculum_iterations(env_cfg.curriculum, agent_cfg.num_steps_per_env)
 
   render_mode = "rgb_array" if (TRAINED_MODE and cfg.video) else None
   if cfg.video and DUMMY_MODE:
