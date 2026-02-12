@@ -202,3 +202,4 @@ def unitree_go1_stairs_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   cfg.scene.terrain.terrain_generator = replace(STAIRS_TERRAINS_CFG)
 
   return cfg
+
