@@ -4,7 +4,7 @@ Displays a 10-row grid of terrains with increasing difficulty.
 Configurations and parameters are dynamically loaded from mjlab.terrains.config.
 
 Run with:
-  uv run python src/mjlab/scripts/visualize_terrain.py
+  uv run src/mjlab/scripts/visualize_terrain.py
 """
 
 from __future__ import annotations
@@ -173,22 +173,22 @@ def main():
       return
 
     robot_mesh = merge_geoms_global(robot_model, robot_data, visual_geom_ids)
-    print(
-      f"Robot mesh generated with {len(robot_mesh.vertices)} vertices and {len(robot_mesh.faces)} faces."
-    )
+    n_verts = len(robot_mesh.vertices)
+    n_faces = len(robot_mesh.faces)
+    print(f"Robot mesh: {n_verts} vertices, {n_faces} faces.")
 
     # Prepare batched positions.
     num_rows, num_cols = state["terrain_origins"].shape[:2]
     batched_positions = []
     for row in range(num_rows):
       for col in range(num_cols):
-        pos = state["terrain_origins"][row, col] + np.array(robot_cfg.init_state.pos)
+        origin = state["terrain_origins"][row, col]
+        pos = origin + np.array(robot_cfg.init_state.pos)
         batched_positions.append(pos)
 
     batched_positions = np.array(batched_positions)
-    print(
-      f"Instancing {len(batched_positions)} robots at positions like {batched_positions[0]}"
-    )
+    n = len(batched_positions)
+    print(f"Instancing {n} robots at positions like {batched_positions[0]}")
     batched_wxyzs = np.array([1.0, 0.0, 0.0, 0.0])[None].repeat(
       len(batched_positions), axis=0
     )
@@ -318,7 +318,10 @@ def main():
 
     if state["preset_name"] == "All Terrains":
       with gui_params_folder:
-        server.gui.add_markdown("_Parameters not available for 'All Terrains' mode._")
+        md = server.gui.add_markdown(
+          "_Parameters not available for 'All Terrains' mode._"
+        )
+        param_controls.append(md)
       return
 
     selected_instance = available_presets[state["preset_name"]]
