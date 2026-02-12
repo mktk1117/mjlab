@@ -101,7 +101,7 @@ class BoxPyramidStairsTerrainCfg(SubTerrainCfg):
       (self.size[1] - 2 * self.border_width - self.platform_width)
       / (2 * self.step_width)
     )
-    num_steps = int(min(num_steps_x, num_steps_y))
+    num_steps = max(0, int(min(num_steps_x, num_steps_y)))
 
     first_step_rgba = brand_ramp(_MUJOCO_BLUE, 0.0)
     border_rgba = darken_rgba(first_step_rgba, 0.85)
@@ -124,6 +124,7 @@ class BoxPyramidStairsTerrainCfg(SubTerrainCfg):
       self.size[0] - 2 * self.border_width,
       self.size[1] - 2 * self.border_width,
     )
+    rgba = brand_ramp(_MUJOCO_BLUE, 0.5)
     for k in range(num_steps):
       t = k / max(num_steps - 1, 1)
       rgba = brand_ramp(_MUJOCO_BLUE, t)
@@ -143,6 +144,12 @@ class BoxPyramidStairsTerrainCfg(SubTerrainCfg):
 
       box_dims = (box_size[0], self.step_width, box_height)
 
+      safe_size = (
+        np.maximum(1e-6, box_dims[0] / 2.0),
+        np.maximum(1e-6, box_dims[1] / 2.0),
+        np.maximum(1e-6, box_dims[2] / 2.0),
+      )
+
       # Top.
       box_pos = (
         terrain_center[0],
@@ -151,7 +158,7 @@ class BoxPyramidStairsTerrainCfg(SubTerrainCfg):
       )
       box = body.add_geom(
         type=mujoco.mjtGeom.mjGEOM_BOX,
-        size=(box_dims[0] / 2.0, box_dims[1] / 2.0, box_dims[2] / 2.0),
+        size=safe_size,
         pos=box_pos,
       )
       boxes.append(box)
@@ -164,7 +171,7 @@ class BoxPyramidStairsTerrainCfg(SubTerrainCfg):
       )
       box = body.add_geom(
         type=mujoco.mjtGeom.mjGEOM_BOX,
-        size=(box_dims[0] / 2.0, box_dims[1] / 2.0, box_dims[2] / 2.0),
+        size=safe_size,
         pos=box_pos,
       )
       boxes.append(box)
@@ -172,7 +179,16 @@ class BoxPyramidStairsTerrainCfg(SubTerrainCfg):
       if self.holes:
         box_dims = (self.step_width, box_size[1], box_height)
       else:
-        box_dims = (self.step_width, box_size[1] - 2 * self.step_width, box_height)
+        box_dims = (
+          self.step_width,
+          box_size[1] - 2 * self.step_width,
+          box_height,
+        )
+      safe_size = (
+        np.maximum(1e-6, box_dims[0] / 2.0),
+        np.maximum(1e-6, box_dims[1] / 2.0),
+        np.maximum(1e-6, box_dims[2] / 2.0),
+      )
 
       # Right.
       box_pos = (
@@ -182,7 +198,7 @@ class BoxPyramidStairsTerrainCfg(SubTerrainCfg):
       )
       box = body.add_geom(
         type=mujoco.mjtGeom.mjGEOM_BOX,
-        size=(box_dims[0] / 2.0, box_dims[1] / 2.0, box_dims[2] / 2.0),
+        size=safe_size,
         pos=box_pos,
       )
       boxes.append(box)
@@ -195,7 +211,7 @@ class BoxPyramidStairsTerrainCfg(SubTerrainCfg):
       )
       box = body.add_geom(
         type=mujoco.mjtGeom.mjGEOM_BOX,
-        size=(box_dims[0] / 2.0, box_dims[1] / 2.0, box_dims[2] / 2.0),
+        size=safe_size,
         pos=box_pos,
       )
       boxes.append(box)
@@ -213,15 +229,18 @@ class BoxPyramidStairsTerrainCfg(SubTerrainCfg):
     )
     box = body.add_geom(
       type=mujoco.mjtGeom.mjGEOM_BOX,
-      size=(box_dims[0] / 2.0, box_dims[1] / 2.0, box_dims[2] / 2.0),
+      size=(
+        np.maximum(1e-6, box_dims[0] / 2.0),
+        np.maximum(1e-6, box_dims[1] / 2.0),
+        np.maximum(1e-6, box_dims[2] / 2.0),
+      ),
       pos=box_pos,
     )
     boxes.append(box)
     origin = np.array(
       [terrain_center[0], terrain_center[1], (num_steps + 1) * step_height]
     )
-    platform_rgba = _get_platform_color(_MUJOCO_BLUE)
-    box_colors.append(platform_rgba)
+    box_colors.append(rgba)
 
     geometries = [
       TerrainGeometry(geom=box, color=color)
@@ -254,7 +273,7 @@ class BoxInvertedPyramidStairsTerrainCfg(BoxPyramidStairsTerrainCfg):
       (self.size[1] - 2 * self.border_width - self.platform_width)
       / (2 * self.step_width)
     )
-    num_steps = int(min(num_steps_x, num_steps_y))
+    num_steps = max(0, int(min(num_steps_x, num_steps_y)))
     total_height = (num_steps + 1) * step_height
 
     first_step_rgba = brand_ramp(_MUJOCO_RED, 0.0)
@@ -279,6 +298,7 @@ class BoxInvertedPyramidStairsTerrainCfg(BoxPyramidStairsTerrainCfg):
       self.size[1] - 2 * self.border_width,
     )
 
+    rgba = brand_ramp(_MUJOCO_RED, 0.5)
     for k in range(num_steps):
       t = k / max(num_steps - 1, 1)
       rgba = brand_ramp(_MUJOCO_RED, t)
@@ -298,6 +318,11 @@ class BoxInvertedPyramidStairsTerrainCfg(BoxPyramidStairsTerrainCfg):
       box_height = total_height - (k + 1) * step_height
 
       box_dims = (box_size[0], self.step_width, box_height)
+      safe_size = (
+        np.maximum(1e-6, box_dims[0] / 2.0),
+        np.maximum(1e-6, box_dims[1] / 2.0),
+        np.maximum(1e-6, box_dims[2] / 2.0),
+      )
 
       # Top.
       box_pos = (
@@ -307,7 +332,7 @@ class BoxInvertedPyramidStairsTerrainCfg(BoxPyramidStairsTerrainCfg):
       )
       box = body.add_geom(
         type=mujoco.mjtGeom.mjGEOM_BOX,
-        size=(box_dims[0] / 2.0, box_dims[1] / 2.0, box_dims[2] / 2.0),
+        size=safe_size,
         pos=box_pos,
       )
       boxes.append(box)
@@ -320,7 +345,7 @@ class BoxInvertedPyramidStairsTerrainCfg(BoxPyramidStairsTerrainCfg):
       )
       box = body.add_geom(
         type=mujoco.mjtGeom.mjGEOM_BOX,
-        size=(box_dims[0] / 2.0, box_dims[1] / 2.0, box_dims[2] / 2.0),
+        size=safe_size,
         pos=box_pos,
       )
       boxes.append(box)
@@ -328,7 +353,16 @@ class BoxInvertedPyramidStairsTerrainCfg(BoxPyramidStairsTerrainCfg):
       if self.holes:
         box_dims = (self.step_width, box_size[1], box_height)
       else:
-        box_dims = (self.step_width, box_size[1] - 2 * self.step_width, box_height)
+        box_dims = (
+          self.step_width,
+          box_size[1] - 2 * self.step_width,
+          box_height,
+        )
+      safe_size = (
+        np.maximum(1e-6, box_dims[0] / 2.0),
+        np.maximum(1e-6, box_dims[1] / 2.0),
+        np.maximum(1e-6, box_dims[2] / 2.0),
+      )
 
       # Right.
       box_pos = (
@@ -338,7 +372,7 @@ class BoxInvertedPyramidStairsTerrainCfg(BoxPyramidStairsTerrainCfg):
       )
       box = body.add_geom(
         type=mujoco.mjtGeom.mjGEOM_BOX,
-        size=(box_dims[0] / 2.0, box_dims[1] / 2.0, box_dims[2] / 2.0),
+        size=safe_size,
         pos=box_pos,
       )
       boxes.append(box)
@@ -351,7 +385,7 @@ class BoxInvertedPyramidStairsTerrainCfg(BoxPyramidStairsTerrainCfg):
       )
       box = body.add_geom(
         type=mujoco.mjtGeom.mjGEOM_BOX,
-        size=(box_dims[0] / 2.0, box_dims[1] / 2.0, box_dims[2] / 2.0),
+        size=safe_size,
         pos=box_pos,
       )
       boxes.append(box)
@@ -369,15 +403,18 @@ class BoxInvertedPyramidStairsTerrainCfg(BoxPyramidStairsTerrainCfg):
     )
     box = body.add_geom(
       type=mujoco.mjtGeom.mjGEOM_BOX,
-      size=(box_dims[0] / 2.0, box_dims[1] / 2.0, box_dims[2] / 2.0),
+      size=(
+        np.maximum(1e-6, box_dims[0] / 2.0),
+        np.maximum(1e-6, box_dims[1] / 2.0),
+        np.maximum(1e-6, box_dims[2] / 2.0),
+      ),
       pos=box_pos,
     )
     boxes.append(box)
     origin = np.array(
       [terrain_center[0], terrain_center[1], -(num_steps + 1) * step_height]
     )
-    platform_rgba = _get_platform_color(_MUJOCO_RED)
-    box_colors.append(platform_rgba)
+    box_colors.append(rgba)
 
     geometries = [
       TerrainGeometry(geom=box, color=color)
@@ -821,6 +858,7 @@ class BoxOpenStairsTerrainCfg(SubTerrainCfg):
       self.size[1] - 2 * self.border_width,
     )
 
+    rgba = brand_ramp(_MUJOCO_BLUE, 0.5)
     for k in range(num_steps):
       t = k / max(num_steps - 1, 1)
       rgba = brand_ramp(_MUJOCO_BLUE, t)
@@ -984,6 +1022,7 @@ class BoxRandomStairsTerrainCfg(SubTerrainCfg):
       self.size[1] - 2 * self.border_width,
     )
 
+    rgba = brand_ramp(_MUJOCO_BLUE, 0.5)
     current_z = 0.0
     for k in range(num_steps):
       t = k / max(num_steps - 1, 1)
@@ -1455,44 +1494,16 @@ class BoxTiltedGridTerrainCfg(SubTerrainCfg):
         # Faces CCW (Counter-Clockwise) from outside.
         # 0:(min,min), 1:(min,max), 2:(max,min), 3:(max,max)
         # 4-7 are same x,y as 0-3 but at top.
+        # fmt: off
         faces = [
-          4,
-          6,
-          7,
-          4,
-          7,
-          5,  # Top (+z)
-          0,
-          1,
-          3,
-          0,
-          3,
-          2,  # Bottom (-z)
-          0,
-          2,
-          6,
-          0,
-          6,
-          4,  # Front (-y)
-          1,
-          5,
-          7,
-          1,
-          7,
-          3,  # Back (+y)
-          0,
-          4,
-          5,
-          0,
-          5,
-          1,  # Left (-x)
-          2,
-          3,
-          7,
-          2,
-          7,
-          6,  # Right (+x)
+          4, 6, 7, 4, 7, 5,  # Top (+z)
+          0, 1, 3, 0, 3, 2,  # Bottom (-z)
+          0, 2, 6, 0, 6, 4,  # Front (-y)
+          1, 5, 7, 1, 7, 3,  # Back (+y)
+          0, 4, 5, 0, 5, 1,  # Left (-x)
+          2, 3, 7, 2, 7, 6,  # Right (+x)
         ]
+        # fmt: on
 
         m_name = f"tile_{i}_{j}_{rng.integers(int(1e9))}"
         mesh = spec.add_mesh(
@@ -1539,10 +1550,7 @@ class BoxNestedRingsTerrainCfg(SubTerrainCfg):
     # In beam terrain, border top was at beam_height.
 
     if self.border_width > 0.0:
-      # Border top is at ground level z=0 for now, or should it be higher?
-      # Let's align with the highest possible ring height for border? No, let's keep it at 0 like NarrowBeams for now or use avg height.
-      # User said "border height same as height of beam" in the previous request.
-      # For rings, let's just make it a fixed height.
+
       border_h = 0.5
       border_center = (
         0.5 * self.size[0],
@@ -1599,8 +1607,7 @@ class BoxNestedRingsTerrainCfg(SubTerrainCfg):
       ):
         break
 
-      # Calculate position based on accumulated width + gap.
-      # Actually simpler to just track current_outer_size.
+      # Position each ring segment based on current_outer_size.
 
       half_h = (h + self.floor_depth) / 2
       z_pos = (h - self.floor_depth) / 2
