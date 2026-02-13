@@ -160,8 +160,8 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       mode="reset",
       params={
         "pose_range": {
-          "x": (-0.5, 0.5),
-          "y": (-0.5, 0.5),
+          "x": (-0.3, 0.3),
+          "y": (-0.3, 0.3),
           "z": (0.01, 0.05),
           "yaw": (-3.14, 3.14),
         },
