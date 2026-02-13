@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "mjlab"
-version = "1.0.0"
+version = "1.1.0"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 readme = { file = "README.md", content-type = "text/markdown" }
@@ -37,8 +37,8 @@ dependencies = [
   "torch>=2.7.0",
   "torchrunx>=0.3.4",
   "warp-lang>=1.12.0.dev",
-  "mujoco-warp",
-  "mujoco>=3.4.0",
+  "mujoco-warp>=3.5.0",
+  "mujoco>=3.5.0",
   "trimesh>=4.8.3",
   "viser>=1.0.21",
   "moviepy",
@@ -114,16 +114,9 @@ name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
-[[tool.uv.index]]
-name = "mujoco"
-url = "https://py.mujoco.org"
-explicit = true
-
 [tool.uv.sources]
 warp-lang = { index = "nvidia", marker = "sys_platform != 'darwin'" }
-mujoco = { index = "mujoco" }
 torch = { index = "pytorch-cu128", extra = "cu128", marker = "sys_platform != 'darwin'" }
-mujoco-warp = { git = "https://github.com/google-deepmind/mujoco_warp", rev = "0828fb0b57d7baf734dd71fa164d092cb17e635b" }
 
 [tool.ruff]
 src = ["src"]  # Helpful for recognizing first-party imports.
