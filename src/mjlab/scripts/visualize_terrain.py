@@ -23,7 +23,7 @@ from mjlab.asset_zoo.robots import (
   get_go1_robot_cfg,
   get_yam_robot_cfg,
 )
-from mjlab.terrains.config import ALL_TERRAINS_CFG
+from mjlab.terrains.config import ALL_TERRAIN_PRESETS, NAMED_TERRAIN_CONFIGS
 from mjlab.terrains.terrain_generator import (
   TerrainGenerator,
   TerrainGeneratorCfg,
@@ -32,6 +32,10 @@ from mjlab.viewer.viser.conversions import (
   merge_geoms,
   merge_geoms_global,
 )
+
+# Import tasks to trigger registration.
+import mjlab.tasks  # noqa: F401
+from mjlab.tasks.registry import list_tasks, load_env_cfg
 
 # Supported robots for visualization.
 ROBOT_CFG_GETTERS = {
@@ -92,15 +96,41 @@ def main():
   server = viser.ViserServer()
 
   # Load available terrains from config.
-  available_presets = ALL_TERRAINS_CFG.sub_terrains
-  preset_names = ["All Terrains"] + list(available_presets.keys())
+  available_presets = {
+    name: fn(proportion=1.0) for name, fn in ALL_TERRAIN_PRESETS.items()
+  }
+  named_config_names = list(NAMED_TERRAIN_CONFIGS.keys())
+  preset_names = named_config_names + list(available_presets.keys())
+
+  # Discover registered tasks.
+  task_ids = ["None"] + list_tasks()
+
+  # Build task -> (terrain_cfg, robot_entity_cfg) mapping.
+  _task_cfgs: dict[str, tuple[TerrainGeneratorCfg | None, Any]] = {}
+  for tid in task_ids:
+    if tid == "None":
+      continue
+    try:
+      ecfg = load_env_cfg(tid)
+      terrain_cfg = None
+      if ecfg.scene.terrain is not None:
+        terrain_cfg = ecfg.scene.terrain.terrain_generator
+      robot_cfg = None
+      if ecfg.scene.entities:
+        # Take the first entity (typically "robot").
+        robot_cfg = next(iter(ecfg.scene.entities.values()))
+      _task_cfgs[tid] = (terrain_cfg, robot_cfg)
+    except Exception as e:
+      print(f"Warning: Could not load task '{tid}': {e}")
+      task_ids.remove(tid)
 
   # State management.
+  default_size = NAMED_TERRAIN_CONFIGS[named_config_names[0]].size
   state: _AppState = {
     "preset_name": preset_names[0],
     "robot_name": "None",
     "seed": 42,
-    "size": ALL_TERRAINS_CFG.size,
+    "size": default_size,
     "params": {},
     "rows": 10,
     "cols": 1,
@@ -207,10 +237,11 @@ def main():
     nonlocal terrain_handle
     status_label.content = "**Status:** Generating terrain..."
 
-    if state["preset_name"] == "All Terrains":
-      # Create a copy with equal proportions to ensure all are shown once.
+    if state["preset_name"] in NAMED_TERRAIN_CONFIGS:
+      # Use the full named config with its proportions.
+      named_cfg = NAMED_TERRAIN_CONFIGS[state["preset_name"]]
       sub_terrains = {}
-      for name, cfg in available_presets.items():
+      for name, cfg in named_cfg.sub_terrains.items():
         new_cfg = dataclasses.replace(cfg, proportion=1.0)
         sub_terrains[name] = new_cfg
       num_cols = len(sub_terrains)
@@ -316,10 +347,10 @@ def main():
       control.remove()
     param_controls.clear()
 
-    if state["preset_name"] == "All Terrains":
+    if state["preset_name"] in NAMED_TERRAIN_CONFIGS:
       with gui_params_folder:
         md = server.gui.add_markdown(
-          "_Parameters not available for 'All Terrains' mode._"
+          f"_Parameters not available for '{state['preset_name']}' mode._"
         )
         param_controls.append(md)
       return
@@ -463,6 +494,74 @@ def main():
 
   # Global Controls.
   with server.gui.add_folder("Global Settings"):
+    task_select = server.gui.add_dropdown(
+      "Task", options=task_ids, initial_value="None"
+    )
+
+    @task_select.on_update
+    def _(event):
+      tid = event.target.value
+      if tid == "None":
+        # Return to manual mode — keep current selections.
+        return
+      if tid not in _task_cfgs:
+        return
+      terrain_cfg, robot_cfg = _task_cfgs[tid]
+
+      # Update terrain preset.
+      if terrain_cfg is not None:
+        # Register as a named config for this task and select it.
+        task_label = f"Task: {tid}"
+        NAMED_TERRAIN_CONFIGS[task_label] = TerrainGeneratorCfg(
+          size=terrain_cfg.size,
+          border_width=terrain_cfg.border_width,
+          num_rows=terrain_cfg.num_rows,
+          num_cols=terrain_cfg.num_cols,
+          sub_terrains=terrain_cfg.sub_terrains,
+          add_lights=True,
+        )
+        # Update Preset dropdown options and selection.
+        updated_presets = list(NAMED_TERRAIN_CONFIGS.keys()) + list(
+          available_presets.keys()
+        )
+        preset_select.options = updated_presets
+        preset_select.value = task_label
+        state["preset_name"] = task_label
+      else:
+        # Flat terrain (no generator) — select flat preset.
+        preset_select.value = "flat"
+        state["preset_name"] = "flat"
+
+      # Update robot.
+      if robot_cfg is not None:
+        # Match robot by spec_fn identity.
+        robot_matched = False
+        for rname, getter in ROBOT_CFG_GETTERS.items():
+          if getter is not None:
+            try:
+              ref_cfg = getter()
+              if ref_cfg.spec_fn is robot_cfg.spec_fn:
+                robot_select.value = rname
+                state["robot_name"] = rname
+                robot_matched = True
+                break
+            except Exception:
+              pass
+        if not robot_matched:
+          # Add the task's robot directly.
+          ROBOT_CFG_GETTERS[tid] = lambda cfg=robot_cfg: cfg
+          robot_select.options = list(ROBOT_CFG_GETTERS.keys())
+          robot_select.value = tid
+          state["robot_name"] = tid
+      else:
+        robot_select.value = "None"
+        state["robot_name"] = "None"
+
+      state["params"] = {}
+      rebuild_gui()
+      update_terrain()
+      update_robots()
+
     preset_select = server.gui.add_dropdown(
       "Preset", options=preset_names, initial_value=state["preset_name"]
     )

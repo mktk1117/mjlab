@@ -1108,24 +1108,30 @@ class BoxRandomStairsTerrainCfg(SubTerrainCfg):
 
       current_z = total_h
 
-    # Platform
+    # Platform — one step higher than the outermost (last) step so the robot
+    # spawns on a raised platform, matching BoxPyramidStairsTerrainCfg.
+    h_low, h_high = self.step_height_range
+    platform_extra_h = rng.uniform(h_low, h_high) * (0.5 + 0.5 * difficulty)
+    platform_z = current_z + platform_extra_h
+
     platform_size = (
       np.maximum(1e-6, terrain_size[0] - 2 * num_steps * self.step_width),
       np.maximum(1e-6, terrain_size[1] - 2 * num_steps * self.step_width),
     )
-    platform_pos = (terrain_center[0], terrain_center[1], current_z / 2)
+    platform_pos = (terrain_center[0], terrain_center[1], platform_z / 2)
     box = body.add_geom(
       type=mujoco.mjtGeom.mjGEOM_BOX,
       size=(
         platform_size[0] / 2.0,
         platform_size[1] / 2.0,
-        np.maximum(1e-6, current_z / 2.0),
+        np.maximum(1e-6, platform_z / 2.0),
       ),
       pos=platform_pos,
     )
-    geometries.append(TerrainGeometry(geom=box, color=rgba))
+    platform_rgba = _get_platform_color(_MUJOCO_BLUE)
+    geometries.append(TerrainGeometry(geom=box, color=platform_rgba))
 
-    origin = np.array([terrain_center[0], terrain_center[1], current_z])
+    origin = np.array([terrain_center[0], terrain_center[1], platform_z])
     return TerrainOutput(origin=origin, geometries=geometries)
 
 
@@ -1440,16 +1446,23 @@ class BoxTiltedGridTerrainCfg(SubTerrainCfg):
     geometries.append(TerrainGeometry(geom=floor_geom, color=(0.1, 0.1, 0.1, 1.0)))
 
     # Platform.
+    # Snap the platform to cover an integer number of grid cells so there is
+    # no gap between the platform edge and the nearest tiles.
+    platform_cells = int(np.ceil(self.platform_width / self.grid_width))
+    # Ensure at least 1 cell and odd count so the platform is centered.
+    if platform_cells % 2 == 0 and platform_cells < num_boxes_x:
+      platform_cells += 1
+    snapped_platform = platform_cells * self.grid_width
     platform_geom = body.add_geom(
       type=mujoco.mjtGeom.mjGEOM_BOX,
-      size=(self.platform_width / 2, self.platform_width / 2, half_height),
+      size=(snapped_platform / 2, snapped_platform / 2, half_height),
       pos=(self.size[0] / 2, self.size[1] / 2, z_center),
     )
     geometries.append(
       TerrainGeometry(geom=platform_geom, color=brand_ramp(_MUJOCO_GREEN, 0.5))
     )
 
-    platform_half = self.platform_width / 2
+    platform_half = snapped_platform / 2
     terrain_center = self.size[0] / 2
     platform_min = terrain_center - platform_half
     platform_max = terrain_center + platform_half
