@@ -614,72 +614,77 @@ class RayCastSensor(Sensor[RayCastData]):
     assert self._local_offsets is not None
     assert self._local_directions is not None
 
-    env_idx = visualizer.env_idx
     data = self.data
+    env_indices = list(visualizer.get_env_indices(data.distances.shape[0]))
+    if not env_indices:
+      return
 
+    # Gather frame poses for selected environments only.
     if self._frame_type == "body":
-      frame_pos = self._data.xpos[env_idx, self._frame_body_id].cpu().numpy()
-      frame_mat_tensor = self._data.xmat[env_idx, self._frame_body_id].view(3, 3)
+      frame_pos = self._data.xpos[env_indices, self._frame_body_id]
+      frame_mat = self._data.xmat[env_indices, self._frame_body_id]
     elif self._frame_type == "site":
-      frame_pos = self._data.site_xpos[env_idx, self._frame_site_id].cpu().numpy()
-      frame_mat_tensor = self._data.site_xmat[env_idx, self._frame_site_id].view(3, 3)
+      frame_pos = self._data.site_xpos[env_indices, self._frame_site_id]
+      frame_mat = self._data.site_xmat[env_indices, self._frame_site_id]
     else:  # geom
-      frame_pos = self._data.geom_xpos[env_idx, self._frame_geom_id].cpu().numpy()
-      frame_mat_tensor = self._data.geom_xmat[env_idx, self._frame_geom_id].view(3, 3)
+      frame_pos = self._data.geom_xpos[env_indices, self._frame_geom_id]
+      frame_mat = self._data.geom_xmat[env_indices, self._frame_geom_id]
 
-    # Apply ray alignment for visualization.
-    rot_mat_tensor = self._compute_alignment_rotation(frame_mat_tensor.unsqueeze(0))[0]
-    rot_mat = rot_mat_tensor.cpu().numpy()
-
-    local_offsets_np = self._local_offsets.cpu().numpy()
-    local_dirs_np = self._local_directions.cpu().numpy()
-    hit_positions_np = data.hit_pos_w[env_idx].cpu().numpy()
-    distances_np = data.distances[env_idx].cpu().numpy()
-    normals_np = data.normals_w[env_idx].cpu().numpy()
+    rot_mats = self._compute_alignment_rotation(frame_mat.view(-1, 3, 3)).cpu().numpy()
+    origins = frame_pos.cpu().numpy()
+    offsets = self._local_offsets.cpu().numpy()
+    directions = self._local_directions.cpu().numpy()
+    hit_positions = data.hit_pos_w[env_indices].cpu().numpy()
+    distances = data.distances[env_indices].cpu().numpy()
+    normals = data.normals_w[env_indices].cpu().numpy()
 
     meansize = visualizer.meansize
     ray_width = 0.1 * meansize
     sphere_radius = self.cfg.viz.hit_sphere_radius * meansize
     normal_length = self.cfg.viz.normal_length * meansize
     normal_width = 0.1 * meansize
+    miss_extent = min(0.5, self.cfg.max_distance * 0.05)
+    name = self.cfg.name
 
-    for i in range(self._num_rays):
-      origin = frame_pos + rot_mat @ local_offsets_np[i]
-      hit = distances_np[i] >= 0
+    for k in range(len(env_indices)):
+      rot = rot_mats[k]
 
-      if hit:
-        end = hit_positions_np[i]
-        color = self.cfg.viz.hit_color
-      else:
-        direction = rot_mat @ local_dirs_np[i]
-        end = origin + direction * min(0.5, self.cfg.max_distance * 0.05)
-        color = self.cfg.viz.miss_color
+      for i in range(self._num_rays):
+        origin = origins[k] + rot @ offsets[i]
+        hit = distances[k, i] >= 0
 
-      if self.cfg.viz.show_rays:
-        visualizer.add_arrow(
-          start=origin,
-          end=end,
-          color=color,
-          width=ray_width,
-          label=f"{self.cfg.name}_ray_{i}",
-        )
+        if hit:
+          end = hit_positions[k, i]
+          color = self.cfg.viz.hit_color
+        else:
+          end = origin + rot @ directions[i] * miss_extent
+          color = self.cfg.viz.miss_color
 
-      if hit:
-        visualizer.add_sphere(
-          center=end,
-          radius=sphere_radius,
-          color=self.cfg.viz.hit_sphere_color,
-          label=f"{self.cfg.name}_hit_{i}",
-        )
-        if self.cfg.viz.show_normals:
-          normal_end = end + normals_np[i] * normal_length
+        if self.cfg.viz.show_rays:
           visualizer.add_arrow(
-            start=end,
-            end=normal_end,
-            color=self.cfg.viz.normal_color,
-            width=normal_width,
-            label=f"{self.cfg.name}_normal_{i}",
+            start=origin,
+            end=end,
+            color=color,
+            width=ray_width,
+            label=f"{name}_ray_{i}",
           )
+
+        if hit:
+          visualizer.add_sphere(
+            center=end,
+            radius=sphere_radius,
+            color=self.cfg.viz.hit_sphere_color,
+            label=f"{name}_hit_{i}",
+          )
+          if self.cfg.viz.show_normals:
+            normal_end = end + normals[k, i] * normal_length
+            visualizer.add_arrow(
+              start=end,
+              end=normal_end,
+              color=self.cfg.viz.normal_color,
+              width=normal_width,
+              label=f"{name}_normal_{i}",
+            )
 
   # Private methods.
 

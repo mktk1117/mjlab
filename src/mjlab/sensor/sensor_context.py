@@ -263,8 +263,7 @@ class SensorContext:
     with wp.ScopedDevice(self.wp_device):
       self._ctx = mjwarp.create_render_context(
         mjm=mj_model,
-        m=self._model.struct,  # type: ignore[attr-defined]
-        d=self._data.struct,  # type: ignore[attr-defined]
+        nworld=self._data.nworld,
         cam_res=cam_res,
         render_rgb=render_rgb,
         render_depth=render_depth,

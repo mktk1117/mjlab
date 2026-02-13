@@ -14,6 +14,7 @@ from mjlab.envs.mdp.actions import JointPositionActionCfg
 from mjlab.managers import EventTermCfg, RewardTermCfg, TerminationTermCfg
 from mjlab.sensor import ContactMatch, ContactSensorCfg, RayCastSensorCfg
 from mjlab.tasks.velocity import mdp
+from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
 from mjlab.tasks.velocity.velocity_env_cfg import make_velocity_env_cfg
 
 TerrainType = Literal["rough", "obstacles"]
@@ -134,6 +135,7 @@ def unitree_go1_rough_env_cfg(
 
     cfg.observations["actor"].enable_corruption = False
     cfg.events.pop("push_robot", None)
+    cfg.curriculum = {}
     cfg.events["randomize_terrain"] = EventTermCfg(
       func=envs_mdp.randomize_terrain,
       mode="reset",
@@ -178,9 +180,14 @@ def unitree_go1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     params={"limit_angle": math.radians(70.0)},
   )
 
-  # Disable terrain curriculum.
-  assert "terrain_levels" in cfg.curriculum
-  del cfg.curriculum["terrain_levels"]
+  # Disable terrain curriculum (not present in play mode since rough clears all).
+  cfg.curriculum.pop("terrain_levels", None)
+
+  if play:
+    twist_cmd = cfg.commands["twist"]
+    assert isinstance(twist_cmd, UniformVelocityCommandCfg)
+    twist_cmd.ranges.lin_vel_x = (-1.5, 2.0)
+    twist_cmd.ranges.ang_vel_z = (-0.7, 0.7)
 
   return cfg
 
