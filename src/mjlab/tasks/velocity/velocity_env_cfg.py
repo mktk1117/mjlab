@@ -8,6 +8,7 @@ import math
 from dataclasses import replace
 
 from mjlab.envs import ManagerBasedRlEnvCfg
+from mjlab.envs import mdp as envs_mdp
 from mjlab.envs.mdp.actions import JointPositionActionCfg
 from mjlab.managers.action_manager import ActionTermCfg
 from mjlab.managers.command_manager import CommandTermCfg
@@ -18,6 +19,7 @@ from mjlab.managers.reward_manager import RewardTermCfg
 from mjlab.managers.scene_entity_config import SceneEntityCfg
 from mjlab.managers.termination_manager import TerminationTermCfg
 from mjlab.scene import SceneCfg
+from mjlab.sensor import GridPatternCfg, ObjRef, RayCastSensorCfg
 from mjlab.sim import MujocoCfg, SimulationCfg
 from mjlab.tasks.velocity import mdp
 from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
@@ -34,7 +36,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
   # Observations
   ##
 
-  policy_terms = {
+  actor_terms = {
     "base_lin_vel": ObservationTermCfg(
       func=mdp.builtin_sensor,
       params={"sensor_name": "robot/imu_lin_vel"},
@@ -62,38 +64,39 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       func=mdp.generated_commands,
       params={"command_name": "twist"},
     ),
+    "height_scan": ObservationTermCfg(
+      func=envs_mdp.height_scan,
+      params={"sensor_name": "terrain_scan"},
+      noise=Unoise(n_min=-0.1, n_max=0.1),
+      clip=(-5.0, 5.0),
+    ),
   }
 
   critic_terms = {
-    **policy_terms,
+    **actor_terms,
+    "height_scan": ObservationTermCfg(
+      func=envs_mdp.height_scan,
+      params={"sensor_name": "terrain_scan"},
+      clip=(-5.0, 5.0),
+    ),
     "foot_height": ObservationTermCfg(
       func=mdp.foot_height,
       params={"asset_cfg": SceneEntityCfg("robot", site_names=())},  # Set per-robot.
     ),
-    "foot_air_time": ObservationTermCfg(
-      func=mdp.foot_air_time,
-      params={"sensor_name": "feet_ground_contact"},
-    ),
-    "foot_contact": ObservationTermCfg(
-      func=mdp.foot_contact,
-      params={"sensor_name": "feet_ground_contact"},
-    ),
-    "foot_contact_forces": ObservationTermCfg(
-      func=mdp.foot_contact_forces,
-      params={"sensor_name": "feet_ground_contact"},
-    ),
   }
 
   observations = {
-    "policy": ObservationGroupCfg(
-      terms=policy_terms,
+    "actor": ObservationGroupCfg(
+      terms=actor_terms,
       concatenate_terms=True,
       enable_corruption=True,
+      nan_policy="error",
     ),
     "critic": ObservationGroupCfg(
       terms=critic_terms,
       concatenate_terms=True,
       enable_corruption=False,
+      nan_policy="error",
     ),
   }
 
@@ -118,7 +121,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     "twist": UniformVelocityCommandCfg(
       entity_name="robot",
       resampling_time_range=(3.0, 8.0),
-      rel_standing_envs=0.1,
+      rel_standing_envs=0.2,
       rel_heading_envs=0.3,
       heading_command=True,
       heading_control_stiffness=0.5,
@@ -126,7 +129,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       ranges=UniformVelocityCommandCfg.Ranges(
         lin_vel_x=(-1.0, 1.0),
         lin_vel_y=(-1.0, 1.0),
-        ang_vel_z=(-0.5, 0.5),
+        ang_vel_z=(-1.0, 1.0),
         heading=(-math.pi, math.pi),
       ),
     )
@@ -142,8 +145,8 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       mode="reset",
       params={
         "pose_range": {
-          "x": (-0.5, 0.5),
-          "y": (-0.5, 0.5),
+          "x": (-0.3, 0.3),
+          "y": (-0.3, 0.3),
           "z": (0.01, 0.05),
           "yaw": (-3.14, 3.14),
         },
@@ -174,7 +177,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
         },
       },
     ),
-    "foot_friction": EventTermCfg(
+    "foot_friction_slide": EventTermCfg(
       mode="startup",
       func=mdp.randomize_field,
       domain_randomization=True,
@@ -182,8 +185,38 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
         "asset_cfg": SceneEntityCfg("robot", geom_names=()),  # Set per-robot.
         "operation": "abs",
         "field": "geom_friction",
-        "ranges": (0.3, 1.2),
-        "shared_random": True,  # All foot geoms share the same friction.
+        "distribution": "uniform",
+        "axes": [0],
+        "ranges": (0.3, 1.5),
+        "shared_random": True,
+      },
+    ),
+    "foot_friction_spin": EventTermCfg(
+      mode="startup",
+      func=mdp.randomize_field,
+      domain_randomization=True,
+      params={
+        "asset_cfg": SceneEntityCfg("robot", geom_names=()),  # Set per-robot.
+        "operation": "abs",
+        "field": "geom_friction",
+        "distribution": "log_uniform",
+        "axes": [1],
+        "ranges": (1e-4, 2e-2),
+        "shared_random": True,
+      },
+    ),
+    "foot_friction_roll": EventTermCfg(
+      mode="startup",
+      func=mdp.randomize_field,
+      domain_randomization=True,
+      params={
+        "asset_cfg": SceneEntityCfg("robot", geom_names=()),  # Set per-robot.
+        "operation": "abs",
+        "field": "geom_friction",
+        "distribution": "log_uniform",
+        "axes": [2],
+        "ranges": (1e-5, 5e-3),
+        "shared_random": True,
       },
     ),
     "encoder_bias": EventTermCfg(
@@ -219,7 +252,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     "track_linear_velocity": RewardTermCfg(
       func=mdp.track_linear_velocity,
       weight=2.0,
-      params={"command_name": "twist", "std": math.sqrt(0.25)},
+      params={"command_name": "twist", "std": math.sqrt(0.5)},
     ),
     "track_angular_velocity": RewardTermCfg(
       func=mdp.track_angular_velocity,
@@ -303,7 +336,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     ),
     "soft_landing": RewardTermCfg(
       func=mdp.soft_landing,
-      weight=-1e-5,
+      weight=0.0,
       params={
         "sensor_name": "feet_ground_contact",
         "command_name": "twist",
@@ -318,10 +351,6 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
 
   terminations = {
     "time_out": TerminationTermCfg(func=mdp.time_out, time_out=True),
-    "fell_over": TerminationTermCfg(
-      func=mdp.bad_orientation,
-      params={"limit_angle": math.radians(70.0)},
-    ),
   }
 
   ##
@@ -333,22 +362,34 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       func=mdp.terrain_levels_vel,
       params={"command_name": "twist"},
     ),
-    "command_vel": CurriculumTermCfg(
-      func=mdp.commands_vel,
-      params={
-        "command_name": "twist",
-        "velocity_stages": [
-          {"step": 0, "lin_vel_x": (-1.0, 1.0), "ang_vel_z": (-0.5, 0.5)},
-          {"step": 5000 * 24, "lin_vel_x": (-1.5, 2.0), "ang_vel_z": (-0.7, 0.7)},
-          {"step": 10000 * 24, "lin_vel_x": (-2.0, 3.0)},
-        ],
-      },
-    ),
+    # "command_vel": CurriculumTermCfg(
+    #   func=mdp.commands_vel,
+    #   params={
+    #     "command_name": "twist",
+    #     "velocity_stages": [
+    #       {"step": 0, "lin_vel_x": (-1.0, 1.0), "ang_vel_z": (-0.5, 0.5)},
+    #       {"step": 5000 * 24, "lin_vel_x": (-1.5, 2.0), "ang_vel_z": (-0.7, 0.7)},
+    #       {"step": 10000 * 24, "lin_vel_x": (-2.0, 3.0)},
+    #     ],
+    #   },
+    # ),
   }
 
   ##
   # Assemble and return
   ##
+
+  terrain_scan = RayCastSensorCfg(
+    name="terrain_scan",
+    frame=ObjRef(type="body", name="", entity="robot"),  # Set per-robot.
+    ray_alignment="yaw",
+    pattern=GridPatternCfg(size=(1.0, 1.0), resolution=0.1),
+    max_distance=5.0,
+    exclude_parent_body=True,
+    include_geom_groups=(0,),  # Terrain is in group 0.
+    debug_vis=True,
+    viz=RayCastSensorCfg.VizCfg(show_normals=False),
+  )
 
   return ManagerBasedRlEnvCfg(
     scene=SceneCfg(
@@ -357,6 +398,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
         terrain_generator=replace(ROUGH_TERRAINS_CFG),
         max_init_terrain_level=5,
       ),
+      sensors=(terrain_scan,),
       num_envs=1,
       extent=2.0,
     ),
@@ -382,6 +424,8 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
         timestep=0.005,
         iterations=10,
         ls_iterations=20,
+        impratio=10,
+        cone="elliptic",
       ),
     ),
     decimation=4,
