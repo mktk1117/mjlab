@@ -918,7 +918,16 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
       material=material_name,
     )
 
-    spawn_height = max_physical_height
+    # Sample the max terrain height in a small patch around the center so that
+    # the robot's feet don't clip into nearby higher terrain.
+    center_row = normalized_elevation.shape[0] // 2
+    center_col = normalized_elevation.shape[1] // 2
+    half_patch = max(1, int(0.5 / grid_spacing))  # ~1 m × 1 m patch
+    r0 = max(center_row - half_patch, 0)
+    r1 = min(center_row + half_patch + 1, normalized_elevation.shape[0])
+    c0 = max(center_col - half_patch, 0)
+    c1 = min(center_col + half_patch + 1, normalized_elevation.shape[1])
+    spawn_height = float(normalized_elevation[r0:r1, c0:c1].max()) * max_physical_height
     origin = np.array([self.size[0] / 2, self.size[1] / 2, spawn_height])
 
     # For flat patches, we pass the absolute physical heights.
