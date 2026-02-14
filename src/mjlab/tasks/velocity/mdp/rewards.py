@@ -113,11 +113,15 @@ def flat_orientation(
 def self_collision_cost(env: ManagerBasedRlEnv, sensor_name: str) -> torch.Tensor:
   """Penalize self-collisions.
 
-  Returns the number of self-collisions detected by the specified contact sensor.
+  Returns the number of collisions detected by the specified contact sensor.
   """
   sensor: ContactSensor = env.scene[sensor_name]
   assert sensor.data.found is not None
-  return sensor.data.found.squeeze(-1)
+  # Sum over all match dims (patterns, slots) to get a scalar per env.
+  found = sensor.data.found
+  while found.dim() > 1:
+    found = found.sum(dim=-1)
+  return found
 
 
 def body_angular_velocity_penalty(

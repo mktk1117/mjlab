@@ -33,12 +33,14 @@ class UniformVelocityCommand(CommandTerm):
     self.robot: Entity = env.scene[cfg.entity_name]
 
     self.vel_command_b = torch.zeros(self.num_envs, 3, device=self.device)
+    self.vel_command_w = torch.zeros(self.num_envs, 3, device=self.device)
     self.heading_target = torch.zeros(self.num_envs, device=self.device)
     self.heading_error = torch.zeros(self.num_envs, device=self.device)
     self.is_heading_env = torch.zeros(
       self.num_envs, dtype=torch.bool, device=self.device
     )
     self.is_standing_env = torch.zeros_like(self.is_heading_env)
+    self.is_world_env = torch.zeros_like(self.is_heading_env)
 
     self.metrics["error_vel_xy"] = torch.zeros(self.num_envs, device=self.device)
     self.metrics["error_vel_yaw"] = torch.zeros(self.num_envs, device=self.device)
@@ -66,6 +68,10 @@ class UniformVelocityCommand(CommandTerm):
     self.vel_command_b[env_ids, 0] = r.uniform_(*self.cfg.ranges.lin_vel_x)
     self.vel_command_b[env_ids, 1] = r.uniform_(*self.cfg.ranges.lin_vel_y)
     self.vel_command_b[env_ids, 2] = r.uniform_(*self.cfg.ranges.ang_vel_z)
+    # Randomly assign world-frame envs.
+    self.is_world_env[env_ids] = r.uniform_(0.0, 1.0) <= self.cfg.rel_world_envs
+    # Copy sampled velocities as world-frame reference for world envs.
+    self.vel_command_w[env_ids] = self.vel_command_b[env_ids]
     if self.cfg.heading_command:
       assert self.cfg.ranges.heading is not None
       self.heading_target[env_ids] = r.uniform_(*self.cfg.ranges.heading)
@@ -88,6 +94,18 @@ class UniformVelocityCommand(CommandTerm):
       self.robot.write_root_state_to_sim(root_state, init_vel_env_ids)
 
   def _update_command(self) -> None:
+    # World-frame envs: rotate world-frame linear vel into body frame.
+    if self.is_world_env.any():
+      w_ids = self.is_world_env.nonzero(as_tuple=False).flatten()
+      heading = self.robot.data.heading_w[w_ids]
+      cos_h = torch.cos(heading)
+      sin_h = torch.sin(heading)
+      vx_w = self.vel_command_w[w_ids, 0]
+      vy_w = self.vel_command_w[w_ids, 1]
+      self.vel_command_b[w_ids, 0] = cos_h * vx_w + sin_h * vy_w
+      self.vel_command_b[w_ids, 1] = -sin_h * vx_w + cos_h * vy_w
+      self.vel_command_b[w_ids, 2] = self.vel_command_w[w_ids, 2]
+
     if self.cfg.heading_command:
       self.heading_error = wrap_to_pi(self.heading_target - self.robot.data.heading_w)
       env_ids = self.is_heading_env.nonzero(as_tuple=False).flatten()
@@ -98,6 +116,7 @@ class UniformVelocityCommand(CommandTerm):
       )
     standing_env_ids = self.is_standing_env.nonzero(as_tuple=False).flatten()
     self.vel_command_b[standing_env_ids, :] = 0.0
+    self.vel_command_w[standing_env_ids, :] = 0.0
 
   # Visualization.
 
@@ -174,6 +193,10 @@ class UniformVelocityCommand(CommandTerm):
 @dataclass(kw_only=True)
 class UniformVelocityCommandCfg(CommandTermCfg):
   entity_name: str
+  rel_world_envs: float = 0.5
+  """Fraction of environments that use world-frame velocity commands.
+  World-frame envs sample linear velocity in world frame and rotate to body
+  frame each step, so the command direction stays fixed in the world."""
   heading_command: bool = False
   heading_control_stiffness: float = 1.0
   rel_standing_envs: float = 0.0
