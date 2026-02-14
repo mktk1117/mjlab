@@ -32,7 +32,7 @@ def terrain_levels_vel(
   env_ids: torch.Tensor,
   command_name: str,
   asset_cfg: SceneEntityCfg = _DEFAULT_SCENE_CFG,
-) -> torch.Tensor:
+) -> dict[str, torch.Tensor]:
   asset: Entity = env.scene[asset_cfg.name]
 
   terrain = env.scene.terrain
@@ -61,7 +61,38 @@ def terrain_levels_vel(
   # Update terrain levels.
   terrain.update_env_origins(env_ids, move_up, move_down)
 
-  return torch.mean(terrain.terrain_levels.float())
+  # Compute per-terrain-type mean levels.
+  levels = terrain.terrain_levels.float()
+  result: dict[str, torch.Tensor] = {"mean": torch.mean(levels)}
+
+  # Map terrain type indices to sub-terrain names.
+  # Columns are assigned by proportion, so rebuild the column→name mapping.
+  proportions = [
+    cfg.proportion for cfg in terrain_generator.sub_terrains.values()
+  ]
+  total = sum(proportions)
+  num_cols = terrain.terrain_origins.shape[1]
+  sub_terrain_names = list(terrain_generator.sub_terrains.keys())
+
+  # Build name → set of column indices.
+  name_to_cols: dict[str, set[int]] = {}
+  cum = 0.0
+  for name, prop in zip(sub_terrain_names, proportions):
+    start_col = int(round(cum / total * num_cols))
+    end_col = int(round((cum + prop) / total * num_cols))
+    name_to_cols.setdefault(name, set()).update(range(start_col, end_col))
+    cum += prop
+
+  # Compute per-type mean level.
+  types = terrain.terrain_types
+  for name, cols in name_to_cols.items():
+    mask = torch.zeros_like(types, dtype=torch.bool)
+    for c in cols:
+      mask |= types == c
+    if mask.any():
+      result[name] = torch.mean(levels[mask])
+
+  return result
 
 
 def commands_vel(
