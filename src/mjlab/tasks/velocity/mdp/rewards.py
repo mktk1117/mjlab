@@ -201,8 +201,11 @@ def feet_clearance(
     foot_z = height_sensor.data.heights  # [B, N] terrain-relative
   else:
     foot_z = asset.data.site_pos_w[:, asset_cfg.site_ids, 2]  # [B, N]
+  # Guard against NaN/Inf from diverged physics.
+  foot_z = torch.nan_to_num(foot_z, nan=0.0, posinf=1.0, neginf=0.0).clamp_(0.0, 1.0)
   foot_vel_xy = asset.data.site_lin_vel_w[:, asset_cfg.site_ids, :2]  # [B, N, 2]
-  vel_norm = torch.norm(foot_vel_xy, dim=-1)  # [B, N]
+  foot_vel_xy = torch.nan_to_num(foot_vel_xy, nan=0.0, posinf=0.0, neginf=0.0)
+  vel_norm = torch.norm(foot_vel_xy, dim=-1).clamp_(max=10.0)  # [B, N]
   delta = torch.abs(foot_z - target_height)  # [B, N]
   cost = torch.sum(delta * vel_norm, dim=1)  # [B]
   if command_name is not None:
@@ -251,6 +254,10 @@ class feet_swing_height:
       foot_heights = height_sensor.data.heights  # [B, N] terrain-relative
     else:
       foot_heights = asset.data.site_pos_w[:, asset_cfg.site_ids, 2]
+    # Guard against NaN/Inf from diverged physics.
+    foot_heights = torch.nan_to_num(
+      foot_heights, nan=0.0, posinf=1.0, neginf=0.0
+    ).clamp_(0.0, 1.0)
     in_air = contact_sensor.data.found == 0
     self.peak_heights = torch.where(
       in_air,
