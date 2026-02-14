@@ -13,6 +13,7 @@ import torch
 from mjlab.entity import Entity, EntityCfg
 from mjlab.sensor import BuiltinSensor, Sensor, SensorCfg
 from mjlab.sensor.camera_sensor import CameraSensor
+from mjlab.sensor.height_sensor import HeightSensor
 from mjlab.sensor.raycast_sensor import RayCastSensor
 from mjlab.sensor.sensor_context import SensorContext
 from mjlab.terrains.terrain_importer import TerrainImporter, TerrainImporterCfg
@@ -149,6 +150,7 @@ class Scene:
     if ctx_sensors:
       camera_sensors = [s for s in ctx_sensors if isinstance(s, CameraSensor)]
       raycast_sensors = [s for s in ctx_sensors if isinstance(s, RayCastSensor)]
+      height_sensors = [s for s in ctx_sensors if isinstance(s, HeightSensor)]
       self._sensor_context = SensorContext(
         mj_model=mj_model,
         model=model,
@@ -156,6 +158,7 @@ class Scene:
         camera_sensors=camera_sensors,
         raycast_sensors=raycast_sensors,
         device=self._device,
+        height_sensors=height_sensors,
       )
 
   def reset(self, env_ids: torch.Tensor | slice | None = None) -> None:

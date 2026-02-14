@@ -7,7 +7,7 @@ import torch
 from mjlab.entity import Entity
 from mjlab.managers.reward_manager import RewardTermCfg
 from mjlab.managers.scene_entity_config import SceneEntityCfg
-from mjlab.sensor import BuiltinSensor, ContactSensor
+from mjlab.sensor import BuiltinSensor, ContactSensor, HeightSensor
 from mjlab.utils.lab_api.math import quat_apply_inverse
 from mjlab.utils.lab_api.string import (
   resolve_matching_names_values,
@@ -158,10 +158,20 @@ def feet_clearance(
   command_name: str | None = None,
   command_threshold: float = 0.01,
   asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+  height_sensor_name: str | None = None,
 ) -> torch.Tensor:
-  """Penalize deviation from target clearance height, weighted by foot velocity."""
+  """Penalize deviation from target clearance height, weighted by foot velocity.
+
+  Args:
+    height_sensor_name: Optional HeightSensor name for terrain-relative heights.
+      When None, uses raw site Z (correct on flat ground only).
+  """
   asset: Entity = env.scene[asset_cfg.name]
-  foot_z = asset.data.site_pos_w[:, asset_cfg.site_ids, 2]  # [B, N]
+  if height_sensor_name is not None:
+    height_sensor: HeightSensor = env.scene[height_sensor_name]
+    foot_z = height_sensor.data.heights  # [B, N] terrain-relative
+  else:
+    foot_z = asset.data.site_pos_w[:, asset_cfg.site_ids, 2]  # [B, N]
   foot_vel_xy = asset.data.site_lin_vel_w[:, asset_cfg.site_ids, :2]  # [B, N, 2]
   vel_norm = torch.norm(foot_vel_xy, dim=-1)  # [B, N]
   delta = torch.abs(foot_z - target_height)  # [B, N]
@@ -178,11 +188,16 @@ def feet_clearance(
 
 
 class feet_swing_height:
-  """Penalize deviation from target swing height, evaluated at landing."""
+  """Penalize deviation from target swing height, evaluated at landing.
+
+  Supports optional ``height_sensor_name`` param for terrain-relative foot
+  heights. When omitted, uses raw site Z (correct on flat ground only).
+  """
 
   def __init__(self, cfg: RewardTermCfg, env: ManagerBasedRlEnv):
     self.sensor_name = cfg.params["sensor_name"]
     self.site_names = cfg.params["asset_cfg"].site_names
+    self.height_sensor_name = cfg.params.get("height_sensor_name", None)
     self.peak_heights = torch.zeros(
       (env.num_envs, len(self.site_names)), device=env.device, dtype=torch.float32
     )
@@ -196,12 +211,17 @@ class feet_swing_height:
     command_name: str,
     command_threshold: float,
     asset_cfg: SceneEntityCfg,
+    height_sensor_name: str | None = None,
   ) -> torch.Tensor:
     asset: Entity = env.scene[asset_cfg.name]
     contact_sensor: ContactSensor = env.scene[sensor_name]
     command = env.command_manager.get_command(command_name)
     assert command is not None
-    foot_heights = asset.data.site_pos_w[:, asset_cfg.site_ids, 2]
+    if self.height_sensor_name is not None:
+      height_sensor: HeightSensor = env.scene[self.height_sensor_name]
+      foot_heights = height_sensor.data.heights  # [B, N] terrain-relative
+    else:
+      foot_heights = asset.data.site_pos_w[:, asset_cfg.site_ids, 2]
     in_air = contact_sensor.data.found == 0
     self.peak_heights = torch.where(
       in_air,

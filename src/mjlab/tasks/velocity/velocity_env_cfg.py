@@ -82,7 +82,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     "height_scan": ObservationTermCfg(
       func=envs_mdp.height_scan,
       params={"sensor_name": "terrain_scan"},
-      noise=Unoise(n_min=-0.1, n_max=0.1),
+      noise=Unoise(n_min=-0.05, n_max=0.05),
       clip=(-5.0, 5.0),
     ),
   }
