@@ -19,7 +19,7 @@ from mjlab.managers.reward_manager import RewardTermCfg
 from mjlab.managers.scene_entity_config import SceneEntityCfg
 from mjlab.managers.termination_manager import TerminationTermCfg
 from mjlab.scene import SceneCfg
-from mjlab.sensor import GridPatternCfg, ObjRef, RayCastSensorCfg
+from mjlab.sensor import GridPatternCfg, HeightSensorCfg, ObjRef, RayCastSensorCfg
 from mjlab.sim import MujocoCfg, SimulationCfg
 from mjlab.tasks.velocity import mdp
 from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
@@ -280,6 +280,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       params={
         "std": math.sqrt(0.2),
         "asset_cfg": SceneEntityCfg("robot", body_names=()),  # Set per-robot.
+        "normal_sensor_name": "base_normal_scan",
       },
     ),
     "pose": RewardTermCfg(
@@ -326,6 +327,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
         "command_name": "twist",
         "command_threshold": 0.05,
         "asset_cfg": SceneEntityCfg("robot", site_names=()),  # Set per-robot.
+        "height_sensor_name": "foot_clearance_scan",
       },
     ),
     "foot_swing_height": RewardTermCfg(
@@ -337,6 +339,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
         "command_name": "twist",
         "command_threshold": 0.05,
         "asset_cfg": SceneEntityCfg("robot", site_names=()),  # Set per-robot.
+        "height_sensor_name": "foot_height_scan",
       },
     ),
     "foot_slip": RewardTermCfg(
@@ -406,6 +409,34 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     viz=RayCastSensorCfg.VizCfg(show_normals=False),
   )
 
+  foot_clearance_scan = HeightSensorCfg(
+    name="foot_clearance_scan",
+    sites=(),  # Set per-robot.
+    sampling=HeightSensorCfg.SamplingCfg(
+      radius=0.1,
+      num_samples=8,
+    ),
+    reduction="min",
+    include_geom_groups=(0,),  # Terrain only.
+  )
+
+  foot_height_scan = HeightSensorCfg(
+    name="foot_height_scan",
+    sites=(),  # Set per-robot.
+    include_geom_groups=(0,),  # Terrain only.
+  )
+
+  base_normal_scan = HeightSensorCfg(
+    name="base_normal_scan",
+    sites=(),  # Set per-robot (base body site).
+    sampling=HeightSensorCfg.SamplingCfg(
+      radius=0.2,
+      num_samples=8,
+    ),
+    reduction="mean",
+    include_geom_groups=(0,),  # Terrain only.
+  )
+
   return ManagerBasedRlEnvCfg(
     scene=SceneCfg(
       terrain=TerrainImporterCfg(
@@ -413,7 +444,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
         terrain_generator=replace(ROUGH_TERRAINS_CFG),
         max_init_terrain_level=5,
       ),
-      sensors=(terrain_scan,),
+      sensors=(terrain_scan, foot_clearance_scan, foot_height_scan, base_normal_scan),
       num_envs=1,
       extent=2.0,
     ),

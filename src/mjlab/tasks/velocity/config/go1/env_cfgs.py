@@ -12,7 +12,7 @@ from mjlab.envs import ManagerBasedRlEnvCfg
 from mjlab.envs import mdp as envs_mdp
 from mjlab.envs.mdp.actions import JointPositionActionCfg
 from mjlab.managers import EventTermCfg, RewardTermCfg, TerminationTermCfg
-from mjlab.sensor import ContactMatch, ContactSensorCfg, RayCastSensorCfg
+from mjlab.sensor import ContactMatch, ContactSensorCfg, HeightSensorCfg, ObjRef, RayCastSensorCfg
 from mjlab.tasks.velocity import mdp
 from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
 from mjlab.tasks.velocity.velocity_env_cfg import make_velocity_env_cfg
@@ -31,15 +31,24 @@ def unitree_go1_rough_env_cfg(
 
   cfg.scene.entities = {"robot": get_go1_robot_cfg()}
 
-  # Set raycast sensor frame to Go1 trunk.
+  foot_names = ("FR", "FL", "RR", "RL")
+  site_names = ("FR", "FL", "RR", "RL")
+  geom_names = tuple(f"{name}_foot_collision" for name in foot_names)
+
+  # Set per-robot sensor config.
   for sensor in cfg.scene.sensors or ():
     if sensor.name == "terrain_scan":
       assert isinstance(sensor, RayCastSensorCfg)
       sensor.frame.name = "trunk"
-
-  foot_names = ("FR", "FL", "RR", "RL")
-  site_names = ("FR", "FL", "RR", "RL")
-  geom_names = tuple(f"{name}_foot_collision" for name in foot_names)
+    elif sensor.name in ("foot_clearance_scan", "foot_height_scan"):
+      assert isinstance(sensor, HeightSensorCfg)
+      sensor.sites = tuple(
+        ObjRef(type="site", name=name, entity="robot")
+        for name in site_names
+      )
+    elif sensor.name == "base_normal_scan":
+      assert isinstance(sensor, HeightSensorCfg)
+      sensor.sites = (ObjRef(type="site", name="imu", entity="robot"),)
 
   feet_ground_cfg = ContactSensorCfg(
     name="feet_ground_contact",
@@ -109,13 +118,13 @@ def unitree_go1_rough_env_cfg(
     r".*(FR|FL|RR|RL)_(hip|thigh)_joint.*": 0.3,
     r".*(FR|FL|RR|RL)_calf_joint.*": 0.6,
   }
-  cfg.rewards["upright"].weight = 0.0
+  cfg.rewards["upright"].weight = 0.1
   cfg.rewards["upright"].params["asset_cfg"].body_names = ("trunk",)
   cfg.rewards["body_ang_vel"].params["asset_cfg"].body_names = ("trunk",)
   for reward_name in ["foot_clearance", "foot_swing_height", "foot_slip"]:
     cfg.rewards[reward_name].params["asset_cfg"].site_names = site_names
-  cfg.rewards["body_ang_vel"].weight = 0.0
-  cfg.rewards["angular_momentum"].weight = 0.0
+  cfg.rewards["body_ang_vel"].weight = -1.0e-4
+  cfg.rewards["angular_momentum"].weight = -1.0e-4
   cfg.rewards["air_time"].weight = 0.0
   cfg.rewards["self_collisions"] = RewardTermCfg(
     func=mdp.self_collision_cost,
@@ -168,7 +177,11 @@ def unitree_go1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
 
   # Remove raycast sensor and height scan (no terrain to scan).
   cfg.scene.sensors = tuple(
-    s for s in (cfg.scene.sensors or ()) if s.name != "terrain_scan"
+    s for s in (cfg.scene.sensors or ())
+    if s.name not in (
+      "terrain_scan", "foot_clearance_scan", "foot_height_scan",
+      "base_normal_scan",
+    )
   )
   del cfg.observations["actor"].terms["height_scan"]
   del cfg.observations["critic"].terms["height_scan"]

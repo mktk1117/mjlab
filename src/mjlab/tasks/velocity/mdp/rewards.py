@@ -64,11 +64,22 @@ def flat_orientation(
   env: ManagerBasedRlEnv,
   std: float,
   asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+  normal_sensor_name: str | None = None,
+  flatness_threshold: float = 0.087,
 ) -> torch.Tensor:
   """Reward flat base orientation (robot being upright).
 
   If asset_cfg has body_ids specified, computes the projected gravity
   for that specific body. Otherwise, uses the root link projected gravity.
+
+  Args:
+    normal_sensor_name: Optional HeightSensor for terrain normals below the
+      base. When provided, the upright reward is scaled by terrain flatness:
+      on sloped terrain (normal far from vertical) the reward is reduced so
+      the robot is not penalized for leaning with the slope.
+    flatness_threshold: Maximum XY component of terrain normal for full
+      reward. Above this the reward linearly decays to 0. Default 0.087
+      (~5° slope).
   """
   asset: Entity = env.scene[asset_cfg.name]
 
@@ -82,7 +93,21 @@ def flat_orientation(
   else:
     # Use root link projected gravity.
     xy_squared = torch.sum(torch.square(asset.data.projected_gravity_b[:, :2]), dim=1)
-  return torch.exp(-xy_squared / std**2)
+
+  reward = torch.exp(-xy_squared / std**2)
+
+  # Gate by terrain flatness: disable upright penalty on slopes.
+  if normal_sensor_name is not None:
+    height_sensor: HeightSensor = env.scene[normal_sensor_name]
+    terrain_normal = height_sensor.data.normals_w  # [B, S, 3]
+    # Use first (and only) site — the base. XY magnitude = slope indicator.
+    normal_xy = terrain_normal[:, 0, :2]  # [B, 2]
+    slope = torch.norm(normal_xy, dim=-1)  # [B], 0 = flat, 1 = vertical wall
+    # Linear ramp: 1.0 when slope ≤ 0, 0.0 when slope ≥ flatness_threshold.
+    flatness = (1.0 - slope / flatness_threshold).clamp(0.0, 1.0)
+    reward = reward * flatness
+
+  return reward
 
 
 def self_collision_cost(env: ManagerBasedRlEnv, sensor_name: str) -> torch.Tensor:
