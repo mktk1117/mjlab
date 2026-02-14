@@ -105,13 +105,13 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       terms=actor_terms,
       concatenate_terms=True,
       enable_corruption=True,
-      nan_policy="error",
+      nan_policy="sanitize",
     ),
     "critic": ObservationGroupCfg(
       terms=critic_terms,
       concatenate_terms=True,
       enable_corruption=False,
-      nan_policy="error",
+      nan_policy="sanitize",
     ),
   }
 
@@ -135,7 +135,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
   commands: dict[str, CommandTermCfg] = {
     "twist": UniformVelocityCommandCfg(
       entity_name="robot",
-      resampling_time_range=(3.0, 8.0),
+      resampling_time_range=(6.0, 10.0),
       rel_standing_envs=0.1,
       rel_heading_envs=0.3,
       heading_command=True,
@@ -308,6 +308,8 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     ),
     "dof_pos_limits": RewardTermCfg(func=mdp.joint_pos_limits, weight=-1.0),
     "action_rate_l2": RewardTermCfg(func=mdp.action_rate_l2, weight=-0.1),
+    "joint_vel_l2": RewardTermCfg(func=mdp.joint_vel_l2, weight=-1.0e-7),
+    "joint_acc_l2": RewardTermCfg(func=mdp.joint_acc_l2, weight=-1.0e-9),
     "air_time": RewardTermCfg(
       func=mdp.feet_air_time,
       weight=0.0,  # Override per-robot.
@@ -369,6 +371,11 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
 
   terminations = {
     "time_out": TerminationTermCfg(func=mdp.time_out, time_out=True),
+    "nan_detection": TerminationTermCfg(func=envs_mdp.nan_detection),
+    "root_height": TerminationTermCfg(
+      func=envs_mdp.root_height_below_minimum,
+      params={"minimum_height": -1.0},
+    ),
   }
 
   ##
@@ -401,7 +408,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     name="terrain_scan",
     frame=ObjRef(type="body", name="", entity="robot"),  # Set per-robot.
     ray_alignment="yaw",
-    pattern=GridPatternCfg(size=(1.0, 1.0), resolution=0.1),
+    pattern=GridPatternCfg(size=(1.4, 1.0), resolution=0.1),
     max_distance=5.0,
     exclude_parent_body=True,
     include_geom_groups=(0,),  # Terrain is in group 0.
