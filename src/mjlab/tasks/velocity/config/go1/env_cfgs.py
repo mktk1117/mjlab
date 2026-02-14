@@ -67,12 +67,34 @@ def unitree_go1_rough_env_cfg(
     reduce="none",
     num_slots=1,
   )
+  thigh_geom_names = tuple(
+    f"{leg}_thigh_collision{i}"
+    for leg in foot_names
+    for i in (1, 2, 3)
+  )
   base_ground_cfg = ContactSensorCfg(
     name="base_ground_touch",
     primary=ContactMatch(
       mode="geom",
       entity="robot",
-      pattern=("trunk_collision",),
+      pattern=("trunk_collision",) + thigh_geom_names,
+    ),
+    secondary=ContactMatch(mode="body", pattern="terrain"),
+    fields=("found",),
+    reduce="none",
+    num_slots=1,
+  )
+  calf_geom_names = tuple(
+    f"{leg}_calf_collision{i}"
+    for leg in foot_names
+    for i in (1, 2)
+  )
+  shank_ground_cfg = ContactSensorCfg(
+    name="shank_ground_touch",
+    primary=ContactMatch(
+      mode="geom",
+      entity="robot",
+      pattern=calf_geom_names,
     ),
     secondary=ContactMatch(mode="body", pattern="terrain"),
     fields=("found",),
@@ -83,6 +105,7 @@ def unitree_go1_rough_env_cfg(
     feet_ground_cfg,
     self_collision_cfg,
     base_ground_cfg,
+    shank_ground_cfg,
   )
 
   if cfg.scene.terrain is not None and cfg.scene.terrain.terrain_generator is not None:
@@ -131,6 +154,11 @@ def unitree_go1_rough_env_cfg(
     weight=-1.0,
     params={"sensor_name": self_collision_cfg.name},
   )
+  cfg.rewards["shank_collision"] = RewardTermCfg(
+    func=mdp.self_collision_cost,
+    weight=-0.1,
+    params={"sensor_name": shank_ground_cfg.name},
+  )
 
   cfg.terminations["illegal_contact"] = TerminationTermCfg(
     func=mdp.illegal_contact,
@@ -154,8 +182,8 @@ def unitree_go1_rough_env_cfg(
     if cfg.scene.terrain is not None:
       if cfg.scene.terrain.terrain_generator is not None:
         cfg.scene.terrain.terrain_generator.curriculum = False
-        cfg.scene.terrain.terrain_generator.num_cols = 5
-        cfg.scene.terrain.terrain_generator.num_rows = 5
+        cfg.scene.terrain.terrain_generator.num_cols = 10
+        cfg.scene.terrain.terrain_generator.num_rows = 10
         cfg.scene.terrain.terrain_generator.border_width = 10.0
 
   return cfg
@@ -190,7 +218,7 @@ def unitree_go1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   del cfg.terminations["illegal_contact"]
   cfg.terminations["fell_over"] = TerminationTermCfg(
     func=mdp.bad_orientation,
-    params={"limit_angle": math.radians(70.0)},
+    params={"limit_angle": math.radians(50.0)},
   )
 
   # Disable terrain curriculum.

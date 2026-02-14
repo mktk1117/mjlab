@@ -136,7 +136,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     "twist": UniformVelocityCommandCfg(
       entity_name="robot",
       resampling_time_range=(3.0, 8.0),
-      rel_standing_envs=0.2,
+      rel_standing_envs=0.1,
       rel_heading_envs=0.3,
       heading_command=True,
       heading_control_stiffness=0.5,
