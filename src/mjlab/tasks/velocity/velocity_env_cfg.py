@@ -125,6 +125,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       actuator_names=(".*",),
       scale=0.5,  # Override per-robot.
       use_default_offset=True,
+      clip_to_joint_limits=True,
     )
   }
 
@@ -308,8 +309,8 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     ),
     "dof_pos_limits": RewardTermCfg(func=mdp.joint_pos_limits, weight=-1.0),
     "action_rate_l2": RewardTermCfg(func=mdp.action_rate_l2, weight=-0.1),
-    "joint_vel_l2": RewardTermCfg(func=mdp.joint_vel_l2, weight=-1.0e-7),
-    "joint_acc_l2": RewardTermCfg(func=mdp.joint_acc_l2, weight=-1.0e-9),
+    "joint_vel_l2": RewardTermCfg(func=mdp.joint_vel_l2, weight=-1.0e-4),
+    "joint_acc_l2": RewardTermCfg(func=mdp.joint_acc_l2, weight=-1.0e-6),
     "air_time": RewardTermCfg(
       func=mdp.feet_air_time,
       weight=0.0,  # Override per-robot.

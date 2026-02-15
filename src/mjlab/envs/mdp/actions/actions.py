@@ -163,6 +163,11 @@ class JointPositionActionCfg(BaseActionCfg):
 
   use_default_offset: bool = True
 
+  clip_to_joint_limits: bool = False
+  """Whether to clip processed position targets to soft joint limits.
+  When True, targets are clamped to `soft_joint_pos_limits` before being
+  applied, preventing commands outside the physical range."""
+
   def __post_init__(self):
     self.transmission_type = TransmissionType.JOINT
 
@@ -197,15 +202,29 @@ class JointEffortActionCfg(BaseActionCfg):
 class JointPositionAction(BaseAction):
   """Control joints via position targets."""
 
+  cfg: JointPositionActionCfg
+
   def __init__(self, cfg: JointPositionActionCfg, env: ManagerBasedRlEnv):
     super().__init__(cfg=cfg, env=env)
 
     if cfg.use_default_offset:
       self._offset = self._entity.data.default_joint_pos[:, self._target_ids].clone()
 
+    # Cache joint position limits for clipping if enabled.
+    if cfg.clip_to_joint_limits:
+      limits = self._entity.data.soft_joint_pos_limits[:, self._target_ids]
+      self._joint_pos_lower = limits[..., 0]  # [B, N]
+      self._joint_pos_upper = limits[..., 1]  # [B, N]
+
   def apply_actions(self) -> None:
+    target = self._processed_actions
+    # Clip target positions to joint limits if configured.
+    if self.cfg.clip_to_joint_limits:
+      target = target.clamp(
+        min=self._joint_pos_lower, max=self._joint_pos_upper
+      )
     encoder_bias = self._entity.data.encoder_bias[:, self._target_ids]
-    target = self._processed_actions - encoder_bias
+    target = target - encoder_bias
     self._entity.set_joint_position_target(target, joint_ids=self._target_ids)
 
 
