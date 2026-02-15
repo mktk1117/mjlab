@@ -47,6 +47,43 @@ class PlayConfig:
   _demo_mode: tyro.conf.Suppress[bool] = False
 
 
+def _find_newest_checkpoint(log_root: Path) -> Path:
+  """Find the newest checkpoint from local log directories.
+
+  Scans `log_root/{run_dirs}/model_*.pt` and returns the highest-numbered
+  checkpoint from the most recent run directory.
+  """
+  if not log_root.exists():
+    raise FileNotFoundError(
+      f"No log directory found at: {log_root}\n"
+      "Provide --checkpoint-file or --wandb-run-path explicitly."
+    )
+  # Find the most recent run directory (sorted by timestamp name).
+  run_dirs = sorted(
+    [d for d in log_root.iterdir() if d.is_dir()], key=lambda d: d.name
+  )
+  if not run_dirs:
+    raise FileNotFoundError(
+      f"No run directories found in: {log_root}\n"
+      "Provide --checkpoint-file or --wandb-run-path explicitly."
+    )
+  # Search from newest run backwards until we find one with checkpoints.
+  for run_dir in reversed(run_dirs):
+    checkpoints = sorted(run_dir.glob("model_*.pt"))
+    if checkpoints:
+      # Pick the highest-numbered checkpoint.
+      best = max(checkpoints, key=lambda p: int(p.stem.split("_")[1]))
+      print(
+        f"[INFO]: Auto-discovered checkpoint: {best.name} "
+        f"(run: {run_dir.name})"
+      )
+      return best
+  raise FileNotFoundError(
+    f"No model_*.pt checkpoints found in: {log_root}\n"
+    "Provide --checkpoint-file or --wandb-run-path explicitly."
+  )
+
+
 def run_play(task_id: str, cfg: PlayConfig):
   configure_torch_backends()
 
@@ -153,21 +190,19 @@ def run_play(task_id: str, cfg: PlayConfig):
       if not resume_path.exists():
         raise FileNotFoundError(f"Checkpoint file not found: {resume_path}")
       print(f"[INFO]: Loading checkpoint: {resume_path.name}")
-    else:
-      if cfg.wandb_run_path is None:
-        raise ValueError(
-          "`wandb_run_path` is required when `checkpoint_file` is not provided."
-        )
+    elif cfg.wandb_run_path is not None:
       resume_path, was_cached = get_wandb_checkpoint_path(
         log_root_path, Path(cfg.wandb_run_path)
       )
-      # Extract run_id and checkpoint name from path for display.
       run_id = resume_path.parent.name
       checkpoint_name = resume_path.name
       cached_str = "cached" if was_cached else "downloaded"
       print(
         f"[INFO]: Loading checkpoint: {checkpoint_name} (run: {run_id}, {cached_str})"
       )
+    else:
+      # Auto-discover the newest checkpoint from local logs.
+      resume_path = _find_newest_checkpoint(log_root_path)
     log_dir = resume_path.parent
 
   if cfg.num_envs is not None:

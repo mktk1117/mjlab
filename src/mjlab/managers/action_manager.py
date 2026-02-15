@@ -149,7 +149,9 @@ class ActionManager(ManagerBase):
       )
     self._prev_prev_action[:] = self._prev_action
     self._prev_action[:] = self._action
-    self._action[:] = action.to(self.device)
+    # Clamp raw policy output to [-1, 1] to bound action_rate rewards.
+    action = action.to(self.device).clamp(-1.0, 1.0)
+    self._action[:] = action
     # Split and apply.
     idx = 0
     for term in self._terms.values():
