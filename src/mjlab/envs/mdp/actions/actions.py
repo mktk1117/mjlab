@@ -164,9 +164,11 @@ class JointPositionActionCfg(BaseActionCfg):
   use_default_offset: bool = True
 
   clip_to_joint_limits: bool = False
-  """Whether to clip processed position targets to soft joint limits.
-  When True, targets are clamped to `soft_joint_pos_limits` before being
-  applied, preventing commands outside the physical range."""
+  """Whether to clip processed position targets to soft joint limits."""
+
+  clip_range: tuple[float, float] | None = None
+  """Optional manual clipping range (min, max) for processed position targets.
+  Applied after scale/offset, before joint limit clipping."""
 
   def __post_init__(self):
     self.transmission_type = TransmissionType.JOINT
@@ -218,7 +220,10 @@ class JointPositionAction(BaseAction):
 
   def apply_actions(self) -> None:
     target = self._processed_actions
-    # Clip target positions to joint limits if configured.
+    # Clip to manual range if configured.
+    if self.cfg.clip_range is not None:
+      target = target.clamp(min=self.cfg.clip_range[0], max=self.cfg.clip_range[1])
+    # Clip to joint limits if configured.
     if self.cfg.clip_to_joint_limits:
       target = target.clamp(
         min=self._joint_pos_lower, max=self._joint_pos_upper
