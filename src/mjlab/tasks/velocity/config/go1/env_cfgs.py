@@ -159,6 +159,8 @@ def unitree_go1_rough_env_cfg(
     weight=-0.1,
     params={"sensor_name": shank_ground_cfg.name},
   )
+  cfg.rewards["joint_vel_l2"].weight = 0.0
+  cfg.rewards["joint_acc_l2"].weight = 0.0
 
   cfg.terminations["illegal_contact"] = TerminationTermCfg(
     func=mdp.illegal_contact,
