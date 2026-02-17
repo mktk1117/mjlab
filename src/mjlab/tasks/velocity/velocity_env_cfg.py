@@ -40,11 +40,40 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     name="terrain_scan",
     frame=ObjRef(type="body", name="", entity="robot"),  # Set per-robot.
     ray_alignment="yaw",
-    pattern=GridPatternCfg(size=(1.6, 1.0), resolution=0.1),
+    pattern=GridPatternCfg(size=(1.4, 1.0), resolution=0.1),
     max_distance=5.0,
     exclude_parent_body=True,
+    include_geom_groups=(0,),  # Terrain is in group 0.
     debug_vis=True,
-    viz=RayCastSensorCfg.VizCfg(show_normals=True),
+    viz=RayCastSensorCfg.VizCfg(show_normals=False),
+  )
+
+  foot_clearance_scan = HeightSensorCfg(
+    name="foot_clearance_scan",
+    sites=(),  # Set per-robot.
+    sampling=HeightSensorCfg.SamplingCfg(
+      radius=0.1,
+      num_samples=8,
+    ),
+    reduction="min",
+    include_geom_groups=(0,),  # Terrain only.
+  )
+
+  foot_height_scan = HeightSensorCfg(
+    name="foot_height_scan",
+    sites=(),  # Set per-robot.
+    include_geom_groups=(0,),  # Terrain only.
+  )
+
+  base_normal_scan = HeightSensorCfg(
+    name="base_normal_scan",
+    sites=(),  # Set per-robot (base body site).
+    sampling=HeightSensorCfg.SamplingCfg(
+      radius=0.2,
+      num_samples=8,
+    ),
+    reduction="mean",
+    include_geom_groups=(0,),  # Terrain only.
   )
 
   ##
@@ -83,17 +112,12 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       func=envs_mdp.height_scan,
       params={"sensor_name": "terrain_scan"},
       noise=Unoise(n_min=-0.05, n_max=0.05),
-      clip=(-5.0, 5.0),
+      scale=1 / terrain_scan.max_distance,
     ),
   }
 
   critic_terms = {
     **actor_terms,
-    "height_scan": ObservationTermCfg(
-      func=envs_mdp.height_scan,
-      params={"sensor_name": "terrain_scan"},
-      clip=(-5.0, 5.0),
-    ),
     "foot_height": ObservationTermCfg(
       func=mdp.foot_height,
       params={"asset_cfg": SceneEntityCfg("robot", site_names=())},  # Set per-robot.
@@ -125,8 +149,8 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       actuator_names=(".*",),
       scale=0.5,  # Override per-robot.
       use_default_offset=True,
-      clip_to_joint_limits=False,
-      clip_range=(-10.0, 10.0),
+      # clip_to_joint_limits=False,
+      # clip_range=(-10.0, 10.0),
     )
   }
 
@@ -413,46 +437,6 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
   ##
   # Assemble and return
   ##
-
-  terrain_scan = RayCastSensorCfg(
-    name="terrain_scan",
-    frame=ObjRef(type="body", name="", entity="robot"),  # Set per-robot.
-    ray_alignment="yaw",
-    pattern=GridPatternCfg(size=(1.4, 1.0), resolution=0.1),
-    max_distance=5.0,
-    exclude_parent_body=True,
-    include_geom_groups=(0,),  # Terrain is in group 0.
-    debug_vis=True,
-    viz=RayCastSensorCfg.VizCfg(show_normals=False),
-  )
-
-  foot_clearance_scan = HeightSensorCfg(
-    name="foot_clearance_scan",
-    sites=(),  # Set per-robot.
-    sampling=HeightSensorCfg.SamplingCfg(
-      radius=0.1,
-      num_samples=8,
-    ),
-    reduction="min",
-    include_geom_groups=(0,),  # Terrain only.
-  )
-
-  foot_height_scan = HeightSensorCfg(
-    name="foot_height_scan",
-    sites=(),  # Set per-robot.
-    include_geom_groups=(0,),  # Terrain only.
-  )
-
-  base_normal_scan = HeightSensorCfg(
-    name="base_normal_scan",
-    sites=(),  # Set per-robot (base body site).
-    sampling=HeightSensorCfg.SamplingCfg(
-      radius=0.2,
-      num_samples=8,
-    ),
-    reduction="mean",
-    include_geom_groups=(0,),  # Terrain only.
-  )
 
   return ManagerBasedRlEnvCfg(
     scene=SceneCfg(
