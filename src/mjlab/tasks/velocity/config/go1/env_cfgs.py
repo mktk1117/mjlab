@@ -32,8 +32,10 @@ def unitree_go1_rough_env_cfg(
   """Create Unitree Go1 rough terrain velocity configuration."""
   cfg = make_velocity_env_cfg()
 
-  cfg.sim.mujoco.ccd_iterations = 500
-  cfg.sim.contact_sensor_maxmatch = 500
+  cfg.sim.njmax = 300
+  cfg.sim.mujoco.ccd_iterations = 50
+  cfg.sim.contact_sensor_maxmatch = 64
+  cfg.sim.nconmax = None
 
   cfg.scene.entities = {"robot": get_go1_robot_cfg()}
 
