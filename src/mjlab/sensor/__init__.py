@@ -5,12 +5,12 @@ from mjlab.sensor.camera_sensor import CameraSensor as CameraSensor
 from mjlab.sensor.camera_sensor import CameraSensorCfg as CameraSensorCfg
 from mjlab.sensor.camera_sensor import CameraSensorData as CameraSensorData
 from mjlab.sensor.contact_sensor import ContactData as ContactData
-from mjlab.sensor.height_sensor import HeightSensor as HeightSensor
-from mjlab.sensor.height_sensor import HeightSensorCfg as HeightSensorCfg
-from mjlab.sensor.height_sensor import HeightSensorData as HeightSensorData
 from mjlab.sensor.contact_sensor import ContactMatch as ContactMatch
 from mjlab.sensor.contact_sensor import ContactSensor as ContactSensor
 from mjlab.sensor.contact_sensor import ContactSensorCfg as ContactSensorCfg
+from mjlab.sensor.height_sensor import HeightSensor as HeightSensor
+from mjlab.sensor.height_sensor import HeightSensorCfg as HeightSensorCfg
+from mjlab.sensor.height_sensor import HeightSensorData as HeightSensorData
 from mjlab.sensor.raycast_sensor import GridPatternCfg as GridPatternCfg
 from mjlab.sensor.raycast_sensor import (
   PinholeCameraPatternCfg as PinholeCameraPatternCfg,

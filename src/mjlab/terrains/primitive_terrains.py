@@ -1562,7 +1562,6 @@ class BoxNestedRingsTerrainCfg(SubTerrainCfg):
     # In beam terrain, border top was at beam_height.
 
     if self.border_width > 0.0:
-
       border_h = 0.5
       border_center = (
         0.5 * self.size[0],

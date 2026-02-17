@@ -7,7 +7,7 @@ To add a new terrain, define a function decorated with @terrain_preset:
 
     @terrain_preset
     def my_new_terrain(**overrides) -> terrain_gen.SomeTerrainCfg:
-      defaults = dict(...)
+      defaults: dict[str, Any] = dict(...)
       defaults.update(overrides)
       return terrain_gen.SomeTerrainCfg(**defaults)
 
@@ -15,7 +15,7 @@ It will be auto-included in ALL_TERRAIN_PRESETS and ALL_TERRAINS_CFG.
 """
 
 from collections.abc import Callable
-from typing import TypeVar
+from typing import Any, TypeVar
 
 import mjlab.terrains as terrain_gen
 from mjlab.terrains.terrain_generator import SubTerrainCfg, TerrainGeneratorCfg
@@ -49,7 +49,7 @@ def flat(**overrides) -> terrain_gen.BoxFlatTerrainCfg:
 
 @terrain_preset
 def pyramid_stairs(**overrides) -> terrain_gen.BoxPyramidStairsTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     step_height_range=(0.0, 0.2),
     step_width=0.3,
     platform_width=3.0,
@@ -61,7 +61,7 @@ def pyramid_stairs(**overrides) -> terrain_gen.BoxPyramidStairsTerrainCfg:
 
 @terrain_preset
 def pyramid_stairs_inv(**overrides) -> terrain_gen.BoxInvertedPyramidStairsTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     step_height_range=(0.0, 0.2),
     step_width=0.3,
     platform_width=3.0,
@@ -73,7 +73,7 @@ def pyramid_stairs_inv(**overrides) -> terrain_gen.BoxInvertedPyramidStairsTerra
 
 @terrain_preset
 def hf_pyramid_slope(**overrides) -> terrain_gen.HfPyramidSlopedTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     slope_range=(0.0, 0.7),
     platform_width=2.0,
     border_width=0.25,
@@ -84,7 +84,7 @@ def hf_pyramid_slope(**overrides) -> terrain_gen.HfPyramidSlopedTerrainCfg:
 
 @terrain_preset
 def hf_pyramid_slope_inv(**overrides) -> terrain_gen.HfPyramidSlopedTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     slope_range=(0.0, 0.7),
     platform_width=2.0,
     border_width=0.25,
@@ -96,7 +96,7 @@ def hf_pyramid_slope_inv(**overrides) -> terrain_gen.HfPyramidSlopedTerrainCfg:
 
 @terrain_preset
 def random_rough(**overrides) -> terrain_gen.HfRandomUniformTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     noise_range=(0.02, 0.10),
     noise_step=0.02,
     border_width=0.25,
@@ -107,7 +107,7 @@ def random_rough(**overrides) -> terrain_gen.HfRandomUniformTerrainCfg:
 
 @terrain_preset
 def wave_terrain(**overrides) -> terrain_gen.HfWaveTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     amplitude_range=(0.0, 0.2),
     num_waves=4,
     border_width=0.25,
@@ -118,7 +118,7 @@ def wave_terrain(**overrides) -> terrain_gen.HfWaveTerrainCfg:
 
 @terrain_preset
 def discrete_obstacles(**overrides) -> terrain_gen.HfDiscreteObstaclesTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     obstacle_width_range=(0.3, 1.0),
     obstacle_height_range=(0.05, 0.3),
     num_obstacles=40,
@@ -130,7 +130,7 @@ def discrete_obstacles(**overrides) -> terrain_gen.HfDiscreteObstaclesTerrainCfg
 
 @terrain_preset
 def perlin_terrain_smooth(**overrides) -> terrain_gen.HfPerlinNoiseTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     height_range=(0.0, 1.0),
     octaves=4,
     persistence=0.2,
@@ -147,7 +147,7 @@ def perlin_terrain_smooth(**overrides) -> terrain_gen.HfPerlinNoiseTerrainCfg:
 
 @terrain_preset
 def perlin_terrain_rough(**overrides) -> terrain_gen.HfPerlinNoiseTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     height_range=(0.0, 1.0),
     octaves=6,
     persistence=0.3,
@@ -164,7 +164,7 @@ def perlin_terrain_rough(**overrides) -> terrain_gen.HfPerlinNoiseTerrainCfg:
 
 @terrain_preset
 def box_random_grid(**overrides) -> terrain_gen.BoxRandomGridTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     grid_width=0.4,
     grid_height_range=(0.0, 0.3),
     platform_width=2.0,
@@ -175,7 +175,7 @@ def box_random_grid(**overrides) -> terrain_gen.BoxRandomGridTerrainCfg:
 
 @terrain_preset
 def box_random_grid_large(**overrides) -> terrain_gen.BoxRandomGridTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     grid_width=0.8,
     grid_height_range=(0.0, 0.3),
     platform_width=2.0,
@@ -190,7 +190,7 @@ def box_random_grid_large(**overrides) -> terrain_gen.BoxRandomGridTerrainCfg:
 
 @terrain_preset
 def random_spread_boxes(**overrides) -> terrain_gen.BoxRandomSpreadTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     num_boxes=80,
     box_width_range=(0.1, 1.0),
     box_length_range=(0.1, 2.0),
@@ -204,7 +204,7 @@ def random_spread_boxes(**overrides) -> terrain_gen.BoxRandomSpreadTerrainCfg:
 
 @terrain_preset
 def open_stairs(**overrides) -> terrain_gen.BoxOpenStairsTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     step_height_range=(0.1, 0.2),
     step_width_range=(0.4, 0.8),
     platform_width=2.0,
@@ -217,7 +217,7 @@ def open_stairs(**overrides) -> terrain_gen.BoxOpenStairsTerrainCfg:
 
 @terrain_preset
 def inverted_open_stairs(**overrides) -> terrain_gen.BoxOpenStairsTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     step_height_range=(0.1, 0.2),
     step_width_range=(0.4, 0.8),
     platform_width=2.0,
@@ -230,7 +230,7 @@ def inverted_open_stairs(**overrides) -> terrain_gen.BoxOpenStairsTerrainCfg:
 
 @terrain_preset
 def random_stairs(**overrides) -> terrain_gen.BoxRandomStairsTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     step_width=0.4,
     step_height_range=(0.1, 0.3),
     platform_width=2.0,
@@ -242,7 +242,7 @@ def random_stairs(**overrides) -> terrain_gen.BoxRandomStairsTerrainCfg:
 
 @terrain_preset
 def stepping_stones(**overrides) -> terrain_gen.BoxSteppingStonesTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     stone_size_range=(0.4, 0.8),
     stone_distance_range=(0.2, 0.5),
     stone_height=0.2,
@@ -259,7 +259,7 @@ def stepping_stones(**overrides) -> terrain_gen.BoxSteppingStonesTerrainCfg:
 
 @terrain_preset
 def narrow_beams(**overrides) -> terrain_gen.BoxNarrowBeamsTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     num_beams=12,
     beam_width_range=(0.2, 0.8),
     beam_height=0.2,
@@ -274,7 +274,7 @@ def narrow_beams(**overrides) -> terrain_gen.BoxNarrowBeamsTerrainCfg:
 
 @terrain_preset
 def nested_rings(**overrides) -> terrain_gen.BoxNestedRingsTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     num_rings=8,
     ring_width_range=(0.3, 0.6),
     gap_range=(0.1, 0.4),
@@ -289,7 +289,7 @@ def nested_rings(**overrides) -> terrain_gen.BoxNestedRingsTerrainCfg:
 
 @terrain_preset
 def tilted_grid(**overrides) -> terrain_gen.BoxTiltedGridTerrainCfg:
-  defaults = dict(
+  defaults: dict[str, Any] = dict(
     grid_width=1.0,
     tilt_range_deg=20.0,
     height_range=0.3,
@@ -371,9 +371,7 @@ ALL_TERRAINS_CFG = TerrainGeneratorCfg(
   border_width=20.0,
   num_rows=10,
   num_cols=len(ALL_TERRAIN_PRESETS),
-  sub_terrains={
-    name: fn(proportion=1.0) for name, fn in ALL_TERRAIN_PRESETS.items()
-  },
+  sub_terrains={name: fn(proportion=1.0) for name, fn in ALL_TERRAIN_PRESETS.items()},
   add_lights=True,
 )
 

@@ -355,9 +355,7 @@ class HeightSensor(Sensor[HeightSensorData]):
     self._num_total_rays = self._num_sites * self._num_samples_per_site
 
     # Normalize ray direction.
-    direction = torch.tensor(
-      self.cfg.direction, device=device, dtype=torch.float32
-    )
+    direction = torch.tensor(self.cfg.direction, device=device, dtype=torch.float32)
     self._ray_direction = direction / direction.norm()
 
     # Allocate warp arrays: [B, S*K] where K = samples per site.
@@ -403,15 +401,9 @@ class HeightSensor(Sensor[HeightSensorData]):
 
     # Pre-allocate output tensors.
     self._heights = torch.zeros(num_envs, self._num_sites, device=device)
-    self._normals_w = torch.zeros(
-      num_envs, self._num_sites, 3, device=device
-    )
-    self._hit_pos_w = torch.zeros(
-      num_envs, self._num_sites, 3, device=device
-    )
-    self._site_pos_w = torch.zeros(
-      num_envs, self._num_sites, 3, device=device
-    )
+    self._normals_w = torch.zeros(num_envs, self._num_sites, 3, device=device)
+    self._hit_pos_w = torch.zeros(num_envs, self._num_sites, 3, device=device)
+    self._site_pos_w = torch.zeros(num_envs, self._num_sites, 3, device=device)
 
     assert self._wp_device is not None
 
@@ -439,11 +431,13 @@ class HeightSensor(Sensor[HeightSensorData]):
     for ring in rings:
       for i in range(ring.num_samples):
         angle = 2.0 * math.pi * i / ring.num_samples
-        offsets.append(torch.tensor(
-          [ring.radius * math.cos(angle), ring.radius * math.sin(angle), 0.0],
-          device=device,
-          dtype=torch.float32,
-        ))
+        offsets.append(
+          torch.tensor(
+            [ring.radius * math.cos(angle), ring.radius * math.sin(angle), 0.0],
+            device=device,
+            dtype=torch.float32,
+          )
+        )
 
     return torch.stack(offsets)  # [K, 3]
 
@@ -555,9 +549,7 @@ class HeightSensor(Sensor[HeightSensorData]):
     K = self._num_samples_per_site
 
     # Gather site positions [B, S, 3].
-    site_ids = torch.tensor(
-      self._site_ids, device=self._device, dtype=torch.long
-    )
+    site_ids = torch.tensor(self._site_ids, device=self._device, dtype=torch.long)
     site_pos = self._data.site_xpos[:, site_ids]  # [B, S, 3]
 
     # Expand site positions to include sample offsets → [B, S, K, 3].
@@ -572,10 +564,7 @@ class HeightSensor(Sensor[HeightSensorData]):
     if self.cfg.ray_alignment == "world":
       # Fixed world-frame direction for all rays.
       world_rays = (
-        self._ray_direction.unsqueeze(0)
-        .unsqueeze(0)
-        .expand(num_envs, S * K, 3)
-        .clone()
+        self._ray_direction.unsqueeze(0).unsqueeze(0).expand(num_envs, S * K, 3).clone()
       )
     elif self.cfg.ray_alignment == "base":
       # Rotate direction by each site's parent body rotation.
@@ -597,9 +586,7 @@ class HeightSensor(Sensor[HeightSensorData]):
         num_envs, S, 3, 3
       )  # [B, S, 3, 3]
       yaw_mat = self._extract_yaw_rotation_batched(site_mat)
-      world_rays_per_site = torch.einsum(
-        "bsij,j->bsi", yaw_mat, self._ray_direction
-      )
+      world_rays_per_site = torch.einsum("bsij,j->bsi", yaw_mat, self._ray_direction)
       world_rays = (
         world_rays_per_site.unsqueeze(2)
         .expand(num_envs, S, K, 3)
@@ -617,8 +604,8 @@ class HeightSensor(Sensor[HeightSensorData]):
 
     # Cache for postprocess.
     self._cached_world_origins = all_origins  # [B, S*K, 3]
-    self._cached_world_rays = world_rays      # [B, S*K, 3]
-    self._site_pos_w = site_pos               # [B, S, 3] (un-expanded)
+    self._cached_world_rays = world_rays  # [B, S*K, 3]
+    self._site_pos_w = site_pos  # [B, S, 3] (un-expanded)
 
   def raycast_kernel(self, rc: mjwarp.RenderContext) -> None:
     """IN-GRAPH: Execute BVH-accelerated raycast kernel."""
@@ -658,11 +645,9 @@ class HeightSensor(Sensor[HeightSensorData]):
 
     hit_mask = distances >= 0  # [B, S*K]
     hit_pos_flat = self._cached_world_origins.clone()  # [B, S*K, 3]
-    hit_pos_flat[hit_mask] = (
-      self._cached_world_origins[hit_mask]
-      + self._cached_world_rays[hit_mask]
-      * distances[hit_mask].unsqueeze(-1)
-    )
+    hit_pos_flat[hit_mask] = self._cached_world_origins[
+      hit_mask
+    ] + self._cached_world_rays[hit_mask] * distances[hit_mask].unsqueeze(-1)
 
     # Zero out normals for misses.
     normals_flat[~hit_mask] = 0.0
@@ -695,9 +680,7 @@ class HeightSensor(Sensor[HeightSensorData]):
       # Replace misses with appropriate sentinel values.
       valid_mask = heights_per_site >= 0  # [B, S, K]
 
-      self._heights = self._reduce_heights(
-        heights_per_site, valid_mask
-      )
+      self._heights = self._reduce_heights(heights_per_site, valid_mask)
       self._normals_w = self._reduce_normals(
         normals_per_site, valid_mask, heights_per_site
       )
@@ -718,11 +701,15 @@ class HeightSensor(Sensor[HeightSensorData]):
 
     if self.cfg.reduction == "min":
       # Replace misses with +inf so they don't affect min.
-      filled = torch.where(valid_mask, heights, torch.tensor(float("inf"), device=device))
+      filled = torch.where(
+        valid_mask, heights, torch.tensor(float("inf"), device=device)
+      )
       result = filled.min(dim=-1).values
     elif self.cfg.reduction == "max":
       # Replace misses with -inf so they don't affect max.
-      filled = torch.where(valid_mask, heights, torch.tensor(float("-inf"), device=device))
+      filled = torch.where(
+        valid_mask, heights, torch.tensor(float("-inf"), device=device)
+      )
       result = filled.max(dim=-1).values
     elif self.cfg.reduction == "mean":
       # Zero-fill misses and divide by count of valid rays.
@@ -731,7 +718,9 @@ class HeightSensor(Sensor[HeightSensorData]):
       result = filled.sum(dim=-1) / count
     elif self.cfg.reduction == "median":
       # Replace misses with +inf, then take median.
-      filled = torch.where(valid_mask, heights, torch.tensor(float("inf"), device=device))
+      filled = torch.where(
+        valid_mask, heights, torch.tensor(float("inf"), device=device)
+      )
       result = filled.median(dim=-1).values
     else:
       raise ValueError(f"Unknown reduction: {self.cfg.reduction}")
@@ -756,9 +745,7 @@ class HeightSensor(Sensor[HeightSensorData]):
     any_valid = valid_mask.any(dim=-1)  # [B, S]
 
     if self.cfg.reduction == "mean":
-      filled = torch.where(
-        valid_mask.unsqueeze(-1), normals, torch.zeros_like(normals)
-      )
+      filled = torch.where(valid_mask.unsqueeze(-1), normals, torch.zeros_like(normals))
       count = valid_mask.float().sum(dim=-1, keepdim=True).clamp(min=1)
       avg = filled.sum(dim=2) / count
       # Re-normalize.
@@ -780,19 +767,22 @@ class HeightSensor(Sensor[HeightSensorData]):
       # Compute the selection index from heights.
       if self.cfg.reduction == "min":
         filled = torch.where(
-          valid_mask, heights,
+          valid_mask,
+          heights,
           torch.tensor(float("inf"), device=device),
         )
         idx = filled.argmin(dim=-1)  # [B, S]
       elif self.cfg.reduction == "max":
         filled = torch.where(
-          valid_mask, heights,
+          valid_mask,
+          heights,
           torch.tensor(float("-inf"), device=device),
         )
         idx = filled.argmax(dim=-1)  # [B, S]
       elif self.cfg.reduction == "median":
         filled = torch.where(
-          valid_mask, heights,
+          valid_mask,
+          heights,
           torch.tensor(float("inf"), device=device),
         )
         # argsort and pick the middle index.
@@ -810,9 +800,7 @@ class HeightSensor(Sensor[HeightSensorData]):
     result[~any_valid] = 0.0
     return result
 
-  def _extract_yaw_rotation_batched(
-    self, rot_mat: torch.Tensor
-  ) -> torch.Tensor:
+  def _extract_yaw_rotation_batched(self, rot_mat: torch.Tensor) -> torch.Tensor:
     """Extract yaw-only rotation from [B, S, 3, 3] rotation matrices."""
     B, S = rot_mat.shape[:2]
     device = rot_mat.device
