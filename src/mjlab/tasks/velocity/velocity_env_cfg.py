@@ -374,9 +374,17 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
   terminations = {
     "time_out": TerminationTermCfg(func=mdp.time_out, time_out=True),
     "nan_detection": TerminationTermCfg(func=envs_mdp.nan_detection),
-    "root_height": TerminationTermCfg(
-      func=envs_mdp.root_height_below_minimum,
-      params={"minimum_height": -1.0},
+    # "root_height": TerminationTermCfg(
+    #   func=envs_mdp.root_height_below_minimum,
+    #   params={"minimum_height": -1.0},
+    # ),
+    "out_of_terrain_bounds": TerminationTermCfg(
+      func=mdp.out_of_terrain_bounds,
+      time_out=True,
+      params={
+        "margin": 0.3,
+        "asset_cfg": SceneEntityCfg("robot"),
+      },
     ),
   }
 
