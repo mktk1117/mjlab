@@ -12,7 +12,13 @@ from mjlab.envs import ManagerBasedRlEnvCfg
 from mjlab.envs import mdp as envs_mdp
 from mjlab.envs.mdp.actions import JointPositionActionCfg
 from mjlab.managers import EventTermCfg, RewardTermCfg, TerminationTermCfg
-from mjlab.sensor import ContactMatch, ContactSensorCfg, HeightSensorCfg, ObjRef, RayCastSensorCfg
+from mjlab.sensor import (
+  ContactMatch,
+  ContactSensorCfg,
+  HeightSensorCfg,
+  ObjRef,
+  RayCastSensorCfg,
+)
 from mjlab.tasks.velocity import mdp
 from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
 from mjlab.tasks.velocity.velocity_env_cfg import make_velocity_env_cfg
@@ -43,8 +49,7 @@ def unitree_go1_rough_env_cfg(
     elif sensor.name in ("foot_clearance_scan", "foot_height_scan"):
       assert isinstance(sensor, HeightSensorCfg)
       sensor.sites = tuple(
-        ObjRef(type="site", name=name, entity="robot")
-        for name in site_names
+        ObjRef(type="site", name=name, entity="robot") for name in site_names
       )
     elif sensor.name == "base_normal_scan":
       assert isinstance(sensor, HeightSensorCfg)
@@ -68,16 +73,26 @@ def unitree_go1_rough_env_cfg(
     num_slots=1,
   )
   thigh_geom_names = tuple(
-    f"{leg}_thigh_collision{i}"
-    for leg in foot_names
-    for i in (1, 2, 3)
+    f"{leg}_thigh_collision{i}" for leg in foot_names for i in (1, 2, 3)
   )
-  base_ground_cfg = ContactSensorCfg(
-    name="base_ground_touch",
+  unwanted_contact_ground_cfg = ContactSensorCfg(
+    name="unwanted_contact_ground_touch",
     primary=ContactMatch(
       mode="geom",
       entity="robot",
-      pattern=("trunk_collision",) + thigh_geom_names,
+      pattern=("trunk_collision", "head_collision"),
+    ),
+    secondary=ContactMatch(mode="body", pattern="terrain"),
+    fields=("found",),
+    reduce="none",
+    num_slots=1,
+  )
+  thigh_ground_cfg = ContactSensorCfg(
+    name="thigh_ground_touch",
+    primary=ContactMatch(
+      mode="geom",
+      entity="robot",
+      pattern=thigh_geom_names,
     ),
     secondary=ContactMatch(mode="body", pattern="terrain"),
     fields=("found",),
@@ -85,9 +100,7 @@ def unitree_go1_rough_env_cfg(
     num_slots=1,
   )
   calf_geom_names = tuple(
-    f"{leg}_calf_collision{i}"
-    for leg in foot_names
-    for i in (1, 2)
+    f"{leg}_calf_collision{i}" for leg in foot_names for i in (1, 2)
   )
   shank_ground_cfg = ContactSensorCfg(
     name="shank_ground_touch",
@@ -104,8 +117,9 @@ def unitree_go1_rough_env_cfg(
   cfg.scene.sensors = (cfg.scene.sensors or ()) + (
     feet_ground_cfg,
     self_collision_cfg,
-    base_ground_cfg,
+    unwanted_contact_ground_cfg,
     shank_ground_cfg,
+    thigh_ground_cfg,
   )
 
   if cfg.scene.terrain is not None and cfg.scene.terrain.terrain_generator is not None:
@@ -159,12 +173,17 @@ def unitree_go1_rough_env_cfg(
     weight=-0.1,
     params={"sensor_name": shank_ground_cfg.name},
   )
+  cfg.rewards["thigh_collision"] = RewardTermCfg(
+    func=mdp.self_collision_cost,
+    weight=-0.1,
+    params={"sensor_name": thigh_ground_cfg.name},
+  )
   cfg.rewards["joint_vel_l2"].weight = 0.0
   cfg.rewards["joint_acc_l2"].weight = 0.0
 
   cfg.terminations["illegal_contact"] = TerminationTermCfg(
     func=mdp.illegal_contact,
-    params={"sensor_name": base_ground_cfg.name},
+    params={"sensor_name": unwanted_contact_ground_cfg.name},
   )
 
   # Apply play mode overrides.
@@ -207,9 +226,13 @@ def unitree_go1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
 
   # Remove raycast sensor and height scan (no terrain to scan).
   cfg.scene.sensors = tuple(
-    s for s in (cfg.scene.sensors or ())
-    if s.name not in (
-      "terrain_scan", "foot_clearance_scan", "foot_height_scan",
+    s
+    for s in (cfg.scene.sensors or ())
+    if s.name
+    not in (
+      "terrain_scan",
+      "foot_clearance_scan",
+      "foot_height_scan",
       "base_normal_scan",
     )
   )
@@ -246,4 +269,3 @@ def unitree_go1_stairs_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   cfg.scene.terrain.terrain_generator = replace(STAIRS_TERRAINS_CFG)
 
   return cfg
-
