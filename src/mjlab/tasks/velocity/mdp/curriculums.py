@@ -67,17 +67,16 @@ def terrain_levels_vel(
 
   # Map terrain type indices to sub-terrain names.
   # Columns are assigned by proportion, so rebuild the column→name mapping.
-  proportions = [
-    cfg.proportion for cfg in terrain_generator.sub_terrains.values()
-  ]
+  proportions = [cfg.proportion for cfg in terrain_generator.sub_terrains.values()]
   total = sum(proportions)
+  assert terrain.terrain_origins is not None
   num_cols = terrain.terrain_origins.shape[1]
   sub_terrain_names = list(terrain_generator.sub_terrains.keys())
 
   # Build name → set of column indices.
   name_to_cols: dict[str, set[int]] = {}
   cum = 0.0
-  for name, prop in zip(sub_terrain_names, proportions):
+  for name, prop in zip(sub_terrain_names, proportions, strict=True):
     start_col = int(round(cum / total * num_cols))
     end_col = int(round((cum + prop) / total * num_cols))
     name_to_cols.setdefault(name, set()).update(range(start_col, end_col))

@@ -310,9 +310,7 @@ class TestMultiEnv:
 
     # All envs should have very similar heights.
     for i in range(1, num_envs):
-      assert heights[i, 0].item() == pytest.approx(
-        heights[0, 0].item(), abs=0.1
-      )
+      assert heights[i, 0].item() == pytest.approx(heights[0, 0].item(), abs=0.1)
 
 
 # =============================================================================
@@ -433,9 +431,7 @@ class TestMultiRaySampling:
       ),
       reduction="mean",
     )
-    scene, sim = _make_scene_and_sim(
-      device, single_site_xml, (single_cfg, multi_cfg)
-    )
+    scene, sim = _make_scene_and_sim(device, single_site_xml, (single_cfg, multi_cfg))
     sim.forward()
     sim.sense()
 
@@ -639,9 +635,7 @@ class TestConcentricRings:
     # All heights should be similar on flat ground.
     assert h.std().item() < 0.1
 
-  def test_concentric_ring_flat_heights_consistent(
-    self, single_site_xml, device
-  ):
+  def test_concentric_ring_flat_heights_consistent(self, single_site_xml, device):
     """On flat ground, all ring rays should measure ~same height."""
     sensor_cfg = HeightSensorCfg(
       name="height_test",
@@ -663,4 +657,3 @@ class TestConcentricRings:
     # All heights ≈ 1.9 on flat ground.
     for i in range(h.shape[0]):
       assert h[i].item() == pytest.approx(1.9, abs=0.1)
-

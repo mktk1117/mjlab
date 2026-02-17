@@ -18,11 +18,14 @@ import mujoco
 import numpy as np
 import viser
 
+# Import tasks to trigger registration.
+import mjlab.tasks  # noqa: F401
 from mjlab.asset_zoo.robots import (
   get_g1_robot_cfg,
   get_go1_robot_cfg,
   get_yam_robot_cfg,
 )
+from mjlab.tasks.registry import list_tasks, load_env_cfg
 from mjlab.terrains.config import ALL_TERRAIN_PRESETS, NAMED_TERRAIN_CONFIGS
 from mjlab.terrains.terrain_generator import (
   TerrainGenerator,
@@ -32,10 +35,6 @@ from mjlab.viewer.viser.conversions import (
   merge_geoms,
   merge_geoms_global,
 )
-
-# Import tasks to trigger registration.
-import mjlab.tasks  # noqa: F401
-from mjlab.tasks.registry import list_tasks, load_env_cfg
 
 # Supported robots for visualization.
 ROBOT_CFG_GETTERS = {
@@ -339,7 +338,7 @@ def main():
 
   # GUI Setup.
   gui_params_folder = server.gui.add_folder("Terrain Parameters")
-  param_controls: List[viser.GuiInputHandle[Any]] = []
+  param_controls: List[viser.GuiInputHandle[Any] | viser.GuiMarkdownHandle] = []
 
   def rebuild_gui():
     nonlocal param_controls

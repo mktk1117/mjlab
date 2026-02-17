@@ -10,7 +10,6 @@ import torch
 import tyro
 
 from mjlab.envs import ManagerBasedRlEnv
-from mjlab.managers.curriculum_manager import resolve_curriculum_iterations
 from mjlab.rl import MjlabOnPolicyRunner, RslRlVecEnvWrapper
 from mjlab.tasks.registry import list_tasks, load_env_cfg, load_rl_cfg, load_runner_cls
 from mjlab.tasks.tracking.mdp import MotionCommandCfg
@@ -59,9 +58,7 @@ def _find_newest_checkpoint(log_root: Path) -> Path:
       "Provide --checkpoint-file or --wandb-run-path explicitly."
     )
   # Find the most recent run directory (sorted by timestamp name).
-  run_dirs = sorted(
-    [d for d in log_root.iterdir() if d.is_dir()], key=lambda d: d.name
-  )
+  run_dirs = sorted([d for d in log_root.iterdir() if d.is_dir()], key=lambda d: d.name)
   if not run_dirs:
     raise FileNotFoundError(
       f"No run directories found in: {log_root}\n"
@@ -73,10 +70,7 @@ def _find_newest_checkpoint(log_root: Path) -> Path:
     if checkpoints:
       # Pick the highest-numbered checkpoint.
       best = max(checkpoints, key=lambda p: int(p.stem.split("_")[1]))
-      print(
-        f"[INFO]: Auto-discovered checkpoint: {best.name} "
-        f"(run: {run_dir.name})"
-      )
+      print(f"[INFO]: Auto-discovered checkpoint: {best.name} (run: {run_dir.name})")
       return best
   raise FileNotFoundError(
     f"No model_*.pt checkpoints found in: {log_root}\n"

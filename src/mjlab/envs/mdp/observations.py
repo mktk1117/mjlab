@@ -122,6 +122,8 @@ def height_scan(
     Tensor of shape [B, N] where B is num_envs and N is num_rays.
   """
   sensor: RayCastSensor = env.scene[sensor_name]
-  heights = sensor.data.pos_w[:, 2].unsqueeze(1) - sensor.data.hit_pos_w[..., 2] - offset
+  heights = (
+    sensor.data.pos_w[:, 2].unsqueeze(1) - sensor.data.hit_pos_w[..., 2] - offset
+  )
   # Clamp NaN/Inf (from diverged physics or ray misses) to a safe range.
   return torch.nan_to_num(heights, nan=0.0, posinf=1.0, neginf=-1.0).clamp_(-1.0, 1.0)

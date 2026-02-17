@@ -204,7 +204,7 @@ class JointEffortActionCfg(BaseActionCfg):
 class JointPositionAction(BaseAction):
   """Control joints via position targets."""
 
-  cfg: JointPositionActionCfg
+  cfg: JointPositionActionCfg  # type: ignore[override]
 
   def __init__(self, cfg: JointPositionActionCfg, env: ManagerBasedRlEnv):
     super().__init__(cfg=cfg, env=env)
@@ -225,9 +225,7 @@ class JointPositionAction(BaseAction):
       target = target.clamp(min=self.cfg.clip_range[0], max=self.cfg.clip_range[1])
     # Clip to joint limits if configured.
     if self.cfg.clip_to_joint_limits:
-      target = target.clamp(
-        min=self._joint_pos_lower, max=self._joint_pos_upper
-      )
+      target = target.clamp(min=self._joint_pos_lower, max=self._joint_pos_upper)
     encoder_bias = self._entity.data.encoder_bias[:, self._target_ids]
     target = target - encoder_bias
     self._entity.set_joint_position_target(target, joint_ids=self._target_ids)
