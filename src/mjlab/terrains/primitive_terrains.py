@@ -745,12 +745,13 @@ class BoxRandomSpreadTerrainCfg(SubTerrainCfg):
       geometries.append(TerrainGeometry(geom=floor_geom, color=(0.4, 0.4, 0.4, 1.0)))
 
     # Platform
+    platform_rgba = _get_platform_color(_MUJOCO_BLUE)
     platform_geom = body.add_geom(
       type=mujoco.mjtGeom.mjGEOM_BOX,
       size=(self.platform_width / 2, self.platform_width / 2, terrain_height / 2),
       pos=(self.size[0] / 2, self.size[1] / 2, -terrain_height / 2),
     )
-    geometries.append(TerrainGeometry(geom=platform_geom, color=(0.4, 0.4, 0.4, 1.0)))
+    geometries.append(TerrainGeometry(geom=platform_geom, color=platform_rgba))
 
     platform_half = self.platform_width / 2
     terrain_center = self.size[0] / 2
@@ -965,7 +966,8 @@ class BoxOpenStairsTerrainCfg(SubTerrainCfg):
       size=(platform_size[0] / 2.0, platform_size[1] / 2.0, self.step_thickness / 2.0),
       pos=platform_pos,
     )
-    geometries.append(TerrainGeometry(geom=box, color=rgba))
+    platform_rgba = _get_platform_color(_MUJOCO_BLUE)
+    geometries.append(TerrainGeometry(geom=box, color=platform_rgba))
 
     origin = np.array(
       [
@@ -1038,6 +1040,10 @@ class BoxRandomStairsTerrainCfg(SubTerrainCfg):
       z_pos = total_h / 2
       box_offset = (k + 0.5) * self.step_width
 
+      # For solid staircase, we can use a single box that is high enough for each "ring".
+      # But to correctly follow the "random height" requirement per step,
+      # we should use 4 boxes per level.
+
       # Top.
       box_pos = (
         terrain_center[0],
@@ -1108,24 +1114,30 @@ class BoxRandomStairsTerrainCfg(SubTerrainCfg):
 
       current_z = total_h
 
-    # Platform
+    # Platform — one step higher than the outermost (last) step so the robot
+    # spawns on a raised platform, matching BoxPyramidStairsTerrainCfg.
+    h_low, h_high = self.step_height_range
+    platform_extra_h = rng.uniform(h_low, h_high) * (0.5 + 0.5 * difficulty)
+    platform_z = current_z + platform_extra_h
+
     platform_size = (
       np.maximum(1e-6, terrain_size[0] - 2 * num_steps * self.step_width),
       np.maximum(1e-6, terrain_size[1] - 2 * num_steps * self.step_width),
     )
-    platform_pos = (terrain_center[0], terrain_center[1], current_z / 2)
+    platform_pos = (terrain_center[0], terrain_center[1], platform_z / 2)
     box = body.add_geom(
       type=mujoco.mjtGeom.mjGEOM_BOX,
       size=(
         platform_size[0] / 2.0,
         platform_size[1] / 2.0,
-        np.maximum(1e-6, current_z / 2.0),
+        np.maximum(1e-6, platform_z / 2.0),
       ),
       pos=platform_pos,
     )
-    geometries.append(TerrainGeometry(geom=box, color=rgba))
+    platform_rgba = _get_platform_color(_MUJOCO_BLUE)
+    geometries.append(TerrainGeometry(geom=box, color=platform_rgba))
 
-    origin = np.array([terrain_center[0], terrain_center[1], current_z])
+    origin = np.array([terrain_center[0], terrain_center[1], platform_z])
     return TerrainOutput(origin=origin, geometries=geometries)
 
 
@@ -1195,6 +1207,7 @@ class BoxSteppingStonesTerrainCfg(SubTerrainCfg):
     geometries.append(TerrainGeometry(geom=floor_geom, color=(0.1, 0.1, 0.1, 1.0)))
 
     # Platform Column.
+    platform_rgba = _get_platform_color(_MUJOCO_GREEN)
     platform_geom = body.add_geom(
       type=mujoco.mjtGeom.mjGEOM_BOX,
       size=(
@@ -1204,9 +1217,7 @@ class BoxSteppingStonesTerrainCfg(SubTerrainCfg):
       ),
       pos=(self.size[0] / 2, self.size[1] / 2, z_center),
     )
-    geometries.append(
-      TerrainGeometry(geom=platform_geom, color=brand_ramp(_MUJOCO_GREEN, 0.5))
-    )
+    geometries.append(TerrainGeometry(geom=platform_geom, color=platform_rgba))
 
     platform_half = self.platform_width / 2
     terrain_center = self.size[0] / 2
@@ -1332,6 +1343,7 @@ class BoxNarrowBeamsTerrainCfg(SubTerrainCfg):
     geometries.append(TerrainGeometry(geom=floor_geom, color=(0.1, 0.1, 0.1, 1.0)))
 
     # Platform Column. Top at beam_height.
+    platform_rgba = _get_platform_color(_MUJOCO_BLUE)
     platform_geom = body.add_geom(
       type=mujoco.mjtGeom.mjGEOM_BOX,
       size=(
@@ -1341,9 +1353,7 @@ class BoxNarrowBeamsTerrainCfg(SubTerrainCfg):
       ),
       pos=(self.size[0] / 2, self.size[1] / 2, z_center),
     )
-    geometries.append(
-      TerrainGeometry(geom=platform_geom, color=brand_ramp(_MUJOCO_BLUE, 0.5))
-    )
+    geometries.append(TerrainGeometry(geom=platform_geom, color=platform_rgba))
 
     inner_size = self.size[0] - 2 * self.border_width
     center_x, center_y = self.size[0] / 2, self.size[1] / 2
@@ -1440,16 +1450,22 @@ class BoxTiltedGridTerrainCfg(SubTerrainCfg):
     geometries.append(TerrainGeometry(geom=floor_geom, color=(0.1, 0.1, 0.1, 1.0)))
 
     # Platform.
+    platform_rgba = _get_platform_color(_MUJOCO_GREEN)
+    # Snap the platform to cover an integer number of grid cells so there is
+    # no gap between the platform edge and the nearest tiles.
+    platform_cells = int(np.ceil(self.platform_width / self.grid_width))
+    # Ensure at least 1 cell and odd count so the platform is centered.
+    if platform_cells % 2 == 0 and platform_cells < num_boxes_x:
+      platform_cells += 1
+    snapped_platform = platform_cells * self.grid_width
     platform_geom = body.add_geom(
       type=mujoco.mjtGeom.mjGEOM_BOX,
-      size=(self.platform_width / 2, self.platform_width / 2, half_height),
+      size=(snapped_platform / 2, snapped_platform / 2, half_height),
       pos=(self.size[0] / 2, self.size[1] / 2, z_center),
     )
-    geometries.append(
-      TerrainGeometry(geom=platform_geom, color=brand_ramp(_MUJOCO_GREEN, 0.5))
-    )
+    geometries.append(TerrainGeometry(geom=platform_geom, color=platform_rgba))
 
-    platform_half = self.platform_width / 2
+    platform_half = snapped_platform / 2
     terrain_center = self.size[0] / 2
     platform_min = terrain_center - platform_half
     platform_max = terrain_center + platform_half
@@ -1487,7 +1503,7 @@ class BoxTiltedGridTerrainCfg(SubTerrainCfg):
             vz = total_h + tilt_x * (vx - bx_center) + tilt_y * (vy - by_center)
             verts.append([vx, vy, vz])
 
-        # Faces ccw from outside.
+        # Faces CCW (Counter-Clockwise) from outside.
         # 0:(min,min), 1:(min,max), 2:(max,min), 3:(max,max)
         # 4-7 are same x,y as 0-3 but at top.
         # fmt: off
@@ -1546,6 +1562,7 @@ class BoxNestedRingsTerrainCfg(SubTerrainCfg):
     # In beam terrain, border top was at beam_height.
 
     if self.border_width > 0.0:
+
       border_h = 0.5
       border_center = (
         0.5 * self.size[0],
@@ -1666,7 +1683,8 @@ class BoxNestedRingsTerrainCfg(SubTerrainCfg):
       size=(platform_size[0] / 2.0, platform_size[1] / 2.0, platform_half_h),
       pos=platform_pos,
     )
-    geometries.append(TerrainGeometry(geom=box, color=brand_ramp(_MUJOCO_BLUE, 0.5)))
+    platform_rgba = _get_platform_color(_MUJOCO_BLUE)
+    geometries.append(TerrainGeometry(geom=box, color=platform_rgba))
 
     origin = np.array([terrain_center[0], terrain_center[1], platform_h])
     return TerrainOutput(origin=origin, geometries=geometries)
