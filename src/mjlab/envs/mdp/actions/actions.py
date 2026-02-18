@@ -204,7 +204,7 @@ class JointEffortActionCfg(BaseActionCfg):
 class JointPositionAction(BaseAction):
   """Control joints via position targets."""
 
-  cfg: JointPositionActionCfg  # type: ignore[override]
+  cfg: JointPositionActionCfg  # pyright: ignore[reportIncompatibleVariableOverride]
 
   def __init__(self, cfg: JointPositionActionCfg, env: ManagerBasedRlEnv):
     super().__init__(cfg=cfg, env=env)
