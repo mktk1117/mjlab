@@ -139,7 +139,7 @@ def perlin_terrain_smooth(**overrides) -> terrain_gen.HfPerlinNoiseTerrainCfg:
     horizontal_scale=0.1,
     resolution=0.1,
     base_thickness_ratio=1.0,
-    border_width=0.50,
+    border_width=0.25,
   )
   defaults.update(overrides)
   return terrain_gen.HfPerlinNoiseTerrainCfg(**defaults)
@@ -156,7 +156,7 @@ def perlin_terrain_rough(**overrides) -> terrain_gen.HfPerlinNoiseTerrainCfg:
     horizontal_scale=0.1,
     resolution=0.1,
     base_thickness_ratio=1.0,
-    border_width=0.50,
+    border_width=0.25,
   )
   defaults.update(overrides)
   return terrain_gen.HfPerlinNoiseTerrainCfg(**defaults)
@@ -388,7 +388,7 @@ if __name__ == "__main__":
 
   terrain_cfg = TerrainImporterCfg(
     terrain_type="generator",
-    terrain_generator=STAIRS_TERRAINS_CFG,
+    terrain_generator=ROUGH_TERRAINS_CFG,
   )
   terrain = TerrainImporter(terrain_cfg, device=device)
   mujoco.viewer.launch(terrain.spec.compile())
