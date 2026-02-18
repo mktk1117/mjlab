@@ -159,6 +159,7 @@ def unitree_go1_rough_env_cfg(
   }
   cfg.rewards["upright"].weight = 0.1
   cfg.rewards["upright"].params["asset_cfg"].body_names = ("trunk",)
+  cfg.rewards["upright"].params["sensor_names"] = ("terrain_scan",)
   cfg.rewards["body_ang_vel"].params["asset_cfg"].body_names = ("trunk",)
   for reward_name in ["foot_clearance", "foot_swing_height", "foot_slip"]:
     cfg.rewards[reward_name].params["asset_cfg"].site_names = site_names
@@ -240,6 +241,7 @@ def unitree_go1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   )
   del cfg.observations["actor"].terms["height_scan"]
   del cfg.observations["critic"].terms["height_scan"]
+  cfg.observations["critic"].terms.pop("terrain_projected_gravity", None)
 
   # Flat terrain only needs fell_over, not trunk-ground contact.
   del cfg.terminations["illegal_contact"]
