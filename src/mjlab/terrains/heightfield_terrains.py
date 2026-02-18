@@ -862,16 +862,16 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
         lacunarity=self.lacunarity,
         scale=effective_scale,
       )
-      # Normalize to [0, 1]
-      noise_min, noise_max = noise_raw.min(), noise_raw.max()
+      # Embed raw noise (centered ~0) in a zero-initialized array so the
+      # border sits near the mean elevation, then normalize together.
+      full_noise = np.zeros((width_pixels, length_pixels), dtype=np.float64)
+      full_noise[
+        border_pixels:-border_pixels,
+        border_pixels:-border_pixels,
+      ] = noise_raw
+      noise_min, noise_max = full_noise.min(), full_noise.max()
       noise_range = noise_max - noise_min if noise_max > noise_min else 1.0
-      inner_normalized = (noise_raw - noise_min) / noise_range
-
-      normalized_elevation = np.zeros((width_pixels, length_pixels), dtype=np.float32)
-      normalized_elevation[
-        border_pixels:-border_pixels,
-        border_pixels:-border_pixels,
-      ] = inner_normalized
+      normalized_elevation = ((full_noise - noise_min) / noise_range).astype(np.float32)
     else:
       noise_raw = _fractal_perlin_noise_2d(
         width_pixels,
@@ -888,6 +888,12 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
 
     max_physical_height = target_height
     base_thickness = max_physical_height * self.base_thickness_ratio
+
+    # Offset hfield so the border surface sits at z=0, matching neighbors.
+    # The border has raw noise=0; its normalized level tells us how high
+    # it would be without offset.
+    border_level = float((0.0 - noise_min) / noise_range)
+    hfield_z_offset = -border_level * max_physical_height
 
     unique_id = uuid.uuid4().hex
     field = spec.add_hfield(
@@ -913,7 +919,7 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
       pos=[
         self.size[0] / 2,
         self.size[1] / 2,
-        0,
+        hfield_z_offset,
       ],
       material=material_name,
     )
@@ -927,7 +933,10 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
     r1 = min(center_row + half_patch + 1, normalized_elevation.shape[0])
     c0 = max(center_col - half_patch, 0)
     c1 = min(center_col + half_patch + 1, normalized_elevation.shape[1])
-    spawn_height = float(normalized_elevation[r0:r1, c0:c1].max()) * max_physical_height
+    spawn_height = (
+      float(normalized_elevation[r0:r1, c0:c1].max()) * max_physical_height
+      + hfield_z_offset
+    )
     origin = np.array([self.size[0] / 2, self.size[1] / 2, spawn_height])
 
     # For flat patches, we pass the absolute physical heights.
@@ -935,7 +944,7 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
       normalized_elevation * max_physical_height,
       1.0,  # vertical_scale is 1.0 because we already have physical heights
       grid_spacing,
-      0,
+      hfield_z_offset,
       self.flat_patch_sampling,
       rng,
     )
