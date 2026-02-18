@@ -414,6 +414,11 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
         "asset_cfg": SceneEntityCfg("robot"),
       },
     ),
+    "fell_over": TerminationTermCfg(
+      func=envs_mdp.bad_orientation,
+      params={"limit_angle": math.radians(60.0)},
+    ),
+
   }
 
   ##

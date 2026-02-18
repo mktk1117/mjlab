@@ -173,16 +173,16 @@ def unitree_go1_rough_env_cfg(
   )
   cfg.rewards["shank_collision"] = RewardTermCfg(
     func=mdp.self_collision_cost,
-    weight=-0.1,
+    weight=-0.5,
     params={"sensor_name": shank_ground_cfg.name},
   )
   cfg.rewards["thigh_collision"] = RewardTermCfg(
     func=mdp.self_collision_cost,
-    weight=-0.1,
+    weight=-1.0,
     params={"sensor_name": thigh_ground_cfg.name},
   )
-  cfg.rewards["joint_vel_l2"].weight = 0.0
-  cfg.rewards["joint_acc_l2"].weight = 0.0
+  cfg.rewards["joint_vel_l2"].weight = -1.0e-5
+  cfg.rewards["joint_acc_l2"].weight = -1.0e-7
 
   cfg.terminations["illegal_contact"] = TerminationTermCfg(
     func=mdp.illegal_contact,
