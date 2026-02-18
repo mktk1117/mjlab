@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
 from threading import Lock
+from typing import TYPE_CHECKING
 
 import viser
 from typing_extensions import override
@@ -17,6 +18,9 @@ from mjlab.viewer.base import BaseViewer, EnvProtocol, PolicyProtocol, Verbosity
 from mjlab.viewer.viser.camera_viewer import ViserCameraViewer
 from mjlab.viewer.viser.scene import ViserMujocoScene
 from mjlab.viewer.viser.term_plotter import ViserTermPlotter
+
+if TYPE_CHECKING:
+  from mjlab.tasks.velocity.mdp.velocity_command import UniformVelocityCommand
 
 
 class ViserPlayViewer(BaseViewer):
@@ -34,6 +38,13 @@ class ViserPlayViewer(BaseViewer):
     self._metrics_plotter: ViserTermPlotter | None = None
     self._sim_lock = Lock()
     self._camera_viewers: list[ViserCameraViewer] = []
+
+    # Virtual joystick state (populated in setup if velocity task).
+    self._twist_command: UniformVelocityCommand | None = None
+    self._joystick_enabled: viser.GuiInputHandle[bool] | None = None
+    self._joystick_vx: viser.GuiInputHandle[float] | None = None
+    self._joystick_vy: viser.GuiInputHandle[float] | None = None
+    self._joystick_wz: viser.GuiInputHandle[float] | None = None
 
   @override
   def setup(self) -> None:
@@ -115,6 +126,9 @@ class ViserPlayViewer(BaseViewer):
           ]
       else:
         self._camera_viewers = []
+
+      # Virtual joystick for velocity tasks.
+      self._setup_joystick()
 
       # Add standard visualization options from ViserMujocoScene (Environment, Visualization, Contacts, Camera Tracking, Debug Visualization).
       self._scene.create_visualization_gui(
@@ -235,6 +249,82 @@ class ViserPlayViewer(BaseViewer):
   def sync_viewer_to_env(self) -> None:
     """Synchronize viewer state to environment (e.g., perturbations)."""
     pass
+
+  # ── Virtual joystick ──────────────────────────────────────────────
+
+  def _setup_joystick(self) -> None:
+    """Add virtual joystick controls if the task has a velocity command."""
+    from mjlab.tasks.velocity.mdp.velocity_command import UniformVelocityCommand
+
+    env = self.env.unwrapped
+    if not hasattr(env, "command_manager"):
+      return
+    if "twist" not in env.command_manager.active_terms:
+      return
+    twist = env.command_manager.get_term("twist")
+    if not isinstance(twist, UniformVelocityCommand):
+      return
+
+    self._twist_command = twist
+    ranges = twist.cfg.ranges
+
+    with self._server.gui.add_folder("Joystick"):
+      self._joystick_enabled = self._server.gui.add_checkbox("Enable", initial_value=False)
+
+      # Max velocity controls (adjusts slider ranges).
+      max_vx = self._server.gui.add_number("Max lin_vel_x", initial_value=ranges.lin_vel_x[1], step=0.1, min=0.1, max=10.0)
+      max_vy = self._server.gui.add_number("Max lin_vel_y", initial_value=ranges.lin_vel_y[1], step=0.1, min=0.1, max=10.0)
+      max_wz = self._server.gui.add_number("Max ang_vel_z", initial_value=ranges.ang_vel_z[1], step=0.1, min=0.1, max=10.0)
+
+      self._joystick_vx = self._server.gui.add_slider(
+        "lin_vel_x", min=-ranges.lin_vel_x[1], max=ranges.lin_vel_x[1],
+        step=0.05, initial_value=0.0,
+      )
+      self._joystick_vy = self._server.gui.add_slider(
+        "lin_vel_y", min=-ranges.lin_vel_y[1], max=ranges.lin_vel_y[1],
+        step=0.05, initial_value=0.0,
+      )
+      self._joystick_wz = self._server.gui.add_slider(
+        "ang_vel_z", min=-ranges.ang_vel_z[1], max=ranges.ang_vel_z[1],
+        step=0.05, initial_value=0.0,
+      )
+
+      @max_vx.on_update
+      def _(_) -> None:
+        self._joystick_vx.min = -max_vx.value
+        self._joystick_vx.max = max_vx.value
+
+      @max_vy.on_update
+      def _(_) -> None:
+        self._joystick_vy.min = -max_vy.value
+        self._joystick_vy.max = max_vy.value
+
+      @max_wz.on_update
+      def _(_) -> None:
+        self._joystick_wz.min = -max_wz.value
+        self._joystick_wz.max = max_wz.value
+
+      zero_btn = self._server.gui.add_button("Zero", icon=viser.Icon.SQUARE_X)
+
+      @zero_btn.on_click
+      def _(_) -> None:
+        self._joystick_vx.value = 0.0
+        self._joystick_vy.value = 0.0
+        self._joystick_wz.value = 0.0
+
+    # Monkey-patch _update_command so joystick values are injected DURING
+    # the command update flow (before observations are computed), not after.
+    original_update = twist._update_command
+
+    def _patched_update_command() -> None:
+      original_update()
+      if self._joystick_enabled is not None and self._joystick_enabled.value:
+        idx = self._scene.env_idx
+        twist.vel_command_b[idx, 0] = self._joystick_vx.value
+        twist.vel_command_b[idx, 1] = self._joystick_vy.value
+        twist.vel_command_b[idx, 2] = self._joystick_wz.value
+
+    twist._update_command = _patched_update_command
 
   @override
   def reset_environment(self) -> None:

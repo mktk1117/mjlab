@@ -77,7 +77,7 @@ def unitree_go1_rough_env_cfg(
     primary=ContactMatch(
       mode="geom",
       entity="robot",
-      pattern=("trunk_collision",) + thigh_geom_names,
+      pattern=("trunk_collision",),# + thigh_geom_names,
     ),
     secondary=ContactMatch(mode="body", pattern="terrain"),
     fields=("found",),
