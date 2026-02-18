@@ -102,6 +102,33 @@ def color_by_height(
   return material_name
 
 
+_EDGE_FADE_METERS = 1.0
+"""Physical width of the cosine fade applied at inner-region edges."""
+
+
+def _apply_edge_fade(
+  data: np.ndarray,
+  grid_spacing: float,
+) -> np.ndarray:
+  """Multiply *data* by a separable cosine ramp that fades to 0 at edges."""
+  rows, cols = data.shape
+  fade_pixels = min(
+    int(_EDGE_FADE_METERS / grid_spacing),
+    rows // 2,
+    cols // 2,
+  )
+  if fade_pixels < 2:
+    return data
+  ramp = 0.5 - 0.5 * np.cos(np.linspace(0, np.pi, fade_pixels))
+  fx = np.ones(rows, dtype=np.float64)
+  fy = np.ones(cols, dtype=np.float64)
+  fx[:fade_pixels] = ramp
+  fx[-fade_pixels:] = ramp[::-1]
+  fy[:fade_pixels] = ramp
+  fy[-fade_pixels:] = ramp[::-1]
+  return data * fx[:, np.newaxis] * fy[np.newaxis, :]
+
+
 def _fractal_perlin_noise_2d(
   x_size: int,
   y_size: int,
@@ -435,6 +462,7 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
       x_upsampled = np.linspace(0, inner_size[0], inner_width_pixels)
       y_upsampled = np.linspace(0, inner_size[1], inner_length_pixels)
       z_upsampled = func(x_upsampled, y_upsampled)
+      z_upsampled = _apply_edge_fade(z_upsampled, self.horizontal_scale)
 
       noise[
         border_pixels : -border_pixels if border_pixels else width_pixels,
@@ -569,6 +597,7 @@ class HfWaveTerrainCfg(SubTerrainCfg):
       yy = yy.reshape(1, inner_length_pixels)
 
       hf_raw = amplitude_pixels * (np.cos(yy * wave_number) + np.sin(xx * wave_number))
+      hf_raw = _apply_edge_fade(hf_raw, self.horizontal_scale)
 
       noise[
         border_pixels : -border_pixels if border_pixels else width_pixels,
@@ -862,6 +891,8 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
         lacunarity=self.lacunarity,
         scale=effective_scale,
       )
+      noise_raw = _apply_edge_fade(noise_raw, self.resolution)
+
       # Embed raw noise (centered ~0) in a zero-initialized array so the
       # border sits near the mean elevation, then normalize together.
       full_noise = np.zeros((width_pixels, length_pixels), dtype=np.float64)
