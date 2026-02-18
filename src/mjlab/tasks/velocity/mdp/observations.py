@@ -7,6 +7,8 @@ import torch
 from mjlab.entity import Entity
 from mjlab.managers.scene_entity_config import SceneEntityCfg
 from mjlab.sensor import ContactSensor, HeightSensor
+from mjlab.tasks.velocity.mdp.terrain_utils import terrain_normal_from_sensors
+from mjlab.utils.lab_api.math import quat_apply_inverse
 
 if TYPE_CHECKING:
   from mjlab.envs import ManagerBasedRlEnv
@@ -100,6 +102,17 @@ def foot_contact(env: ManagerBasedRlEnv, sensor_name: str) -> torch.Tensor:
   sensor_data = sensor.data
   assert sensor_data.found is not None
   return (sensor_data.found > 0).float()
+
+
+def terrain_projected_gravity(
+  env: ManagerBasedRlEnv,
+  sensor_names: tuple[str, ...],
+  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+) -> torch.Tensor:
+  """Terrain normal projected into body frame."""
+  asset: Entity = env.scene[asset_cfg.name]
+  terrain_normal_w = terrain_normal_from_sensors(env, sensor_names)
+  return quat_apply_inverse(asset.data.root_link_quat_w, terrain_normal_w)
 
 
 def foot_contact_forces(env: ManagerBasedRlEnv, sensor_name: str) -> torch.Tensor:

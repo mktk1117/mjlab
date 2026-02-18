@@ -122,6 +122,10 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       func=mdp.foot_height,
       params={"asset_cfg": SceneEntityCfg("robot", site_names=())},  # Set per-robot.
     ),
+    "terrain_projected_gravity": ObservationTermCfg(
+      func=mdp.terrain_projected_gravity,
+      params={"sensor_names": ("terrain_scan",)},
+    ),
   }
 
   observations = {
@@ -306,7 +310,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       params={
         "std": math.sqrt(0.2),
         "asset_cfg": SceneEntityCfg("robot", body_names=()),  # Set per-robot.
-        "normal_sensor_name": "base_normal_scan",
+        "sensor_names": ("terrain_scan",),
       },
     ),
     "pose": RewardTermCfg(
