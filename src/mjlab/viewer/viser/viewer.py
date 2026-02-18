@@ -17,6 +17,7 @@ from mjlab.sim.sim import Simulation
 from mjlab.viewer.base import BaseViewer, EnvProtocol, PolicyProtocol, VerbosityLevel
 from mjlab.viewer.viser.camera_viewer import ViserCameraViewer
 from mjlab.viewer.viser.scene import ViserMujocoScene
+from mjlab.viewer.viser.reward_bar_panel import RewardBarPanel
 from mjlab.viewer.viser.term_plotter import ViserTermPlotter
 
 if TYPE_CHECKING:
@@ -35,6 +36,7 @@ class ViserPlayViewer(BaseViewer):
   ) -> None:
     super().__init__(env, policy, frame_rate, verbosity)
     self._reward_plotter: ViserTermPlotter | None = None
+    self._reward_bar_panel: RewardBarPanel | None = None
     self._metrics_plotter: ViserTermPlotter | None = None
     self._sim_lock = Lock()
     self._camera_viewers: list[ViserCameraViewer] = []
@@ -149,6 +151,12 @@ class ViserPlayViewer(BaseViewer):
             self._scene.env_idx
           )
         ]
+        # Live bar panel (running-mean comparison).
+        self._reward_bar_panel = RewardBarPanel(
+          self._server,
+          term_names,
+          step_dt=self.env.unwrapped.step_dt,
+        )
         self._reward_plotter = ViserTermPlotter(self._server, term_names, name="Reward")
 
     if hasattr(self.env.unwrapped, "metrics_manager"):
@@ -196,19 +204,24 @@ class ViserPlayViewer(BaseViewer):
         self._prev_env_idx = self._scene.env_idx
         if self._reward_plotter:
           self._reward_plotter.clear_histories()
+        if self._reward_bar_panel:
+          self._reward_bar_panel.clear_histories()
         if self._metrics_plotter:
           self._metrics_plotter.clear_histories()
         # Clear debug visualizations when switching environments
         if self._scene.debug_visualization_enabled:
           self._scene.clear_debug_all()
 
-      if self._reward_plotter is not None and not self._is_paused:
+      if (self._reward_plotter is not None or self._reward_bar_panel is not None) and not self._is_paused:
         terms = list(
           self.env.unwrapped.reward_manager.get_active_iterable_terms(
             self._scene.env_idx
           )
         )
-        self._reward_plotter.update(terms)
+        if self._reward_plotter is not None:
+          self._reward_plotter.update(terms)
+        if self._reward_bar_panel is not None:
+          self._reward_bar_panel.update(terms)
 
       if self._metrics_plotter is not None and not self._is_paused:
         terms = list(
@@ -333,6 +346,8 @@ class ViserPlayViewer(BaseViewer):
       super().reset_environment()
     if self._reward_plotter:
       self._reward_plotter.clear_histories()
+    if self._reward_bar_panel:
+      self._reward_bar_panel.clear_histories()
     if self._metrics_plotter:
       self._metrics_plotter.clear_histories()
 
@@ -341,6 +356,8 @@ class ViserPlayViewer(BaseViewer):
     """Close the viewer and cleanup resources."""
     if self._reward_plotter:
       self._reward_plotter.cleanup()
+    if self._reward_bar_panel:
+      self._reward_bar_panel.cleanup()
     if self._metrics_plotter:
       self._metrics_plotter.cleanup()
     for camera_viewer in self._camera_viewers:
