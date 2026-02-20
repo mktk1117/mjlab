@@ -122,6 +122,7 @@ def height_scan(
     offset: Constant offset subtracted from heights.
     miss_value: Value to use for rays that miss (distance < 0).
       Defaults to the sensor's ``max_distance``.
+    clip: Clip output heights to [-clip, clip]. None disables clipping.
 
   Returns:
     Tensor of shape [B, N] where B is num_envs and N is num_rays.
@@ -133,4 +134,5 @@ def height_scan(
     sensor.data.pos_w[:, 2].unsqueeze(1) - sensor.data.hit_pos_w[..., 2] - offset
   )
   miss_mask = sensor.data.distances < 0
-  return torch.where(miss_mask, torch.full_like(heights, miss_value), heights)
+  heights = torch.where(miss_mask, torch.full_like(heights, miss_value), heights)
+  return heights

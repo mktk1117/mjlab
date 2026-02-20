@@ -8,7 +8,6 @@ from mjlab.entity import Entity
 from mjlab.managers.reward_manager import RewardTermCfg
 from mjlab.managers.scene_entity_config import SceneEntityCfg
 from mjlab.sensor import BuiltinSensor, ContactSensor, HeightSensor
-from mjlab.tasks.velocity.mdp.terrain_utils import terrain_normal_from_sensors
 from mjlab.utils.lab_api.math import quat_apply_inverse
 from mjlab.utils.lab_api.string import (
   resolve_matching_names_values,
@@ -65,28 +64,27 @@ def flat_orientation(
   env: ManagerBasedRlEnv,
   std: float,
   asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
-  sensor_names: tuple[str, ...] = (),
+  normal_sensor_name: str | None = None,
+  flatness_threshold: float = 0.087,
 ) -> torch.Tensor:
   """Reward flat base orientation (robot being upright).
 
-  When ``sensor_names`` is provided, aligns with local terrain normal.
-
   If asset_cfg has body_ids specified, computes the projected gravity
   for that specific body. Otherwise, uses the root link projected gravity.
+
+  Args:
+    normal_sensor_name: Optional HeightSensor for terrain normals below the
+      base. When provided, the upright reward is scaled by terrain flatness:
+      on sloped terrain (normal far from vertical) the reward is reduced so
+      the robot is not penalized for leaning with the slope.
+    flatness_threshold: Maximum XY component of terrain normal for full
+      reward. Above this the reward linearly decays to 0. Default 0.087
+      (~5° slope).
   """
   asset: Entity = env.scene[asset_cfg.name]
 
-  if sensor_names:
-    terrain_normal_w = terrain_normal_from_sensors(env, sensor_names)
-    if asset_cfg.body_ids:
-      body_quat_w = asset.data.body_link_quat_w[:, asset_cfg.body_ids, :]
-      body_quat_w = body_quat_w.squeeze(1)
-    else:
-      body_quat_w = asset.data.root_link_quat_w
-    terrain_normal_b = quat_apply_inverse(body_quat_w, terrain_normal_w)
-    xy_squared = torch.sum(torch.square(terrain_normal_b[:, :2]), dim=1)
-  elif asset_cfg.body_ids:
-    # If body_ids are specified, compute projected gravity for that body.
+  # If body_ids are specified, compute projected gravity for that body.
+  if asset_cfg.body_ids:
     body_quat_w = asset.data.body_link_quat_w[:, asset_cfg.body_ids, :]  # [B, N, 4]
     body_quat_w = body_quat_w.squeeze(1)  # [B, 4]
     gravity_w = asset.data.gravity_vec_w  # [3]
@@ -95,7 +93,21 @@ def flat_orientation(
   else:
     # Use root link projected gravity.
     xy_squared = torch.sum(torch.square(asset.data.projected_gravity_b[:, :2]), dim=1)
-  return torch.exp(-xy_squared / std**2)
+
+  reward = torch.exp(-xy_squared / std**2)
+
+  # Gate by terrain flatness: disable upright penalty on slopes.
+  if normal_sensor_name is not None:
+    height_sensor: HeightSensor = env.scene[normal_sensor_name]
+    terrain_normal = height_sensor.data.normals_w  # [B, S, 3]
+    # Use first (and only) site — the base. XY magnitude = slope indicator.
+    normal_xy = terrain_normal[:, 0, :2]  # [B, 2]
+    slope = torch.norm(normal_xy, dim=-1)  # [B], 0 = flat, 1 = vertical wall
+    # Hard gate: full reward on flat terrain, zero on slopes.
+    is_flat = (slope < flatness_threshold).float()
+    reward = reward * is_flat
+
+  return reward
 
 
 def self_collision_cost(env: ManagerBasedRlEnv, sensor_name: str) -> torch.Tensor:
@@ -205,6 +217,68 @@ def feet_clearance(
       active = (total_command > command_threshold).float()
       cost = cost * active
   return cost
+
+
+def terrain_clearance(
+  env: ManagerBasedRlEnv,
+  target_height: float,
+  sensor_name: str,
+  height_sensor_name: str,
+  command_name: str | None = None,
+  command_threshold: float = 0.05,
+  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+) -> torch.Tensor:
+  """Positive reward for lifting feet above terrain during swing phase.
+
+  Unlike ``feet_clearance`` (a penalty gated on foot velocity that rewards
+  stopping), this function gives a *positive* reward proportional to how
+  close each swing foot is to the target clearance height.
+
+  When ``command_name`` is provided, the reward is gated on command velocity
+  so that standing still earns zero reward.
+
+  Reward per foot (during swing only)::
+
+      clamp(foot_height_above_terrain / target_height, 0, 1)
+
+  Averaged across all feet. Feet on the ground contribute 0.
+
+  Args:
+    target_height: Desired clearance above terrain (m).
+    sensor_name: ContactSensor name for swing/stance detection.
+    height_sensor_name: HeightSensor name for terrain-relative foot heights.
+    command_name: Optional velocity command name.  When set, the reward is
+      zero for envs whose total command magnitude is below
+      ``command_threshold``.
+    command_threshold: Minimum command magnitude to activate the reward.
+    asset_cfg: Entity config (unused except for scene lookup).
+  """
+  # Swing detection via contact sensor.
+  contact_sensor: ContactSensor = env.scene[sensor_name]
+  in_swing = contact_sensor.data.found == 0  # [B, N]
+
+  # Terrain-relative foot heights from a min-reduction height sensor.
+  height_sensor: HeightSensor = env.scene[height_sensor_name]
+  foot_z = height_sensor.data.heights  # [B, N]
+  foot_z = torch.nan_to_num(foot_z, nan=0.0, posinf=1.0, neginf=0.0).clamp_(0.0, 2.0)
+
+  # Proportional achievement, capped at 1.0 (no penalty for going higher).
+  achievement = (foot_z / target_height).clamp_(0.0, 1.0)  # [B, N]
+
+  # Average over swing feet only.  Feet on the ground contribute 0.
+  reward = (achievement * in_swing.float()).mean(dim=1)  # [B]
+
+  # Gate on command velocity — standing still earns nothing.
+  if command_name is not None:
+    command = env.command_manager.get_command(command_name)
+    if command is not None:
+      linear_norm = torch.norm(command[:, :2], dim=1)
+      angular_norm = torch.abs(command[:, 2])
+      total_command = linear_norm + angular_norm
+      active = (total_command > command_threshold).float()
+      reward = reward * active
+
+  return reward
 
 
 class feet_swing_height:

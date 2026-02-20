@@ -16,8 +16,13 @@ class RslRlModelCfg:
   """Whether to normalize the observations. Default is False."""
   init_noise_std: float = 1.0
   """The initial noise standard deviation."""
-  noise_std_type: Literal["scalar", "log"] = "scalar"
-  """The type of noise standard deviation."""
+  noise_std_type: Literal["scalar", "log", "softplus"] = "scalar"
+  """The type of noise standard deviation.
+
+  - ``"scalar"``: Raw parameter value used directly as std. Can go negative.
+  - ``"log"``: Parameter is in log-space, std = exp(param). Always positive but can explode.
+  - ``"softplus"``: Parameter mapped through softplus, std = softplus(param). Always positive and stable.
+  """
   stochastic: bool = False
   """Whether the model output is stochastic."""
   cnn_cfg: dict[str, Any] | None = None

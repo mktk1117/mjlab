@@ -409,8 +409,6 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
   def function(
     self, difficulty: float, spec: mujoco.MjSpec, rng: np.random.Generator
   ) -> TerrainOutput:
-    del difficulty  # Unused.
-
     body = spec.body("terrain")
 
     if self.border_width > 0 and self.border_width < self.horizontal_scale:
@@ -435,6 +433,12 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
 
     noise = np.zeros((width_pixels, length_pixels), dtype=np.int16)
 
+    # Scale noise range by difficulty (flat at difficulty=0).
+    scaled_noise_range = (
+      self.noise_range[0] * difficulty,
+      self.noise_range[1] * difficulty,
+    )
+
     if border_pixels > 0:
       inner_width_pixels = width_pixels - 2 * border_pixels
       inner_length_pixels = length_pixels - 2 * border_pixels
@@ -446,8 +450,8 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
       width_downsampled = int(inner_size[0] / downsampled_scale)
       length_downsampled = int(inner_size[1] / downsampled_scale)
 
-      height_min = int(self.noise_range[0] / self.vertical_scale)
-      height_max = int(self.noise_range[1] / self.vertical_scale)
+      height_min = int(scaled_noise_range[0] / self.vertical_scale)
+      height_max = int(scaled_noise_range[1] / self.vertical_scale)
       height_step = int(self.noise_step / self.vertical_scale)
 
       height_range = np.arange(height_min, height_max + height_step, height_step)
@@ -471,8 +475,8 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
     else:
       width_downsampled = int(self.size[0] / downsampled_scale)
       length_downsampled = int(self.size[1] / downsampled_scale)
-      height_min = int(self.noise_range[0] / self.vertical_scale)
-      height_max = int(self.noise_range[1] / self.vertical_scale)
+      height_min = int(scaled_noise_range[0] / self.vertical_scale)
+      height_max = int(scaled_noise_range[1] / self.vertical_scale)
       height_step = int(self.noise_step / self.vertical_scale)
 
       height_range = np.arange(height_min, height_max + height_step, height_step)
@@ -526,7 +530,7 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
       material=material_name,
     )
 
-    spawn_height = (self.noise_range[0] + self.noise_range[1]) / 2
+    spawn_height = (scaled_noise_range[0] + scaled_noise_range[1]) / 2
     origin = np.array([self.size[0] / 2, self.size[1] / 2, spawn_height])
 
     flat_patches = _compute_flat_patches(

@@ -250,6 +250,622 @@ class BoxPyramidStairsTerrainCfg(SubTerrainCfg):
 
 
 @dataclass(kw_only=True)
+class BoxLedgedStairsTerrainCfg(SubTerrainCfg):
+  """Pyramid stairs where each step has a protruding ledge (nosing) at the edge."""
+
+  border_width: float = 0.0
+  step_height_range: tuple[float, float] = (0.0, 0.2)
+  """Min and max step height, in meters. Interpolated by difficulty."""
+  step_width: float = 0.3
+  """Depth (run) of each step, in meters."""
+  platform_width: float = 1.0
+  """Side length of the flat square platform at the top."""
+  ledge_depth: float = 0.05
+  """How far the ledge protrudes beyond the step face, in meters."""
+  ledge_thickness: float = 0.02
+  """Vertical thickness of the ledge overhang, in meters."""
+
+  def function(
+    self, difficulty: float, spec: mujoco.MjSpec, rng: np.random.Generator
+  ) -> TerrainOutput:
+    del rng  # Unused.
+    boxes = []
+    box_colors = []
+
+    body = spec.body("terrain")
+
+    step_height = self.step_height_range[0] + difficulty * (
+      self.step_height_range[1] - self.step_height_range[0]
+    )
+
+    # Compute number of steps in x and y direction.
+    num_steps_x = int(
+      (self.size[0] - 2 * self.border_width - self.platform_width)
+      / (2 * self.step_width)
+    )
+    num_steps_y = int(
+      (self.size[1] - 2 * self.border_width - self.platform_width)
+      / (2 * self.step_width)
+    )
+    num_steps = max(0, int(min(num_steps_x, num_steps_y)))
+
+    first_step_rgba = brand_ramp(_MUJOCO_BLUE, 0.0)
+    border_rgba = darken_rgba(first_step_rgba, 0.85)
+
+    if self.border_width > 0.0:
+      border_center = (0.5 * self.size[0], 0.5 * self.size[1], -step_height / 2)
+      border_inner_size = (
+        self.size[0] - 2 * self.border_width,
+        self.size[1] - 2 * self.border_width,
+      )
+      border_boxes = make_border(
+        body, self.size, border_inner_size, step_height, border_center
+      )
+      boxes.extend(border_boxes)
+      for _ in range(len(border_boxes)):
+        box_colors.append(border_rgba)
+
+    terrain_center = [0.5 * self.size[0], 0.5 * self.size[1], 0.0]
+    terrain_size = (
+      self.size[0] - 2 * self.border_width,
+      self.size[1] - 2 * self.border_width,
+    )
+
+    # Ledge color — slightly lighter than steps.
+
+    rgba = brand_ramp(_MUJOCO_BLUE, 0.5)
+    for k in range(num_steps):
+      t = k / max(num_steps - 1, 1)
+      rgba = brand_ramp(_MUJOCO_BLUE, t)
+      ledge_rgba = darken_rgba(brand_ramp(_MUJOCO_BLUE, t), 0.7)
+
+      box_size = (
+        terrain_size[0] - 2 * k * self.step_width,
+        terrain_size[1] - 2 * k * self.step_width,
+      )
+      box_z = terrain_center[2] + k * step_height / 2.0
+      box_offset = (k + 0.5) * self.step_width
+      box_height = (k + 2) * step_height
+
+      # -- Riser boxes (same as BoxPyramidStairsTerrainCfg) --
+      # Top side riser.
+      riser_size_top = (
+        np.maximum(1e-6, box_size[0] / 2.0),
+        np.maximum(1e-6, self.step_width / 2.0),
+        np.maximum(1e-6, box_height / 2.0),
+      )
+      box_pos = (
+        terrain_center[0],
+        terrain_center[1] + terrain_size[1] / 2.0 - box_offset,
+        box_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_top, pos=box_pos,
+      )
+      boxes.append(box)
+      box_colors.append(rgba)
+
+      # Bottom side riser.
+      box_pos = (
+        terrain_center[0],
+        terrain_center[1] - terrain_size[1] / 2.0 + box_offset,
+        box_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_top, pos=box_pos,
+      )
+      boxes.append(box)
+      box_colors.append(rgba)
+
+      riser_size_side = (
+        np.maximum(1e-6, self.step_width / 2.0),
+        np.maximum(1e-6, (box_size[1] - 2 * self.step_width) / 2.0),
+        np.maximum(1e-6, box_height / 2.0),
+      )
+
+      # Right side riser.
+      box_pos = (
+        terrain_center[0] + terrain_size[0] / 2.0 - box_offset,
+        terrain_center[1],
+        box_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_side, pos=box_pos,
+      )
+      boxes.append(box)
+      box_colors.append(rgba)
+
+      # Left side riser.
+      box_pos = (
+        terrain_center[0] - terrain_size[0] / 2.0 + box_offset,
+        terrain_center[1],
+        box_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_side, pos=box_pos,
+      )
+      boxes.append(box)
+      box_colors.append(rgba)
+
+      # -- Ledge boxes (thin overhang protruding outward) --
+      # Ledge top is flush with the step surface. The protruding part
+      # hangs over the lower step below, making the overhang visible.
+      step_top_z = box_z + box_height / 2.0
+      ledge_z = step_top_z - self.ledge_thickness / 2.0
+
+      # Along-edge extent: full box_size + ledge_depth at each corner
+      # so all four sides wrap around consistently.
+      ledge_along_x = (box_size[0] + 2 * self.ledge_depth) / 2.0
+      ledge_along_y = (box_size[1] + 2 * self.ledge_depth) / 2.0
+
+      # Top ledge (protrudes in +Y beyond step face).
+      ledge_pos = (
+        terrain_center[0],
+        terrain_center[1] + terrain_size[1] / 2.0 - box_offset
+            + self.step_width / 2.0 + self.ledge_depth / 2.0,
+        ledge_z,
+      )
+      ledge_size = (
+        np.maximum(1e-6, ledge_along_x),
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        self.ledge_thickness / 2.0,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size, pos=ledge_pos,
+      )
+      boxes.append(box)
+      box_colors.append(ledge_rgba)
+
+      # Bottom ledge (protrudes in -Y).
+      ledge_pos = (
+        terrain_center[0],
+        terrain_center[1] - terrain_size[1] / 2.0 + box_offset
+            - self.step_width / 2.0 - self.ledge_depth / 2.0,
+        ledge_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size, pos=ledge_pos,
+      )
+      boxes.append(box)
+      box_colors.append(ledge_rgba)
+
+      # Right ledge (protrudes in +X).
+      ledge_pos = (
+        terrain_center[0] + terrain_size[0] / 2.0 - box_offset
+            + self.step_width / 2.0 + self.ledge_depth / 2.0,
+        terrain_center[1],
+        ledge_z,
+      )
+      ledge_size_side = (
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        np.maximum(1e-6, ledge_along_y),
+        self.ledge_thickness / 2.0,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size_side, pos=ledge_pos,
+      )
+      boxes.append(box)
+      box_colors.append(ledge_rgba)
+
+      # Left ledge (protrudes in -X).
+      ledge_pos = (
+        terrain_center[0] - terrain_size[0] / 2.0 + box_offset
+            - self.step_width / 2.0 - self.ledge_depth / 2.0,
+        terrain_center[1],
+        ledge_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size_side, pos=ledge_pos,
+      )
+      boxes.append(box)
+      box_colors.append(ledge_rgba)
+
+    # Generate final box for the middle platform.
+    platform_w = terrain_size[0] - 2 * num_steps * self.step_width
+    platform_h = terrain_size[1] - 2 * num_steps * self.step_width
+    platform_height = (num_steps + 2) * step_height
+    platform_center = (
+      terrain_center[0],
+      terrain_center[1],
+      terrain_center[2] + num_steps * step_height / 2,
+    )
+    box = body.add_geom(
+      type=mujoco.mjtGeom.mjGEOM_BOX,
+      size=(
+        np.maximum(1e-6, platform_w / 2.0),
+        np.maximum(1e-6, platform_h / 2.0),
+        np.maximum(1e-6, platform_height / 2.0),
+      ),
+      pos=platform_center,
+    )
+    boxes.append(box)
+    box_colors.append(rgba)
+
+    # Platform ledges — same style as step ledges.
+    platform_top_z = platform_center[2] + platform_height / 2.0
+    plat_ledge_z = platform_top_z - self.ledge_thickness / 2.0
+    plat_ledge_rgba = darken_rgba(brand_ramp(_MUJOCO_BLUE, 1.0), 0.7)
+
+    # N ledge.
+    box = body.add_geom(
+      type=mujoco.mjtGeom.mjGEOM_BOX,
+      size=(
+        np.maximum(1e-6, (platform_w + 2 * self.ledge_depth) / 2.0),
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        self.ledge_thickness / 2.0,
+      ),
+      pos=(
+        platform_center[0],
+        platform_center[1] + platform_h / 2.0 + self.ledge_depth / 2.0,
+        plat_ledge_z,
+      ),
+    )
+    boxes.append(box)
+    box_colors.append(plat_ledge_rgba)
+
+    # S ledge.
+    box = body.add_geom(
+      type=mujoco.mjtGeom.mjGEOM_BOX,
+      size=(
+        np.maximum(1e-6, (platform_w + 2 * self.ledge_depth) / 2.0),
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        self.ledge_thickness / 2.0,
+      ),
+      pos=(
+        platform_center[0],
+        platform_center[1] - platform_h / 2.0 - self.ledge_depth / 2.0,
+        plat_ledge_z,
+      ),
+    )
+    boxes.append(box)
+    box_colors.append(plat_ledge_rgba)
+
+    # E ledge.
+    box = body.add_geom(
+      type=mujoco.mjtGeom.mjGEOM_BOX,
+      size=(
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        np.maximum(1e-6, (platform_h + 2 * self.ledge_depth) / 2.0),
+        self.ledge_thickness / 2.0,
+      ),
+      pos=(
+        platform_center[0] + platform_w / 2.0 + self.ledge_depth / 2.0,
+        platform_center[1],
+        plat_ledge_z,
+      ),
+    )
+    boxes.append(box)
+    box_colors.append(plat_ledge_rgba)
+
+    # W ledge.
+    box = body.add_geom(
+      type=mujoco.mjtGeom.mjGEOM_BOX,
+      size=(
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        np.maximum(1e-6, (platform_h + 2 * self.ledge_depth) / 2.0),
+        self.ledge_thickness / 2.0,
+      ),
+      pos=(
+        platform_center[0] - platform_w / 2.0 - self.ledge_depth / 2.0,
+        platform_center[1],
+        plat_ledge_z,
+      ),
+    )
+    boxes.append(box)
+    box_colors.append(plat_ledge_rgba)
+
+    origin = np.array(
+      [terrain_center[0], terrain_center[1], (num_steps + 1) * step_height]
+    )
+
+    geometries = [
+      TerrainGeometry(geom=box, color=color)
+      for box, color in zip(boxes, box_colors, strict=True)
+    ]
+    return TerrainOutput(origin=origin, geometries=geometries)
+
+
+@dataclass(kw_only=True)
+class BoxInvertedLedgedStairsTerrainCfg(BoxLedgedStairsTerrainCfg):
+  """Inverted ledged stairs — descends toward the center (bowl) with ledges."""
+
+  def function(
+    self, difficulty: float, spec: mujoco.MjSpec, rng: np.random.Generator
+  ) -> TerrainOutput:
+    del rng  # Unused.
+    boxes = []
+    box_colors = []
+
+    body = spec.body("terrain")
+
+    step_height = self.step_height_range[0] + difficulty * (
+      self.step_height_range[1] - self.step_height_range[0]
+    )
+
+    # Compute number of steps.
+    num_steps_x = int(
+      (self.size[0] - 2 * self.border_width - self.platform_width)
+      / (2 * self.step_width)
+    )
+    num_steps_y = int(
+      (self.size[1] - 2 * self.border_width - self.platform_width)
+      / (2 * self.step_width)
+    )
+    num_steps = max(0, int(min(num_steps_x, num_steps_y)))
+    total_height = (num_steps + 1) * step_height
+
+    first_step_rgba = brand_ramp(_MUJOCO_BLUE, 0.0)
+    border_rgba = darken_rgba(first_step_rgba, 0.85)
+
+    if self.border_width > 0.0:
+      border_center = (0.5 * self.size[0], 0.5 * self.size[1], -0.5 * step_height)
+      border_inner_size = (
+        self.size[0] - 2 * self.border_width,
+        self.size[1] - 2 * self.border_width,
+      )
+      border_boxes = make_border(
+        body, self.size, border_inner_size, step_height, border_center
+      )
+      boxes.extend(border_boxes)
+      for _ in range(len(border_boxes)):
+        box_colors.append(border_rgba)
+
+    terrain_center = [0.5 * self.size[0], 0.5 * self.size[1], 0.0]
+    terrain_size = (
+      self.size[0] - 2 * self.border_width,
+      self.size[1] - 2 * self.border_width,
+    )
+
+    rgba = brand_ramp(_MUJOCO_BLUE, 0.5)
+    for k in range(num_steps):
+      t = k / max(num_steps - 1, 1)
+      rgba = brand_ramp(_MUJOCO_BLUE, t)
+      ledge_rgba = darken_rgba(brand_ramp(_MUJOCO_BLUE, t), 0.7)
+
+      box_size = (
+        terrain_size[0] - 2 * k * self.step_width,
+        terrain_size[1] - 2 * k * self.step_width,
+      )
+
+      # Inverted: boxes go downward.
+      box_z = terrain_center[2] - total_height / 2 - (k + 1) * step_height / 2.0
+      box_offset = (k + 0.5) * self.step_width
+      box_height = total_height - (k + 1) * step_height
+
+      # -- Riser boxes --
+      riser_size_top = (
+        np.maximum(1e-6, box_size[0] / 2.0),
+        np.maximum(1e-6, self.step_width / 2.0),
+        np.maximum(1e-6, box_height / 2.0),
+      )
+      # Top riser.
+      box_pos = (
+        terrain_center[0],
+        terrain_center[1] + terrain_size[1] / 2.0 - box_offset,
+        box_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_top, pos=box_pos,
+      )
+      boxes.append(box)
+      box_colors.append(rgba)
+
+      # Bottom riser.
+      box_pos = (
+        terrain_center[0],
+        terrain_center[1] - terrain_size[1] / 2.0 + box_offset,
+        box_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_top, pos=box_pos,
+      )
+      boxes.append(box)
+      box_colors.append(rgba)
+
+      riser_size_side = (
+        np.maximum(1e-6, self.step_width / 2.0),
+        np.maximum(1e-6, (box_size[1] - 2 * self.step_width) / 2.0),
+        np.maximum(1e-6, box_height / 2.0),
+      )
+
+      # Right riser.
+      box_pos = (
+        terrain_center[0] + terrain_size[0] / 2.0 - box_offset,
+        terrain_center[1],
+        box_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_side, pos=box_pos,
+      )
+      boxes.append(box)
+      box_colors.append(rgba)
+
+      # Left riser.
+      box_pos = (
+        terrain_center[0] - terrain_size[0] / 2.0 + box_offset,
+        terrain_center[1],
+        box_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_side, pos=box_pos,
+      )
+      boxes.append(box)
+      box_colors.append(rgba)
+
+      # -- Ledge boxes (protrude INWARD for inverted stairs) --
+      step_top_z = box_z + box_height / 2.0
+      ledge_z = step_top_z - self.ledge_thickness / 2.0
+      ledge_along_x = (box_size[0] - 2 * self.step_width) / 2.0
+      ledge_along_y = (box_size[1] - 2 * self.step_width) / 2.0
+
+      # Top ledge (protrudes inward, -Y from riser).
+      ledge_pos = (
+        terrain_center[0],
+        terrain_center[1] + terrain_size[1] / 2.0 - box_offset
+            - self.step_width / 2.0 - self.ledge_depth / 2.0,
+        ledge_z,
+      )
+      ledge_size = (
+        np.maximum(1e-6, ledge_along_x),
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        self.ledge_thickness / 2.0,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size, pos=ledge_pos,
+      )
+      boxes.append(box)
+      box_colors.append(ledge_rgba)
+
+      # Bottom ledge (protrudes inward, +Y from riser).
+      ledge_pos = (
+        terrain_center[0],
+        terrain_center[1] - terrain_size[1] / 2.0 + box_offset
+            + self.step_width / 2.0 + self.ledge_depth / 2.0,
+        ledge_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size, pos=ledge_pos,
+      )
+      boxes.append(box)
+      box_colors.append(ledge_rgba)
+
+      # Right ledge (protrudes inward, -X from riser).
+      ledge_pos = (
+        terrain_center[0] + terrain_size[0] / 2.0 - box_offset
+            - self.step_width / 2.0 - self.ledge_depth / 2.0,
+        terrain_center[1],
+        ledge_z,
+      )
+      ledge_size_side = (
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        np.maximum(1e-6, ledge_along_y),
+        self.ledge_thickness / 2.0,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size_side, pos=ledge_pos,
+      )
+      boxes.append(box)
+      box_colors.append(ledge_rgba)
+
+      # Left ledge (protrudes inward, +X from riser).
+      ledge_pos = (
+        terrain_center[0] - terrain_size[0] / 2.0 + box_offset
+            + self.step_width / 2.0 + self.ledge_depth / 2.0,
+        terrain_center[1],
+        ledge_z,
+      )
+      box = body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size_side, pos=ledge_pos,
+      )
+      boxes.append(box)
+      box_colors.append(ledge_rgba)
+
+    # Bottom platform.
+    platform_w = terrain_size[0] - 2 * num_steps * self.step_width
+    platform_h = terrain_size[1] - 2 * num_steps * self.step_width
+    platform_height = step_height
+    platform_center = (
+      terrain_center[0],
+      terrain_center[1],
+      terrain_center[2] - total_height - step_height / 2,
+    )
+    box = body.add_geom(
+      type=mujoco.mjtGeom.mjGEOM_BOX,
+      size=(
+        np.maximum(1e-6, platform_w / 2.0),
+        np.maximum(1e-6, platform_h / 2.0),
+        np.maximum(1e-6, platform_height / 2.0),
+      ),
+      pos=platform_center,
+    )
+    boxes.append(box)
+    box_colors.append(rgba)
+
+    # Platform ledges.
+    platform_top_z = platform_center[2] + platform_height / 2.0
+    plat_ledge_z = platform_top_z - self.ledge_thickness / 2.0
+    plat_ledge_rgba = darken_rgba(brand_ramp(_MUJOCO_BLUE, 1.0), 0.7)
+
+    # N ledge.
+    box = body.add_geom(
+      type=mujoco.mjtGeom.mjGEOM_BOX,
+      size=(
+        np.maximum(1e-6, (platform_w + 2 * self.ledge_depth) / 2.0),
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        self.ledge_thickness / 2.0,
+      ),
+      pos=(
+        platform_center[0],
+        platform_center[1] + platform_h / 2.0 + self.ledge_depth / 2.0,
+        plat_ledge_z,
+      ),
+    )
+    boxes.append(box)
+    box_colors.append(plat_ledge_rgba)
+
+    # S ledge.
+    box = body.add_geom(
+      type=mujoco.mjtGeom.mjGEOM_BOX,
+      size=(
+        np.maximum(1e-6, (platform_w + 2 * self.ledge_depth) / 2.0),
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        self.ledge_thickness / 2.0,
+      ),
+      pos=(
+        platform_center[0],
+        platform_center[1] - platform_h / 2.0 - self.ledge_depth / 2.0,
+        plat_ledge_z,
+      ),
+    )
+    boxes.append(box)
+    box_colors.append(plat_ledge_rgba)
+
+    # E ledge.
+    box = body.add_geom(
+      type=mujoco.mjtGeom.mjGEOM_BOX,
+      size=(
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        np.maximum(1e-6, (platform_h + 2 * self.ledge_depth) / 2.0),
+        self.ledge_thickness / 2.0,
+      ),
+      pos=(
+        platform_center[0] + platform_w / 2.0 + self.ledge_depth / 2.0,
+        platform_center[1],
+        plat_ledge_z,
+      ),
+    )
+    boxes.append(box)
+    box_colors.append(plat_ledge_rgba)
+
+    # W ledge.
+    box = body.add_geom(
+      type=mujoco.mjtGeom.mjGEOM_BOX,
+      size=(
+        np.maximum(1e-6, self.ledge_depth / 2.0),
+        np.maximum(1e-6, (platform_h + 2 * self.ledge_depth) / 2.0),
+        self.ledge_thickness / 2.0,
+      ),
+      pos=(
+        platform_center[0] - platform_w / 2.0 - self.ledge_depth / 2.0,
+        platform_center[1],
+        plat_ledge_z,
+      ),
+    )
+    boxes.append(box)
+    box_colors.append(plat_ledge_rgba)
+
+    origin = np.array(
+      [terrain_center[0], terrain_center[1], -(num_steps + 1) * step_height]
+    )
+
+    geometries = [
+      TerrainGeometry(geom=box, color=color)
+      for box, color in zip(boxes, box_colors, strict=True)
+    ]
+    return TerrainOutput(origin=origin, geometries=geometries)
+
+
+@dataclass(kw_only=True)
 class BoxInvertedPyramidStairsTerrainCfg(BoxPyramidStairsTerrainCfg):
   def function(
     self, difficulty: float, spec: mujoco.MjSpec, rng: np.random.Generator
@@ -764,8 +1380,8 @@ class BoxRandomSpreadTerrainCfg(SubTerrainCfg):
       size_y = rng.uniform(*self.box_length_range)
       height = rng.uniform(*self.box_height_range)
 
-      # Scale height by difficulty.
-      height = height * (0.2 + 0.8 * difficulty)
+      # Scale height by difficulty (zero at difficulty=0 → flat terrain).
+      height = height * difficulty
 
       # Random position within inner area.
       pos_x = rng.uniform(
@@ -1029,7 +1645,7 @@ class BoxRandomStairsTerrainCfg(SubTerrainCfg):
       rgba = brand_ramp(_MUJOCO_BLUE, t)
 
       h_low, h_high = self.step_height_range
-      step_h = rng.uniform(h_low, h_high) * (0.5 + 0.5 * difficulty)
+      step_h = rng.uniform(h_low, h_high) * difficulty
       total_h = current_z + step_h
 
       box_size = (
@@ -1117,7 +1733,7 @@ class BoxRandomStairsTerrainCfg(SubTerrainCfg):
     # Platform — one step higher than the outermost (last) step so the robot
     # spawns on a raised platform, matching BoxPyramidStairsTerrainCfg.
     h_low, h_high = self.step_height_range
-    platform_extra_h = rng.uniform(h_low, h_high) * (0.5 + 0.5 * difficulty)
+    platform_extra_h = rng.uniform(h_low, h_high) * difficulty
     platform_z = current_z + platform_extra_h
 
     platform_size = (

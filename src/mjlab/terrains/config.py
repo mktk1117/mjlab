@@ -60,6 +60,34 @@ def pyramid_stairs(**overrides) -> terrain_gen.BoxPyramidStairsTerrainCfg:
 
 
 @terrain_preset
+def ledged_stairs(**overrides) -> terrain_gen.BoxLedgedStairsTerrainCfg:
+  defaults: dict[str, Any] = dict(
+    step_height_range=(0.0, 0.2),
+    step_width=0.3,
+    platform_width=3.0,
+    border_width=1.0,
+    ledge_depth=0.03,
+    ledge_thickness=0.01,
+  )
+  defaults.update(overrides)
+  return terrain_gen.BoxLedgedStairsTerrainCfg(**defaults)
+
+
+@terrain_preset
+def ledged_stairs_inv(**overrides) -> terrain_gen.BoxInvertedLedgedStairsTerrainCfg:
+  defaults: dict[str, Any] = dict(
+    step_height_range=(0.0, 0.2),
+    step_width=0.3,
+    platform_width=3.0,
+    border_width=1.0,
+    ledge_depth=0.05,
+    ledge_thickness=0.02,
+  )
+  defaults.update(overrides)
+  return terrain_gen.BoxInvertedLedgedStairsTerrainCfg(**defaults)
+
+
+@terrain_preset
 def pyramid_stairs_inv(**overrides) -> terrain_gen.BoxInvertedPyramidStairsTerrainCfg:
   defaults: dict[str, Any] = dict(
     step_height_range=(0.0, 0.2),
@@ -148,7 +176,7 @@ def perlin_terrain_smooth(**overrides) -> terrain_gen.HfPerlinNoiseTerrainCfg:
 @terrain_preset
 def perlin_terrain_rough(**overrides) -> terrain_gen.HfPerlinNoiseTerrainCfg:
   defaults: dict[str, Any] = dict(
-    height_range=(0.0, 1.0),
+    height_range=(0.0, 0.5),
     octaves=6,
     persistence=0.3,
     lacunarity=4.0,
@@ -312,13 +340,15 @@ ROUGH_TERRAINS_CFG = TerrainGeneratorCfg(
   size=(8.0, 8.0),
   border_width=20.0,
   num_rows=10,
-  num_cols=len(ALL_TERRAIN_PRESETS),
+  num_cols=19,  # One column per terrain type; proportions control robot count.
   sub_terrains={
     "flat": flat(proportion=0.2),
-    "pyramid_stairs": pyramid_stairs(proportion=0.2),
-    "pyramid_stairs_inv": pyramid_stairs_inv(proportion=0.2),
+    "pyramid_stairs": pyramid_stairs(proportion=0.1),
+    "pyramid_stairs_inv": pyramid_stairs_inv(proportion=0.1),
     "hf_pyramid_slope": hf_pyramid_slope(proportion=0.1),
     "hf_pyramid_slope_inv": hf_pyramid_slope_inv(proportion=0.1),
+    "ledged_stairs": ledged_stairs(proportion=0.05),
+    "ledged_stairs_inv": ledged_stairs_inv(proportion=0.05),
     "random_rough": random_rough(proportion=0.1),
     "wave_terrain": wave_terrain(proportion=0.1),
     "box_random_grid": box_random_grid(proportion=0.1),
@@ -330,6 +360,7 @@ ROUGH_TERRAINS_CFG = TerrainGeneratorCfg(
     "inverted_open_stairs": inverted_open_stairs(proportion=0.05),
     "random_stairs": random_stairs(proportion=0.05),
     "tilted_grid": tilted_grid(proportion=0.05),
+    "tilted_grid_narrow": tilted_grid(proportion=0.05, grid_width=1.0),
   },
   add_lights=True,
 )

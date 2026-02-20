@@ -63,24 +63,34 @@ def terrain_levels_vel(
 
   # Compute per-terrain-type mean levels.
   levels = terrain.terrain_levels.float()
-  result: dict[str, torch.Tensor] = {"mean": torch.mean(levels)}
+  result: dict[str, torch.Tensor] = {
+    "mean": torch.mean(levels),
+    "max": torch.max(levels),
+  }
+
+  # Store raw terrain levels for histogram logging.
+  histogram = env.extras.setdefault("histogram", {})
+  histogram["Histogram/terrain_levels"] = levels
 
   # Map terrain type indices to sub-terrain names.
-  # Columns are assigned by proportion, so rebuild the column→name mapping.
-  proportions = [cfg.proportion for cfg in terrain_generator.sub_terrains.values()]
-  total = sum(proportions)
-  assert terrain.terrain_origins is not None
-  num_cols = terrain.terrain_origins.shape[1]
+  # When num_cols == num_terrains (one column per type), the mapping is 1:1.
+  # Otherwise, fall back to the generator's column allocation.
   sub_terrain_names = list(terrain_generator.sub_terrains.keys())
+  num_cols = terrain.terrain_origins.shape[1]
 
-  # Build name → set of column indices.
   name_to_cols: dict[str, set[int]] = {}
-  cum = 0.0
-  for name, prop in zip(sub_terrain_names, proportions, strict=True):
-    start_col = int(round(cum / total * num_cols))
-    end_col = int(round((cum + prop) / total * num_cols))
-    name_to_cols.setdefault(name, set()).update(range(start_col, end_col))
-    cum += prop
+  if num_cols == len(sub_terrain_names):
+    # 1:1 mapping: column i is terrain i.
+    for i, name in enumerate(sub_terrain_names):
+      name_to_cols[name] = {i}
+  else:
+    from mjlab.terrains.terrain_generator import TerrainGenerator
+
+    proportions = [cfg.proportion for cfg in terrain_generator.sub_terrains.values()]
+    col_to_idx = TerrainGenerator.compute_col_to_terrain_index(proportions, num_cols)
+    for col, idx in enumerate(col_to_idx):
+      name = sub_terrain_names[idx]
+      name_to_cols.setdefault(name, set()).add(col)
 
   # Compute per-type mean level.
   types = terrain.terrain_types
@@ -90,8 +100,14 @@ def terrain_levels_vel(
       mask |= types == c
     if mask.any():
       result[name] = torch.mean(levels[mask])
+      histogram[f"Histogram/terrain_levels/{name}"] = levels[mask]
 
   return result
+
+
+# ---------------------------------------------------------------------------
+# Velocity command curriculum
+# ---------------------------------------------------------------------------
 
 
 def commands_vel(
@@ -100,6 +116,7 @@ def commands_vel(
   command_name: str,
   velocity_stages: list[VelocityStage],
 ) -> dict[str, torch.Tensor]:
+  """Widen velocity command ranges according to training step stages."""
   del env_ids  # Unused.
   command_term = env.command_manager.get_term(command_name)
   assert command_term is not None
@@ -120,6 +137,11 @@ def commands_vel(
     "ang_vel_z_min": torch.tensor(cfg.ranges.ang_vel_z[0]),
     "ang_vel_z_max": torch.tensor(cfg.ranges.ang_vel_z[1]),
   }
+
+
+# ---------------------------------------------------------------------------
+# Reward weight curriculum
+# ---------------------------------------------------------------------------
 
 
 def reward_weight(

@@ -88,7 +88,9 @@ class TerrainImporter:
         )
       terrain_generator = TerrainGenerator(self.cfg.terrain_generator, device=device)
       terrain_generator.compile(self._spec)
-      self.configure_env_origins(terrain_generator.terrain_origins)
+      self.configure_env_origins(
+        terrain_generator.terrain_origins, self.cfg.terrain_generator
+      )
       self._flat_patches: dict[str, torch.Tensor] = {
         name: torch.from_numpy(arr).to(device=device, dtype=torch.float)
         for name, arr in terrain_generator.flat_patches.items()
@@ -202,7 +204,11 @@ class TerrainImporter:
     )
     spec_cfg.LightCfg(pos=(0, 0, 1.5), type="directional").edit_spec(self._spec)
 
-  def configure_env_origins(self, origins: np.ndarray | torch.Tensor | None = None):
+  def configure_env_origins(
+    self,
+    origins: np.ndarray | torch.Tensor | None = None,
+    terrain_generator_cfg: TerrainGeneratorCfg | None = None,
+  ):
     """Configure the origins of the environments based on the added terrain."""
     if origins is not None:
       if isinstance(origins, np.ndarray):
@@ -211,7 +217,7 @@ class TerrainImporter:
         assert isinstance(origins, torch.Tensor)
       self.terrain_origins = origins.to(self.device, dtype=torch.float)
       self.env_origins = self._compute_env_origins_curriculum(
-        self.cfg.num_envs, self.terrain_origins
+        self.cfg.num_envs, self.terrain_origins, terrain_generator_cfg
       )
     else:
       self.terrain_origins = None
@@ -262,26 +268,19 @@ class TerrainImporter:
     ]
 
   def _compute_env_origins_curriculum(
-    self, num_envs: int, origins: torch.Tensor
+    self,
+    num_envs: int,
+    origins: torch.Tensor,
+    terrain_generator_cfg: TerrainGeneratorCfg | None = None,
   ) -> torch.Tensor:
     """Compute the origins of the environments defined by the sub-terrains origins.
 
     Allocation strategy:
-      - Columns (terrain_types): Evenly distributed across environments using
-        integer division. Each column gets floor(num_envs / num_cols) or
-        ceil(num_envs / num_cols) envs.
+      - Columns (terrain_types): Distributed across environments **by proportion**.
+        Each column (terrain type) receives
+        ``max(1, round(proportion / total * num_envs))`` environments.
       - Rows (terrain_levels): Randomly sampled from [0, max_init_terrain_level].
         Supports curriculum learning where rows represent difficulty levels.
-
-    .. note::
-      Multiple environments can be assigned to the same (row, col) patch, leaving
-      other patches unoccupied, even when num_envs > num_patches. This is because
-      row assignment is random while column assignment is deterministic.
-
-    Example: 5x5 terrain grid (25 patches), 100 environments:
-      - Each of 5 columns gets exactly 20 environments
-      - Those 20 are randomly distributed across 5 rows
-      - Result: Some patches get 0 envs, others might get 5+
 
     See FAQ: "How does env_origins determine robot layout?"
     """
@@ -294,11 +293,44 @@ class TerrainImporter:
     self.terrain_levels = torch.randint(
       0, max_init_level + 1, (num_envs,), device=self.device
     )
-    self.terrain_types = torch.div(
-      torch.arange(num_envs, device=self.device),
-      (num_envs / num_cols),
-      rounding_mode="floor",
-    ).to(torch.long)
+
+    # Distribute robots across columns by proportion.
+    if (
+      terrain_generator_cfg is not None
+      and len(terrain_generator_cfg.sub_terrains) == num_cols
+    ):
+      proportions = np.array(
+        [cfg.proportion for cfg in terrain_generator_cfg.sub_terrains.values()]
+      )
+      proportions = proportions / proportions.sum()
+      # Compute per-column environment counts (at least 1 per column if possible).
+      counts = np.maximum(np.round(proportions * num_envs).astype(int), 1)
+      # Adjust to match num_envs exactly.
+      diff = num_envs - counts.sum()
+      if diff > 0:
+        # Add extra envs to the columns with the largest proportions.
+        order = np.argsort(-proportions)
+        for i in range(diff):
+          counts[order[i % num_cols]] += 1
+      elif diff < 0:
+        # Remove envs from the columns with the smallest proportions (keep >= 1).
+        order = np.argsort(proportions)
+        for i in range(-diff):
+          idx = order[i % num_cols]
+          if counts[idx] > 1:
+            counts[idx] -= 1
+      self.terrain_types = torch.cat([
+        torch.full((c,), col, device=self.device, dtype=torch.long)
+        for col, c in enumerate(counts)
+      ])
+    else:
+      # Fallback: even distribution.
+      self.terrain_types = torch.div(
+        torch.arange(num_envs, device=self.device),
+        (num_envs / num_cols),
+        rounding_mode="floor",
+      ).to(torch.long)
+
     env_origins = torch.zeros(num_envs, 3, device=self.device)
     env_origins[:] = origins[self.terrain_levels, self.terrain_types]
     return env_origins

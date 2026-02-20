@@ -243,20 +243,67 @@ class TerrainGenerator:
       # Store the spawn origin for this terrain.
       self.terrain_origins[sub_row, sub_col] = spawn_origin
 
-  def _generate_curriculum_terrains(self, spec: mujoco.MjSpec) -> None:
-    # Normalize the proportions of the sub-terrains.
-    proportions = np.array(
-      [sub_cfg.proportion for sub_cfg in self.cfg.sub_terrains.values()]
-    )
-    proportions /= np.sum(proportions)
+  @staticmethod
+  def compute_col_to_terrain_index(
+    proportions: list[float] | np.ndarray,
+    num_cols: int,
+  ) -> np.ndarray:
+    """Map each column index to its sub-terrain index.
 
-    sub_indices = []
-    for index in range(self.cfg.num_cols):
-      sub_index = np.min(
-        np.where(index / self.cfg.num_cols + 0.001 < np.cumsum(proportions))[0]
-      )
-      sub_indices.append(sub_index)
-    sub_indices = np.array(sub_indices, dtype=np.int32)
+    When ``num_cols >= len(proportions)``, every terrain with a positive
+    proportion is guaranteed at least one column.  The remaining columns
+    are distributed proportionally.
+
+    Returns:
+      1-D int array of length *num_cols* where ``result[col]`` is the
+      sub-terrain index for that column.
+    """
+    props = np.asarray(proportions, dtype=np.float64)
+    n_terrains = len(props)
+
+    if num_cols >= n_terrains:
+      # Stage 1 — give every terrain with proportion > 0 exactly one column.
+      allocated = np.zeros(n_terrains, dtype=np.int32)
+      for i in range(n_terrains):
+        if props[i] > 0:
+          allocated[i] = 1
+
+      remaining = num_cols - int(allocated.sum())
+
+      # Stage 2 — distribute remaining columns proportionally.
+      if remaining > 0:
+        norm = props / props.sum()
+        extra = norm * remaining
+        floor_extra = np.floor(extra).astype(np.int32)
+        allocated += floor_extra
+        leftover = remaining - int(floor_extra.sum())
+        # Give leftover columns to terrains with the largest fractional parts.
+        fractions = extra - floor_extra
+        for _ in range(leftover):
+          idx = int(np.argmax(fractions))
+          allocated[idx] += 1
+          fractions[idx] = -1.0  # don't pick again
+
+      # Build column → terrain index mapping.
+      sub_indices = np.empty(num_cols, dtype=np.int32)
+      col = 0
+      for i in range(n_terrains):
+        for _ in range(allocated[i]):
+          sub_indices[col] = i
+          col += 1
+    else:
+      # Fewer columns than terrains — fall back to cumulative distribution.
+      norm = props / props.sum()
+      cum = np.cumsum(norm)
+      sub_indices = np.empty(num_cols, dtype=np.int32)
+      for c in range(num_cols):
+        sub_indices[c] = int(np.min(np.where(c / num_cols + 0.001 < cum)[0]))
+
+    return sub_indices
+
+  def _generate_curriculum_terrains(self, spec: mujoco.MjSpec) -> None:
+    proportions = [sub_cfg.proportion for sub_cfg in self.cfg.sub_terrains.values()]
+    sub_indices = self.compute_col_to_terrain_index(proportions, self.cfg.num_cols)
 
     sub_terrains_cfgs = list(self.cfg.sub_terrains.values())
 

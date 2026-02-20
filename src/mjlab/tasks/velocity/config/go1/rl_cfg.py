@@ -13,14 +13,15 @@ def unitree_go1_ppo_runner_cfg() -> RslRlOnPolicyRunnerCfg:
     actor=RslRlModelCfg(
       hidden_dims=(512, 256, 128),
       activation="elu",
-      obs_normalization=False,
+      noise_std_type="log",
+      obs_normalization=True,
       stochastic=True,
       init_noise_std=1.0,
     ),
     critic=RslRlModelCfg(
       hidden_dims=(512, 256, 128),
       activation="elu",
-      obs_normalization=False,
+      obs_normalization=True,
       stochastic=False,
       init_noise_std=1.0,
     ),

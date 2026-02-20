@@ -41,6 +41,7 @@ class UniformVelocityCommand(CommandTerm):
     )
     self.is_standing_env = torch.zeros_like(self.is_heading_env)
     self.is_world_env = torch.zeros_like(self.is_heading_env)
+    self.is_forward_env = torch.zeros_like(self.is_heading_env)
 
     self.metrics["error_vel_xy"] = torch.zeros(self.num_envs, device=self.device)
     self.metrics["error_vel_yaw"] = torch.zeros(self.num_envs, device=self.device)
@@ -77,6 +78,17 @@ class UniformVelocityCommand(CommandTerm):
       self.heading_target[env_ids] = r.uniform_(*self.cfg.ranges.heading)
       self.is_heading_env[env_ids] = r.uniform_(0.0, 1.0) <= self.cfg.rel_heading_envs
     self.is_standing_env[env_ids] = r.uniform_(0.0, 1.0) <= self.cfg.rel_standing_envs
+    # Forward-only envs: positive lin_vel_x, zero lateral and angular.
+    self.is_forward_env[env_ids] = r.uniform_(0.0, 1.0) <= self.cfg.rel_forward_envs
+    fwd_ids = env_ids[self.is_forward_env[env_ids]]
+    if len(fwd_ids) > 0:
+      # Resample lin_vel_x to be positive only.
+      max_x = self.cfg.ranges.lin_vel_x[1]
+      min_x = max(0.3, self.cfg.ranges.lin_vel_x[0])  # at least 0.3 m/s forward
+      self.vel_command_b[fwd_ids, 0] = r[:len(fwd_ids)].uniform_(min_x, max_x)
+      self.vel_command_b[fwd_ids, 1] = 0.0
+      self.vel_command_b[fwd_ids, 2] = 0.0
+      self.vel_command_w[fwd_ids] = self.vel_command_b[fwd_ids]
 
     init_vel_mask = r.uniform_(0.0, 1.0) < self.cfg.init_velocity_prob
     init_vel_env_ids = env_ids[init_vel_mask]
@@ -201,6 +213,10 @@ class UniformVelocityCommandCfg(CommandTermCfg):
   heading_control_stiffness: float = 1.0
   rel_standing_envs: float = 0.0
   rel_heading_envs: float = 1.0
+  rel_forward_envs: float = 0.0
+  """Fraction of environments that receive forward-only commands (positive
+  lin_vel_x, zero lin_vel_y and ang_vel_z).  Increases training coverage for
+  straight-line walking, which is important for stair climbing."""
   init_velocity_prob: float = 0.0
 
   @dataclass

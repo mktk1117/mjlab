@@ -198,6 +198,11 @@ class GridPatternCfg:
   direction: tuple[float, float, float] = (0.0, 0.0, -1.0)
   """Ray direction in frame-local coordinates."""
 
+  z_offset: float = 0.0
+  """Vertical offset for ray origins in the frame-local Z axis (meters).
+  Set to a positive value (e.g. 1.0) to raise ray origins above the body,
+  allowing downward rays to detect terrain higher than the robot's base."""
+
   def generate_rays(
     self, mj_model: mujoco.MjModel | None, device: str
   ) -> tuple[torch.Tensor, torch.Tensor]:
@@ -226,6 +231,7 @@ class GridPatternCfg:
     local_offsets = torch.zeros((num_rays, 3), device=device, dtype=torch.float32)
     local_offsets[:, 0] = grid_x.flatten()
     local_offsets[:, 1] = grid_y.flatten()
+    local_offsets[:, 2] = self.z_offset
 
     # All rays share the same direction for grid pattern.
     direction = torch.tensor(self.direction, device=device, dtype=torch.float32)

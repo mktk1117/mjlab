@@ -82,7 +82,8 @@ def unitree_go1_rough_env_cfg(
     primary=ContactMatch(
       mode="geom",
       entity="robot",
-      pattern=("trunk_collision", "head_collision"),
+      # pattern=("trunk_collision", "head_collision"),
+      pattern=("trunk_collision",),
     ),
     secondary=ContactMatch(mode="body", pattern="terrain"),
     fields=("found",),
@@ -157,15 +158,16 @@ def unitree_go1_rough_env_cfg(
     r".*(FR|FL|RR|RL)_(hip|thigh)_joint.*": 0.3,
     r".*(FR|FL|RR|RL)_calf_joint.*": 0.6,
   }
-  cfg.rewards["upright"].weight = 0.1
+  cfg.rewards["upright"].weight = 0.0
   cfg.rewards["upright"].params["asset_cfg"].body_names = ("trunk",)
-  cfg.rewards["upright"].params["sensor_names"] = ("terrain_scan",)
   cfg.rewards["body_ang_vel"].params["asset_cfg"].body_names = ("trunk",)
   for reward_name in ["foot_clearance", "foot_swing_height", "foot_slip"]:
     cfg.rewards[reward_name].params["asset_cfg"].site_names = site_names
   cfg.rewards["body_ang_vel"].weight = -1.0e-4
   cfg.rewards["angular_momentum"].weight = -1.0e-4
   cfg.rewards["air_time"].weight = 0.0
+  cfg.rewards["foot_swing_height"].weight = 0.0
+  cfg.rewards["foot_clearance"].weight = 0.0
   cfg.rewards["self_collisions"] = RewardTermCfg(
     func=mdp.self_collision_cost,
     weight=-1.0,
@@ -173,16 +175,16 @@ def unitree_go1_rough_env_cfg(
   )
   cfg.rewards["shank_collision"] = RewardTermCfg(
     func=mdp.self_collision_cost,
-    weight=-0.5,
+    weight=-0.1,
     params={"sensor_name": shank_ground_cfg.name},
   )
   cfg.rewards["thigh_collision"] = RewardTermCfg(
     func=mdp.self_collision_cost,
-    weight=-1.0,
+    weight=-0.5,
     params={"sensor_name": thigh_ground_cfg.name},
   )
-  cfg.rewards["joint_vel_l2"].weight = -1.0e-5
-  cfg.rewards["joint_acc_l2"].weight = -1.0e-7
+  cfg.rewards["joint_vel_l2"].weight = -1.0e-6
+  cfg.rewards["joint_acc_l2"].weight = -1.0e-8
 
   cfg.terminations["illegal_contact"] = TerminationTermCfg(
     func=mdp.illegal_contact,
