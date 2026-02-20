@@ -183,8 +183,8 @@ def unitree_go1_rough_env_cfg(
     weight=-0.5,
     params={"sensor_name": thigh_ground_cfg.name},
   )
-  cfg.rewards["joint_vel_l2"].weight = -1.0e-6
-  cfg.rewards["joint_acc_l2"].weight = -1.0e-8
+  cfg.rewards["joint_vel_l2"].weight = -1.0e-5
+  cfg.rewards["joint_acc_l2"].weight = -1.0e-7
 
   cfg.terminations["illegal_contact"] = TerminationTermCfg(
     func=mdp.illegal_contact,
