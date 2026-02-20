@@ -88,4 +88,6 @@ def main(args: Args) -> None:
 
 
 if __name__ == "__main__":
-  main(tyro.cli(Args))
+  import mjlab
+
+  main(tyro.cli(Args, config=mjlab.TYRO_FLAGS))
