@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="/home/runner/work/mjlab/mjlab/.venv/lib/python3.13/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=3ea80bc3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -148,6 +148,54 @@
     <p class="title logo__title">The mjlab Documentation</p>
   
 </a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="mjlab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/mjlab-1.1.0-silver.svg" class="icon-link-image" alt="mjlab"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mujocolab.github.io/mjlab/nightly/" title="Benchmarks" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/Nightly-Benchmarks-blue" class="icon-link-image" alt="Benchmarks"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
         <div class="sidebar-primary-item">
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
@@ -165,14 +213,6 @@
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
-        <div class="sidebar-primary-item">
-<div class="sidebar-version-switcher">
-  <label class="sidebar-version-label" for="version-select">Version</label>
-  <select id="version-select" class="sidebar-version-select" onchange="location = this.value;">
-    <option value="sensor.html" selected>main</option>
-  </select>
-</div>
-</div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -533,10 +573,75 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.ContactSensorCfg.name"><code class="docutils literal notranslate"><span class="pre">ContactSensorCfg.name</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor"><code class="docutils literal notranslate"><span class="pre">HeightSensor</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.requires_sensor_context"><code class="docutils literal notranslate"><span class="pre">HeightSensor.requires_sensor_context</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensor.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.edit_spec"><code class="docutils literal notranslate"><span class="pre">HeightSensor.edit_spec()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.initialize"><code class="docutils literal notranslate"><span class="pre">HeightSensor.initialize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.set_context"><code class="docutils literal notranslate"><span class="pre">HeightSensor.set_context()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.num_sites"><code class="docutils literal notranslate"><span class="pre">HeightSensor.num_sites</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.num_samples_per_site"><code class="docutils literal notranslate"><span class="pre">HeightSensor.num_samples_per_site</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.debug_vis"><code class="docutils literal notranslate"><span class="pre">HeightSensor.debug_vis()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.prepare_rays"><code class="docutils literal notranslate"><span class="pre">HeightSensor.prepare_rays()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.raycast_kernel"><code class="docutils literal notranslate"><span class="pre">HeightSensor.raycast_kernel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.postprocess_rays"><code class="docutils literal notranslate"><span class="pre">HeightSensor.postprocess_rays()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_color"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.hit_color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.miss_color"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.miss_color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_color"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.hit_sphere_color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_radius"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.hit_sphere_radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.show_rays"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.show_rays</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.show_normals"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.show_normals</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.normal_color"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.normal_color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.normal_length"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.normal_length</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.RingCfg"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.RingCfg</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.RingCfg.radius"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.RingCfg.radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.RingCfg.num_samples"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.RingCfg.num_samples</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.RingCfg.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.RingCfg.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.radius"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg.radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.num_samples"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg.num_samples</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.rings"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg.rings</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.include_center"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg.include_center</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.sites"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.sites</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.direction"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.direction</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.ray_alignment"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.ray_alignment</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.sampling"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.sampling</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.reduction"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.reduction</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.max_distance"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.max_distance</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.exclude_parent_body"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.exclude_parent_body</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.include_geom_groups"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.include_geom_groups</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.debug_vis"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.debug_vis</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.viz"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.viz</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.build"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.build()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.name"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.name</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData"><code class="docutils literal notranslate"><span class="pre">HeightSensorData</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData.heights"><code class="docutils literal notranslate"><span class="pre">HeightSensorData.heights</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData.normals_w"><code class="docutils literal notranslate"><span class="pre">HeightSensorData.normals_w</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData.hit_pos_w"><code class="docutils literal notranslate"><span class="pre">HeightSensorData.hit_pos_w</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData.site_pos_w"><code class="docutils literal notranslate"><span class="pre">HeightSensorData.site_pos_w</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensorData.__init__()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg</span></code></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.size"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.size</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.resolution"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.resolution</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.direction"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.direction</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.z_offset"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.z_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.generate_rays"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.generate_rays()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.__init__"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.__init__()</span></code></a></li>
 </ul>
@@ -676,28 +781,37 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.ContactSensorCfg" title="mjlab.sensor.ContactSensorCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContactSensorCfg</span></code></a></p></td>
 <td><p>Tracks contacts between primary and secondary patterns.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.GridPatternCfg" title="mjlab.sensor.GridPatternCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GridPatternCfg</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor" title="mjlab.sensor.HeightSensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HeightSensor</span></code></a></p></td>
+<td><p>Height sensor that measures per-site ground height via raycasting.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg" title="mjlab.sensor.HeightSensorCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HeightSensorCfg</span></code></a></p></td>
+<td><p>Height sensor configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorData" title="mjlab.sensor.HeightSensorData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HeightSensorData</span></code></a></p></td>
+<td><p>Height sensor output data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.GridPatternCfg" title="mjlab.sensor.GridPatternCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GridPatternCfg</span></code></a></p></td>
 <td><p>Grid pattern - parallel rays in a 2D grid.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.PinholeCameraPatternCfg" title="mjlab.sensor.PinholeCameraPatternCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PinholeCameraPatternCfg</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.PinholeCameraPatternCfg" title="mjlab.sensor.PinholeCameraPatternCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PinholeCameraPatternCfg</span></code></a></p></td>
 <td><p>Pinhole camera pattern - rays diverging from origin like a camera.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.RayCastData" title="mjlab.sensor.RayCastData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RayCastData</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.RayCastData" title="mjlab.sensor.RayCastData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RayCastData</span></code></a></p></td>
 <td><p>Raycast sensor output data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.RayCastSensor" title="mjlab.sensor.RayCastSensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RayCastSensor</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.RayCastSensor" title="mjlab.sensor.RayCastSensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RayCastSensor</span></code></a></p></td>
 <td><p>Raycast sensor for terrain and obstacle detection.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.RayCastSensorCfg" title="mjlab.sensor.RayCastSensorCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RayCastSensorCfg</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.RayCastSensorCfg" title="mjlab.sensor.RayCastSensorCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RayCastSensorCfg</span></code></a></p></td>
 <td><p>Raycast sensor configuration.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.Sensor" title="mjlab.sensor.Sensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sensor</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.Sensor" title="mjlab.sensor.Sensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sensor</span></code></a></p></td>
 <td><p>Base sensor interface with typed data and per-step caching.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.SensorCfg" title="mjlab.sensor.SensorCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SensorCfg</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.SensorCfg" title="mjlab.sensor.SensorCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SensorCfg</span></code></a></p></td>
 <td><p>Base configuration for a sensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.SensorContext" title="mjlab.sensor.SensorContext"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SensorContext</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.SensorContext" title="mjlab.sensor.SensorContext"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SensorContext</span></code></a></p></td>
 <td><p>Container for shared sensing resources.</p></td>
 </tr>
 </tbody>
@@ -1714,6 +1828,619 @@ Set to your decimation value to capture all substeps within one policy step.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mjlab.sensor.</span></span><span class="sig-name descname"><span class="pre">HeightSensor</span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensor" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mjlab.sensor.Sensor" title="mjlab.sensor.sensor.Sensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sensor</span></code></a>[<a class="reference internal" href="#mjlab.sensor.HeightSensorData" title="mjlab.sensor.height_sensor.HeightSensorData"><code class="xref py py-class docutils literal notranslate"><span class="pre">HeightSensorData</span></code></a>]</p>
+<p>Height sensor that measures per-site ground height via raycasting.</p>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.requires_sensor_context" title="mjlab.sensor.HeightSensor.requires_sensor_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">requires_sensor_context</span></code></a></p></td>
+<td><p>Whether this sensor needs a SensorContext (render context).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.num_sites" title="mjlab.sensor.HeightSensor.num_sites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_sites</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.num_samples_per_site" title="mjlab.sensor.HeightSensor.num_samples_per_site"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_samples_per_site</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.__init__" title="mjlab.sensor.HeightSensor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(cfg)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.edit_spec" title="mjlab.sensor.HeightSensor.edit_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit_spec</span></code></a>(scene_spec, entities)</p></td>
+<td><p>Edit the scene spec to add this sensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.initialize" title="mjlab.sensor.HeightSensor.initialize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize</span></code></a>(mj_model, model, data, device)</p></td>
+<td><p>Initialize the sensor after model compilation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.set_context" title="mjlab.sensor.HeightSensor.set_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_context</span></code></a>(ctx)</p></td>
+<td><p>Wire this sensor to a SensorContext for BVH-accelerated raycasting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.debug_vis" title="mjlab.sensor.HeightSensor.debug_vis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">debug_vis</span></code></a>(visualizer)</p></td>
+<td><p>Visualize sensor data for debugging.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.prepare_rays" title="mjlab.sensor.HeightSensor.prepare_rays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare_rays</span></code></a>()</p></td>
+<td><p>PRE-GRAPH: Read site positions and compute world-frame ray origins/dirs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.raycast_kernel" title="mjlab.sensor.HeightSensor.raycast_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raycast_kernel</span></code></a>(rc)</p></td>
+<td><p>IN-GRAPH: Execute BVH-accelerated raycast kernel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensor.postprocess_rays" title="mjlab.sensor.HeightSensor.postprocess_rays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">postprocess_rays</span></code></a>()</p></td>
+<td><p>POST-GRAPH: Convert Warp outputs to PyTorch, compute heights, reduce.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.requires_sensor_context">
+<span class="sig-name descname"><span class="pre">requires_sensor_context</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensor.requires_sensor_context" title="Link to this definition">#</a></dt>
+<dd><p>Whether this sensor needs a SensorContext (render context).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg" title="mjlab.sensor.height_sensor.HeightSensorCfg"><span class="pre">HeightSensorCfg</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensor.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.edit_spec">
+<span class="sig-name descname"><span class="pre">edit_spec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene_spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MjSpec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="entity.html#mjlab.entity.Entity" title="mjlab.entity.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensor.edit_spec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensor.edit_spec" title="Link to this definition">#</a></dt>
+<dd><p>Edit the scene spec to add this sensor.</p>
+<p>This is called during scene construction to add sensor elements
+to the MjSpec.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scene_spec</strong> – The scene MjSpec to edit.</p></li>
+<li><p><strong>entities</strong> – Dictionary of entities in the scene, keyed by name.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mj_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MjModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">mujoco_warp.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">mujoco_warp.Data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensor.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensor.initialize" title="Link to this definition">#</a></dt>
+<dd><p>Initialize the sensor after model compilation.</p>
+<p>This is called after the MjSpec is compiled into an MjModel and the simulation
+is ready to run. Use this to cache sensor indices, allocate buffers, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mj_model</strong> – The compiled MuJoCo model.</p></li>
+<li><p><strong>model</strong> – The mjwarp model wrapper.</p></li>
+<li><p><strong>data</strong> – The mjwarp data arrays.</p></li>
+<li><p><strong>device</strong> – Device for tensor operations (e.g., “cuda”, “cpu”).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.set_context">
+<span class="sig-name descname"><span class="pre">set_context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#mjlab.sensor.SensorContext" title="mjlab.sensor.SensorContext"><span class="pre">SensorContext</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensor.set_context"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensor.set_context" title="Link to this definition">#</a></dt>
+<dd><p>Wire this sensor to a SensorContext for BVH-accelerated raycasting.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.num_sites">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_sites</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#mjlab.sensor.HeightSensor.num_sites" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.num_samples_per_site">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_samples_per_site</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#mjlab.sensor.HeightSensor.num_samples_per_site" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.debug_vis">
+<span class="sig-name descname"><span class="pre">debug_vis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visualizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DebugVisualizer</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensor.debug_vis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensor.debug_vis" title="Link to this definition">#</a></dt>
+<dd><p>Visualize sensor data for debugging.</p>
+<p>Base implementation does nothing. Override in subclasses that support
+debug visualization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>visualizer</strong> – The debug visualizer to draw to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.prepare_rays">
+<span class="sig-name descname"><span class="pre">prepare_rays</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensor.prepare_rays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensor.prepare_rays" title="Link to this definition">#</a></dt>
+<dd><p>PRE-GRAPH: Read site positions and compute world-frame ray origins/dirs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.raycast_kernel">
+<span class="sig-name descname"><span class="pre">raycast_kernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">mujoco_warp.RenderContext</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensor.raycast_kernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensor.raycast_kernel" title="Link to this definition">#</a></dt>
+<dd><p>IN-GRAPH: Execute BVH-accelerated raycast kernel.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensor.postprocess_rays">
+<span class="sig-name descname"><span class="pre">postprocess_rays</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensor.postprocess_rays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensor.postprocess_rays" title="Link to this definition">#</a></dt>
+<dd><p>POST-GRAPH: Convert Warp outputs to PyTorch, compute heights, reduce.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mjlab.sensor.</span></span><span class="sig-name descname"><span class="pre">HeightSensorCfg</span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensorCfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mjlab.sensor.SensorCfg" title="mjlab.sensor.sensor.SensorCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">SensorCfg</span></code></a></p>
+<p>Height sensor configuration.</p>
+<p>Casts downward rays per site to measure ground-relative height and
+surface normal. Supports multi-ray sampling with aggregation.</p>
+<p><strong>Classes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg" title="mjlab.sensor.HeightSensorCfg.VizCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VizCfg</span></code></a></p></td>
+<td><p>Visualization settings for debug rendering.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.RingCfg" title="mjlab.sensor.HeightSensorCfg.RingCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RingCfg</span></code></a></p></td>
+<td><p>Configuration for a single ring in a concentric pattern.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg" title="mjlab.sensor.HeightSensorCfg.SamplingCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SamplingCfg</span></code></a></p></td>
+<td><p>Multi-ray sampling pattern around each site.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.sites" title="mjlab.sensor.HeightSensorCfg.sites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sites</span></code></a></p></td>
+<td><p>Sites to measure height for.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.direction" title="mjlab.sensor.HeightSensorCfg.direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></a></p></td>
+<td><p>straight down).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.ray_alignment" title="mjlab.sensor.HeightSensorCfg.ray_alignment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ray_alignment</span></code></a></p></td>
+<td><p>How the ray direction aligns with the frame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.sampling" title="mjlab.sensor.HeightSensorCfg.sampling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sampling</span></code></a></p></td>
+<td><p>Optional multi-ray sampling pattern.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.reduction" title="mjlab.sensor.HeightSensorCfg.reduction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduction</span></code></a></p></td>
+<td><p>How to aggregate multi-ray samples per site.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.max_distance" title="mjlab.sensor.HeightSensorCfg.max_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_distance</span></code></a></p></td>
+<td><p>Maximum ray distance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.exclude_parent_body" title="mjlab.sensor.HeightSensorCfg.exclude_parent_body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exclude_parent_body</span></code></a></p></td>
+<td><p>Exclude parent body from ray intersection tests.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.include_geom_groups" title="mjlab.sensor.HeightSensorCfg.include_geom_groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">include_geom_groups</span></code></a></p></td>
+<td><p>Geom groups (0-5) to include in raycasting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.debug_vis" title="mjlab.sensor.HeightSensorCfg.debug_vis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">debug_vis</span></code></a></p></td>
+<td><p>Enable debug visualization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.viz" title="mjlab.sensor.HeightSensorCfg.viz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">viz</span></code></a></p></td>
+<td><p>Visualization settings.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.build" title="mjlab.sensor.HeightSensorCfg.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>()</p></td>
+<td><p>Build sensor instance from this config.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.__init__" title="mjlab.sensor.HeightSensorCfg.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(name[, sites, direction, ...])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.VizCfg">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VizCfg</span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensorCfg.VizCfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.VizCfg" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Visualization settings for debug rendering.</p>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_color" title="mjlab.sensor.HeightSensorCfg.VizCfg.hit_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hit_color</span></code></a></p></td>
+<td><p>RGBA color for rays that hit a surface.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg.miss_color" title="mjlab.sensor.HeightSensorCfg.VizCfg.miss_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">miss_color</span></code></a></p></td>
+<td><p>RGBA color for rays that miss.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_color" title="mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hit_sphere_color</span></code></a></p></td>
+<td><p>RGBA color for spheres drawn at hit points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_radius" title="mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hit_sphere_radius</span></code></a></p></td>
+<td><p>Radius of spheres drawn at hit points (multiplier of meansize).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg.show_rays" title="mjlab.sensor.HeightSensorCfg.VizCfg.show_rays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_rays</span></code></a></p></td>
+<td><p>Whether to draw ray arrows.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg.show_normals" title="mjlab.sensor.HeightSensorCfg.VizCfg.show_normals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_normals</span></code></a></p></td>
+<td><p>Whether to draw surface normals at hit points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg.normal_color" title="mjlab.sensor.HeightSensorCfg.VizCfg.normal_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_color</span></code></a></p></td>
+<td><p>RGBA color for surface normal arrows.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg.normal_length" title="mjlab.sensor.HeightSensorCfg.VizCfg.normal_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_length</span></code></a></p></td>
+<td><p>Length of surface normal arrows (multiplier of meansize).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg.__init__" title="mjlab.sensor.HeightSensorCfg.VizCfg.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([hit_color, miss_color, ...])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.VizCfg.hit_color">
+<span class="sig-name descname"><span class="pre">hit_color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0.0,</span> <span class="pre">1.0,</span> <span class="pre">0.0,</span> <span class="pre">0.8)</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_color" title="Link to this definition">#</a></dt>
+<dd><p>RGBA color for rays that hit a surface.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.VizCfg.miss_color">
+<span class="sig-name descname"><span class="pre">miss_color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(1.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.4)</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.VizCfg.miss_color" title="Link to this definition">#</a></dt>
+<dd><p>RGBA color for rays that miss.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_color">
+<span class="sig-name descname"><span class="pre">hit_sphere_color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0.0,</span> <span class="pre">1.0,</span> <span class="pre">1.0,</span> <span class="pre">1.0)</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_color" title="Link to this definition">#</a></dt>
+<dd><p>RGBA color for spheres drawn at hit points.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_radius">
+<span class="sig-name descname"><span class="pre">hit_sphere_radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.5</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_radius" title="Link to this definition">#</a></dt>
+<dd><p>Radius of spheres drawn at hit points (multiplier of meansize).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.VizCfg.show_rays">
+<span class="sig-name descname"><span class="pre">show_rays</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.VizCfg.show_rays" title="Link to this definition">#</a></dt>
+<dd><p>Whether to draw ray arrows.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.VizCfg.show_normals">
+<span class="sig-name descname"><span class="pre">show_normals</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.VizCfg.show_normals" title="Link to this definition">#</a></dt>
+<dd><p>Whether to draw surface normals at hit points.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.VizCfg.normal_color">
+<span class="sig-name descname"><span class="pre">normal_color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0)</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.VizCfg.normal_color" title="Link to this definition">#</a></dt>
+<dd><p>RGBA color for surface normal arrows.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.VizCfg.normal_length">
+<span class="sig-name descname"><span class="pre">normal_length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.0</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.VizCfg.normal_length" title="Link to this definition">#</a></dt>
+<dd><p>Length of surface normal arrows (multiplier of meansize).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.VizCfg.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hit_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">1.0,</span> <span class="pre">0.0,</span> <span class="pre">0.8)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">miss_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hit_sphere_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">1.0,</span> <span class="pre">1.0,</span> <span class="pre">1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hit_sphere_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_rays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_normals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.VizCfg.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.RingCfg">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RingCfg</span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensorCfg.RingCfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.RingCfg" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Configuration for a single ring in a concentric pattern.</p>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.RingCfg.radius" title="mjlab.sensor.HeightSensorCfg.RingCfg.radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius</span></code></a></p></td>
+<td><p>Radius of this ring in meters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.RingCfg.num_samples" title="mjlab.sensor.HeightSensorCfg.RingCfg.num_samples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_samples</span></code></a></p></td>
+<td><p>Number of evenly spaced sample points on this ring.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.RingCfg.__init__" title="mjlab.sensor.HeightSensorCfg.RingCfg.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(radius, num_samples)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.RingCfg.radius">
+<span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.RingCfg.radius" title="Link to this definition">#</a></dt>
+<dd><p>Radius of this ring in meters.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.RingCfg.num_samples">
+<span class="sig-name descname"><span class="pre">num_samples</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.RingCfg.num_samples" title="Link to this definition">#</a></dt>
+<dd><p>Number of evenly spaced sample points on this ring.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.RingCfg.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.RingCfg.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.SamplingCfg">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SamplingCfg</span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensorCfg.SamplingCfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Multi-ray sampling pattern around each site.</p>
+<p>Supports two modes:</p>
+<ol class="arabic simple">
+<li><p><strong>Single ring</strong>: Set <code class="docutils literal notranslate"><span class="pre">radius</span></code> and <code class="docutils literal notranslate"><span class="pre">num_samples</span></code> for one ring.</p></li>
+<li><p><strong>Concentric rings</strong>: Set <code class="docutils literal notranslate"><span class="pre">rings</span></code> to a tuple of <code class="xref py py-class docutils literal notranslate"><span class="pre">RingCfg</span></code>
+for multiple concentric rings at different radii.</p></li>
+</ol>
+<p>When <code class="docutils literal notranslate"><span class="pre">rings</span></code> is provided, <code class="docutils literal notranslate"><span class="pre">radius</span></code> and <code class="docutils literal notranslate"><span class="pre">num_samples</span></code> are ignored.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">include_center=True</span></code> (default), a center ray is always included.</p>
+<p>Example (concentric rings around each foot):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SamplingCfg</span><span class="p">(</span>
+    <span class="n">rings</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">HeightSensorCfg</span><span class="o">.</span><span class="n">RingCfg</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>
+        <span class="n">HeightSensorCfg</span><span class="o">.</span><span class="n">RingCfg</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">6</span><span class="p">),</span>
+        <span class="n">HeightSensorCfg</span><span class="o">.</span><span class="n">RingCfg</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span>
+        <span class="n">HeightSensorCfg</span><span class="o">.</span><span class="n">RingCfg</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+        <span class="n">HeightSensorCfg</span><span class="o">.</span><span class="n">RingCfg</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.50</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">12</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.radius" title="mjlab.sensor.HeightSensorCfg.SamplingCfg.radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius</span></code></a></p></td>
+<td><p>Radius for single-ring mode.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.num_samples" title="mjlab.sensor.HeightSensorCfg.SamplingCfg.num_samples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_samples</span></code></a></p></td>
+<td><p>Samples for single-ring mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.rings" title="mjlab.sensor.HeightSensorCfg.SamplingCfg.rings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rings</span></code></a></p></td>
+<td><p>Concentric ring definitions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.include_center" title="mjlab.sensor.HeightSensorCfg.SamplingCfg.include_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">include_center</span></code></a></p></td>
+<td><p>Whether to include a ray at the site center (in addition to rings).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.__init__" title="mjlab.sensor.HeightSensorCfg.SamplingCfg.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([radius, num_samples, rings, ...])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.SamplingCfg.radius">
+<span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.1</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.radius" title="Link to this definition">#</a></dt>
+<dd><p>Radius for single-ring mode. Ignored when <code class="docutils literal notranslate"><span class="pre">rings</span></code> is set.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.SamplingCfg.num_samples">
+<span class="sig-name descname"><span class="pre">num_samples</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.num_samples" title="Link to this definition">#</a></dt>
+<dd><p>Samples for single-ring mode. Ignored when <code class="docutils literal notranslate"><span class="pre">rings</span></code> is set.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.SamplingCfg.rings">
+<span class="sig-name descname"><span class="pre">rings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.RingCfg" title="mjlab.sensor.height_sensor.HeightSensorCfg.RingCfg"><span class="pre">RingCfg</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.rings" title="Link to this definition">#</a></dt>
+<dd><p>Concentric ring definitions. Overrides <code class="docutils literal notranslate"><span class="pre">radius</span></code>/<code class="docutils literal notranslate"><span class="pre">num_samples</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.SamplingCfg.include_center">
+<span class="sig-name descname"><span class="pre">include_center</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.include_center" title="Link to this definition">#</a></dt>
+<dd><p>Whether to include a ray at the site center (in addition to rings).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.SamplingCfg.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.RingCfg" title="mjlab.sensor.height_sensor.HeightSensorCfg.RingCfg"><span class="pre">RingCfg</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_center</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.sites">
+<span class="sig-name descname"><span class="pre">sites</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#mjlab.sensor.ObjRef" title="mjlab.sensor.ObjRef"><span class="pre">ObjRef</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.sites" title="Link to this definition">#</a></dt>
+<dd><p>Sites to measure height for.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.direction">
+<span class="sig-name descname"><span class="pre">direction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0.0,</span> <span class="pre">0.0,</span> <span class="pre">-1.0)</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.direction" title="Link to this definition">#</a></dt>
+<dd><p>straight down).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ray direction in frame-local coordinates (default</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.ray_alignment">
+<span class="sig-name descname"><span class="pre">ray_alignment</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">RayAlignment</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'world'</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.ray_alignment" title="Link to this definition">#</a></dt>
+<dd><p>How the ray direction aligns with the frame.</p>
+<ul class="simple">
+<li><p>“world”: Fixed in world frame (always shoots -Z). Default — best for
+ground height measurement regardless of body orientation.</p></li>
+<li><p>“yaw”: Position + yaw only, ignores pitch/roll.</p></li>
+<li><p>“base”: Full position + rotation. Ray direction rotates with body.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.sampling">
+<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg" title="mjlab.sensor.HeightSensorCfg.SamplingCfg"><span class="pre">SamplingCfg</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.sampling" title="Link to this definition">#</a></dt>
+<dd><p>Optional multi-ray sampling pattern.</p>
+<p>When None (default), one ray is cast per site. When specified, multiple
+rays are cast around each site in a ring pattern and aggregated using
+the <code class="docutils literal notranslate"><span class="pre">reduction</span></code> method.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.reduction">
+<span class="sig-name descname"><span class="pre">reduction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Reduction</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'mean'</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.reduction" title="Link to this definition">#</a></dt>
+<dd><p>How to aggregate multi-ray samples per site.</p>
+<p>Only used when <code class="docutils literal notranslate"><span class="pre">sampling</span></code> is specified. Options:
+- “mean”: Average of all sample heights/normals.
+- “min”: Minimum height per site (useful for foot clearance).
+- “max”: Maximum height per site.
+- “median”: Median height per site.
+- “none”: No reduction — output raw per-ray data [B, S, K].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.max_distance">
+<span class="sig-name descname"><span class="pre">max_distance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10.0</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.max_distance" title="Link to this definition">#</a></dt>
+<dd><p>Maximum ray distance. Rays beyond this report -1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.exclude_parent_body">
+<span class="sig-name descname"><span class="pre">exclude_parent_body</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.exclude_parent_body" title="Link to this definition">#</a></dt>
+<dd><p>Exclude parent body from ray intersection tests.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.include_geom_groups">
+<span class="sig-name descname"><span class="pre">include_geom_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0,</span> <span class="pre">1,</span> <span class="pre">2)</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.include_geom_groups" title="Link to this definition">#</a></dt>
+<dd><p>Geom groups (0-5) to include in raycasting.</p>
+<p>Defaults to (0, 1, 2). Set to None to include all groups.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.debug_vis">
+<span class="sig-name descname"><span class="pre">debug_vis</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.debug_vis" title="Link to this definition">#</a></dt>
+<dd><p>Enable debug visualization.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.viz">
+<span class="sig-name descname"><span class="pre">viz</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#mjlab.sensor.HeightSensorCfg.VizCfg" title="mjlab.sensor.HeightSensorCfg.VizCfg"><span class="pre">VizCfg</span></a></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.viz" title="Link to this definition">#</a></dt>
+<dd><p>Visualization settings.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mjlab.sensor.HeightSensor" title="mjlab.sensor.height_sensor.HeightSensor"><span class="pre">HeightSensor</span></a></span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensorCfg.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.build" title="Link to this definition">#</a></dt>
+<dd><p>Build sensor instance from this config.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites:</span> <span class="pre">tuple[ObjRef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...]</span> <span class="pre">=</span> <span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction:</span> <span class="pre">tuple[float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">float]</span> <span class="pre">=</span> <span class="pre">(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">-1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ray_alignment:</span> <span class="pre">RayAlignment</span> <span class="pre">=</span> <span class="pre">'world'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">SamplingCfg</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction:</span> <span class="pre">Reduction</span> <span class="pre">=</span> <span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_distance:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_parent_body:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_geom_groups:</span> <span class="pre">tuple[int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">(0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">2)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_vis:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">viz:</span> <span class="pre">VizCfg</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorCfg.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#mjlab.sensor.HeightSensorCfg.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorData">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mjlab.sensor.</span></span><span class="sig-name descname"><span class="pre">HeightSensorData</span></span><a class="reference internal" href="../../_modules/mjlab/sensor/height_sensor.html#HeightSensorData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.HeightSensorData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Height sensor output data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Fields are views into GPU buffers and are valid until the next
+<code class="docutils literal notranslate"><span class="pre">sense()</span></code> call.</p>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorData.heights" title="mjlab.sensor.HeightSensorData.heights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heights</span></code></a></p></td>
+<td><p>[B, S] or [B, S, K] Height of each site above ground.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorData.normals_w" title="mjlab.sensor.HeightSensorData.normals_w"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normals_w</span></code></a></p></td>
+<td><p>[B, S, 3] or [B, S, K, 3] Surface normal at ground point (world frame).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorData.hit_pos_w" title="mjlab.sensor.HeightSensorData.hit_pos_w"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hit_pos_w</span></code></a></p></td>
+<td><p>[B, S, 3] Ground hit position for center ray (world frame).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorData.site_pos_w" title="mjlab.sensor.HeightSensorData.site_pos_w"><code class="xref py py-obj docutils literal notranslate"><span class="pre">site_pos_w</span></code></a></p></td>
+<td><p>[B, S, 3] Site position in world frame.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.HeightSensorData.__init__" title="mjlab.sensor.HeightSensorData.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(heights, normals_w, hit_pos_w, ...)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorData.heights">
+<span class="sig-name descname"><span class="pre">heights</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tensor</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorData.heights" title="Link to this definition">#</a></dt>
+<dd><p>[B, S] or [B, S, K] Height of each site above ground.</p>
+<p>Shape is [B, S] when reduction is applied (default), or [B, S, K] when
+reduction=”none” (K = num_samples per site). -1 for misses.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorData.normals_w">
+<span class="sig-name descname"><span class="pre">normals_w</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tensor</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorData.normals_w" title="Link to this definition">#</a></dt>
+<dd><p>[B, S, 3] or [B, S, K, 3] Surface normal at ground point (world frame).</p>
+<p>Shape is [B, S, 3] when reduction is applied, or [B, S, K, 3] when
+reduction=”none”. Zero for misses.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorData.hit_pos_w">
+<span class="sig-name descname"><span class="pre">hit_pos_w</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tensor</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorData.hit_pos_w" title="Link to this definition">#</a></dt>
+<dd><p>[B, S, 3] Ground hit position for center ray (world frame).</p>
+<p>Always shape [B, S, 3] regardless of reduction (uses center/first ray).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorData.site_pos_w">
+<span class="sig-name descname"><span class="pre">site_pos_w</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tensor</span></em><a class="headerlink" href="#mjlab.sensor.HeightSensorData.site_pos_w" title="Link to this definition">#</a></dt>
+<dd><p>[B, S, 3] Site position in world frame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mjlab.sensor.HeightSensorData.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">heights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normals_w</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hit_pos_w</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">site_pos_w</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#mjlab.sensor.HeightSensorData.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="mjlab.sensor.GridPatternCfg">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mjlab.sensor.</span></span><span class="sig-name descname"><span class="pre">GridPatternCfg</span></span><a class="reference internal" href="../../_modules/mjlab/sensor/raycast_sensor.html#GridPatternCfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.GridPatternCfg" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
@@ -1730,6 +2457,9 @@ Set to your decimation value to capture all substeps within one policy step.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.GridPatternCfg.direction" title="mjlab.sensor.GridPatternCfg.direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></a></p></td>
 <td><p>Ray direction in frame-local coordinates.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.GridPatternCfg.z_offset" title="mjlab.sensor.GridPatternCfg.z_offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z_offset</span></code></a></p></td>
+<td><p>Vertical offset for ray origins in the frame-local Z axis (meters).</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1739,7 +2469,7 @@ Set to your decimation value to capture all substeps within one policy step.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.GridPatternCfg.generate_rays" title="mjlab.sensor.GridPatternCfg.generate_rays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_rays</span></code></a>(mj_model, device)</p></td>
 <td><p>Generate ray pattern.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.GridPatternCfg.__init__" title="mjlab.sensor.GridPatternCfg.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([size, resolution, direction])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.GridPatternCfg.__init__" title="mjlab.sensor.GridPatternCfg.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([size, resolution, direction, z_offset])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -1763,6 +2493,14 @@ Set to your decimation value to capture all substeps within one policy step.</p>
 <dd><p>Ray direction in frame-local coordinates.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mjlab.sensor.GridPatternCfg.z_offset">
+<span class="sig-name descname"><span class="pre">z_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#mjlab.sensor.GridPatternCfg.z_offset" title="Link to this definition">#</a></dt>
+<dd><p>Vertical offset for ray origins in the frame-local Z axis (meters).
+Set to a positive value (e.g. 1.0) to raise ray origins above the body,
+allowing downward rays to detect terrain higher than the robot’s base.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="mjlab.sensor.GridPatternCfg.generate_rays">
 <span class="sig-name descname"><span class="pre">generate_rays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mj_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MjModel</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/mjlab/sensor/raycast_sensor.html#GridPatternCfg.generate_rays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.GridPatternCfg.generate_rays" title="Link to this definition">#</a></dt>
@@ -1782,7 +2520,7 @@ Set to your decimation value to capture all substeps within one policy step.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mjlab.sensor.GridPatternCfg.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">0.0,</span> <span class="pre">-1.0)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#mjlab.sensor.GridPatternCfg.__init__" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">0.0,</span> <span class="pre">-1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#mjlab.sensor.GridPatternCfg.__init__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2549,7 +3287,7 @@ execution is handled by Simulation.</p>
 <p><strong>Methods:</strong></p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.SensorContext.__init__" title="mjlab.sensor.SensorContext.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(mj_model, model, data, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mjlab.sensor.SensorContext.__init__" title="mjlab.sensor.SensorContext.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(mj_model, model, data, ...[, ...])</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#mjlab.sensor.SensorContext.recreate" title="mjlab.sensor.SensorContext.recreate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recreate</span></code></a>(mj_model)</p></td>
@@ -2590,7 +3328,7 @@ execution is handled by Simulation.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="mjlab.sensor.SensorContext.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mj_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">mujoco.MjModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">mjwarp.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">mjwarp.Data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera_sensors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#mjlab.sensor.CameraSensor" title="mjlab.sensor.CameraSensor"><span class="pre">CameraSensor</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raycast_sensors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#mjlab.sensor.RayCastSensor" title="mjlab.sensor.RayCastSensor"><span class="pre">RayCastSensor</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mjlab/sensor/sensor_context.html#SensorContext.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.SensorContext.__init__" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mj_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">mujoco.MjModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">mjwarp.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">mjwarp.Data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera_sensors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#mjlab.sensor.CameraSensor" title="mjlab.sensor.CameraSensor"><span class="pre">CameraSensor</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raycast_sensors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#mjlab.sensor.RayCastSensor" title="mjlab.sensor.RayCastSensor"><span class="pre">RayCastSensor</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_sensors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#mjlab.sensor.HeightSensor" title="mjlab.sensor.HeightSensor"><span class="pre">HeightSensor</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mjlab/sensor/sensor_context.html#SensorContext.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mjlab.sensor.SensorContext.__init__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -2824,10 +3562,75 @@ CUDA graph. No-op if no cameras need RGB.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.ContactSensorCfg.name"><code class="docutils literal notranslate"><span class="pre">ContactSensorCfg.name</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor"><code class="docutils literal notranslate"><span class="pre">HeightSensor</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.requires_sensor_context"><code class="docutils literal notranslate"><span class="pre">HeightSensor.requires_sensor_context</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensor.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.edit_spec"><code class="docutils literal notranslate"><span class="pre">HeightSensor.edit_spec()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.initialize"><code class="docutils literal notranslate"><span class="pre">HeightSensor.initialize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.set_context"><code class="docutils literal notranslate"><span class="pre">HeightSensor.set_context()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.num_sites"><code class="docutils literal notranslate"><span class="pre">HeightSensor.num_sites</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.num_samples_per_site"><code class="docutils literal notranslate"><span class="pre">HeightSensor.num_samples_per_site</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.debug_vis"><code class="docutils literal notranslate"><span class="pre">HeightSensor.debug_vis()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.prepare_rays"><code class="docutils literal notranslate"><span class="pre">HeightSensor.prepare_rays()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.raycast_kernel"><code class="docutils literal notranslate"><span class="pre">HeightSensor.raycast_kernel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensor.postprocess_rays"><code class="docutils literal notranslate"><span class="pre">HeightSensor.postprocess_rays()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_color"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.hit_color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.miss_color"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.miss_color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_color"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.hit_sphere_color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.hit_sphere_radius"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.hit_sphere_radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.show_rays"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.show_rays</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.show_normals"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.show_normals</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.normal_color"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.normal_color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.normal_length"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.normal_length</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.VizCfg.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.VizCfg.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.RingCfg"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.RingCfg</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.RingCfg.radius"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.RingCfg.radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.RingCfg.num_samples"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.RingCfg.num_samples</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.RingCfg.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.RingCfg.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.radius"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg.radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.num_samples"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg.num_samples</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.rings"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg.rings</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.include_center"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg.include_center</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.SamplingCfg.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.SamplingCfg.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.sites"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.sites</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.direction"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.direction</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.ray_alignment"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.ray_alignment</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.sampling"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.sampling</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.reduction"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.reduction</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.max_distance"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.max_distance</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.exclude_parent_body"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.exclude_parent_body</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.include_geom_groups"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.include_geom_groups</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.debug_vis"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.debug_vis</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.viz"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.viz</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.build"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.build()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorCfg.name"><code class="docutils literal notranslate"><span class="pre">HeightSensorCfg.name</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData"><code class="docutils literal notranslate"><span class="pre">HeightSensorData</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData.heights"><code class="docutils literal notranslate"><span class="pre">HeightSensorData.heights</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData.normals_w"><code class="docutils literal notranslate"><span class="pre">HeightSensorData.normals_w</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData.hit_pos_w"><code class="docutils literal notranslate"><span class="pre">HeightSensorData.hit_pos_w</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData.site_pos_w"><code class="docutils literal notranslate"><span class="pre">HeightSensorData.site_pos_w</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.HeightSensorData.__init__"><code class="docutils literal notranslate"><span class="pre">HeightSensorData.__init__()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg</span></code></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.size"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.size</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.resolution"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.resolution</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.direction"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.direction</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.z_offset"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.z_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.generate_rays"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.generate_rays()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mjlab.sensor.GridPatternCfg.__init__"><code class="docutils literal notranslate"><span class="pre">GridPatternCfg.__init__()</span></code></a></li>
 </ul>

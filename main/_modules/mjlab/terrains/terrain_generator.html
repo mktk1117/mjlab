@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="/home/runner/work/mjlab/mjlab/.venv/lib/python3.13/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=3ea80bc3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -147,6 +147,54 @@
     <p class="title logo__title">The mjlab Documentation</p>
   
 </a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="mjlab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/mjlab-1.1.0-silver.svg" class="icon-link-image" alt="mjlab"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mujocolab.github.io/mjlab/nightly/" title="Benchmarks" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/Nightly-Benchmarks-blue" class="icon-link-image" alt="Benchmarks"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
         <div class="sidebar-primary-item">
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
@@ -164,14 +212,6 @@
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
-        <div class="sidebar-primary-item">
-<div class="sidebar-version-switcher">
-  <label class="sidebar-version-label" for="version-select">Version</label>
-  <select id="version-select" class="sidebar-version-select" onchange="location = this.value;">
-    <option value="terrain_generator.html" selected>main</option>
-  </select>
-</div>
-</div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -623,20 +663,70 @@ document.write(`
       <span class="c1"># Store the spawn origin for this terrain.</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">terrain_origins</span><span class="p">[</span><span class="n">sub_row</span><span class="p">,</span> <span class="n">sub_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">spawn_origin</span>
 
-  <span class="k">def</span><span class="w"> </span><span class="nf">_generate_curriculum_terrains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="n">mujoco</span><span class="o">.</span><span class="n">MjSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># Normalize the proportions of the sub-terrains.</span>
-    <span class="n">proportions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-      <span class="p">[</span><span class="n">sub_cfg</span><span class="o">.</span><span class="n">proportion</span> <span class="k">for</span> <span class="n">sub_cfg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">sub_terrains</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
-    <span class="p">)</span>
-    <span class="n">proportions</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">proportions</span><span class="p">)</span>
+<div class="viewcode-block" id="TerrainGenerator.compute_col_to_terrain_index">
+<a class="viewcode-back" href="../../../source/api/terrains.html#mjlab.terrains.TerrainGenerator.compute_col_to_terrain_index">[docs]</a>
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">compute_col_to_terrain_index</span><span class="p">(</span>
+    <span class="n">proportions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">num_cols</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map each column index to its sub-terrain index.</span>
 
-    <span class="n">sub_indices</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">num_cols</span><span class="p">):</span>
-      <span class="n">sub_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">index</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">num_cols</span> <span class="o">+</span> <span class="mf">0.001</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">proportions</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-      <span class="p">)</span>
-      <span class="n">sub_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_index</span><span class="p">)</span>
-    <span class="n">sub_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sub_indices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="sd">    When ``num_cols &gt;= len(proportions)``, every terrain with a positive</span>
+<span class="sd">    proportion is guaranteed at least one column.  The remaining columns</span>
+<span class="sd">    are distributed proportionally.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      1-D int array of length *num_cols* where ``result[col]`` is the</span>
+<span class="sd">      sub-terrain index for that column.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">props</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">proportions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">n_terrains</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">num_cols</span> <span class="o">&gt;=</span> <span class="n">n_terrains</span><span class="p">:</span>
+      <span class="c1"># Stage 1 — give every terrain with proportion &gt; 0 exactly one column.</span>
+      <span class="n">allocated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_terrains</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_terrains</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">props</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="n">allocated</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+      <span class="n">remaining</span> <span class="o">=</span> <span class="n">num_cols</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">allocated</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+      <span class="c1"># Stage 2 — distribute remaining columns proportionally.</span>
+      <span class="k">if</span> <span class="n">remaining</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">props</span> <span class="o">/</span> <span class="n">props</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="n">norm</span> <span class="o">*</span> <span class="n">remaining</span>
+        <span class="n">floor_extra</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">extra</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="n">allocated</span> <span class="o">+=</span> <span class="n">floor_extra</span>
+        <span class="n">leftover</span> <span class="o">=</span> <span class="n">remaining</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">floor_extra</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="c1"># Give leftover columns to terrains with the largest fractional parts.</span>
+        <span class="n">fractions</span> <span class="o">=</span> <span class="n">extra</span> <span class="o">-</span> <span class="n">floor_extra</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">leftover</span><span class="p">):</span>
+          <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">fractions</span><span class="p">))</span>
+          <span class="n">allocated</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+          <span class="n">fractions</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>  <span class="c1"># don&#39;t pick again</span>
+
+      <span class="c1"># Build column → terrain index mapping.</span>
+      <span class="n">sub_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_cols</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+      <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_terrains</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">allocated</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+          <span class="n">sub_indices</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+          <span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="c1"># Fewer columns than terrains — fall back to cumulative distribution.</span>
+      <span class="n">norm</span> <span class="o">=</span> <span class="n">props</span> <span class="o">/</span> <span class="n">props</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+      <span class="n">cum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">norm</span><span class="p">)</span>
+      <span class="n">sub_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_cols</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cols</span><span class="p">):</span>
+        <span class="n">sub_indices</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">c</span> <span class="o">/</span> <span class="n">num_cols</span> <span class="o">+</span> <span class="mf">0.001</span> <span class="o">&lt;</span> <span class="n">cum</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">sub_indices</span></div>
+
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">_generate_curriculum_terrains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="n">mujoco</span><span class="o">.</span><span class="n">MjSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">proportions</span> <span class="o">=</span> <span class="p">[</span><span class="n">sub_cfg</span><span class="o">.</span><span class="n">proportion</span> <span class="k">for</span> <span class="n">sub_cfg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">sub_terrains</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+    <span class="n">sub_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_col_to_terrain_index</span><span class="p">(</span><span class="n">proportions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">num_cols</span><span class="p">)</span>
 
     <span class="n">sub_terrains_cfgs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">sub_terrains</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 

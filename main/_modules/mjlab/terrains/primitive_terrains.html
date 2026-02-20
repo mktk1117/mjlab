@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="/home/runner/work/mjlab/mjlab/.venv/lib/python3.13/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=3ea80bc3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -147,6 +147,54 @@
     <p class="title logo__title">The mjlab Documentation</p>
   
 </a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="mjlab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/mjlab-1.1.0-silver.svg" class="icon-link-image" alt="mjlab"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mujocolab.github.io/mjlab/nightly/" title="Benchmarks" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/Nightly-Benchmarks-blue" class="icon-link-image" alt="Benchmarks"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
         <div class="sidebar-primary-item">
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
@@ -164,14 +212,6 @@
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
-        <div class="sidebar-primary-item">
-<div class="sidebar-version-switcher">
-  <label class="sidebar-version-label" for="version-select">Version</label>
-  <select id="version-select" class="sidebar-version-select" onchange="location = this.value;">
-    <option value="primitive_terrains.html" selected>main</option>
-  </select>
-</div>
-</div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -611,6 +651,634 @@ document.write(`
       <span class="p">[</span><span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">num_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_height</span><span class="p">]</span>
     <span class="p">)</span>
     <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+    <span class="n">geometries</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">box_colors</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">TerrainOutput</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="BoxLedgedStairsTerrainCfg">
+<a class="viewcode-back" href="../../../source/api/terrains.html#mjlab.terrains.BoxLedgedStairsTerrainCfg">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BoxLedgedStairsTerrainCfg</span><span class="p">(</span><span class="n">SubTerrainCfg</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Pyramid stairs where each step has a protruding ledge (nosing) at the edge.&quot;&quot;&quot;</span>
+
+  <span class="n">border_width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+  <span class="n">step_height_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Min and max step height, in meters. Interpolated by difficulty.&quot;&quot;&quot;</span>
+  <span class="n">step_width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Depth (run) of each step, in meters.&quot;&quot;&quot;</span>
+  <span class="n">platform_width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Side length of the flat square platform at the top.&quot;&quot;&quot;</span>
+  <span class="n">ledge_depth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;How far the ledge protrudes beyond the step face, in meters.&quot;&quot;&quot;</span>
+  <span class="n">ledge_thickness</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Vertical thickness of the ledge overhang, in meters.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BoxLedgedStairsTerrainCfg.function">
+<a class="viewcode-back" href="../../../source/api/terrains.html#mjlab.terrains.BoxLedgedStairsTerrainCfg.function">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">difficulty</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="n">mujoco</span><span class="o">.</span><span class="n">MjSpec</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TerrainOutput</span><span class="p">:</span>
+    <span class="k">del</span> <span class="n">rng</span>  <span class="c1"># Unused.</span>
+    <span class="n">boxes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">box_colors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">body</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">body</span><span class="p">(</span><span class="s2">&quot;terrain&quot;</span><span class="p">)</span>
+
+    <span class="n">step_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_height_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">difficulty</span> <span class="o">*</span> <span class="p">(</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">step_height_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_height_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Compute number of steps in x and y direction.</span>
+    <span class="n">num_steps_x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span><span class="p">)</span>
+      <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">num_steps_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span><span class="p">)</span>
+      <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">num_steps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">num_steps_x</span><span class="p">,</span> <span class="n">num_steps_y</span><span class="p">)))</span>
+
+    <span class="n">first_step_rgba</span> <span class="o">=</span> <span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">border_rgba</span> <span class="o">=</span> <span class="n">darken_rgba</span><span class="p">(</span><span class="n">first_step_rgba</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+      <span class="n">border_center</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">step_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+      <span class="n">border_inner_size</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">border_boxes</span> <span class="o">=</span> <span class="n">make_border</span><span class="p">(</span>
+        <span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">border_inner_size</span><span class="p">,</span> <span class="n">step_height</span><span class="p">,</span> <span class="n">border_center</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">border_boxes</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">border_boxes</span><span class="p">)):</span>
+        <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">border_rgba</span><span class="p">)</span>
+
+    <span class="n">terrain_center</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="n">terrain_size</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span><span class="p">,</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Ledge color — slightly lighter than steps.</span>
+
+    <span class="n">rgba</span> <span class="o">=</span> <span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_steps</span><span class="p">):</span>
+      <span class="n">t</span> <span class="o">=</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">num_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="n">rgba</span> <span class="o">=</span> <span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+      <span class="n">ledge_rgba</span> <span class="o">=</span> <span class="n">darken_rgba</span><span class="p">(</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="mf">0.7</span><span class="p">)</span>
+
+      <span class="n">box_size</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">,</span>
+        <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box_z</span> <span class="o">=</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="n">step_height</span> <span class="o">/</span> <span class="mf">2.0</span>
+      <span class="n">box_offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span>
+      <span class="n">box_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_height</span>
+
+      <span class="c1"># -- Riser boxes (same as BoxPyramidStairsTerrainCfg) --</span>
+      <span class="c1"># Top side riser.</span>
+      <span class="n">riser_size_top</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">box_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">box_height</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+      <span class="p">)</span>
+      <span class="n">box_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">box_offset</span><span class="p">,</span>
+        <span class="n">box_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">riser_size_top</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">box_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+      <span class="c1"># Bottom side riser.</span>
+      <span class="n">box_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">box_offset</span><span class="p">,</span>
+        <span class="n">box_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">riser_size_top</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">box_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+      <span class="n">riser_size_side</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="p">(</span><span class="n">box_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">box_height</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+      <span class="p">)</span>
+
+      <span class="c1"># Right side riser.</span>
+      <span class="n">box_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">box_offset</span><span class="p">,</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">box_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">riser_size_side</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">box_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+      <span class="c1"># Left side riser.</span>
+      <span class="n">box_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">box_offset</span><span class="p">,</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">box_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">riser_size_side</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">box_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+      <span class="c1"># -- Ledge boxes (thin overhang protruding outward) --</span>
+      <span class="c1"># Ledge top is flush with the step surface. The protruding part</span>
+      <span class="c1"># hangs over the lower step below, making the overhang visible.</span>
+      <span class="n">step_top_z</span> <span class="o">=</span> <span class="n">box_z</span> <span class="o">+</span> <span class="n">box_height</span> <span class="o">/</span> <span class="mf">2.0</span>
+      <span class="n">ledge_z</span> <span class="o">=</span> <span class="n">step_top_z</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+      <span class="c1"># Along-edge extent: full box_size + ledge_depth at each corner</span>
+      <span class="c1"># so all four sides wrap around consistently.</span>
+      <span class="n">ledge_along_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">box_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+      <span class="n">ledge_along_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">box_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+      <span class="c1"># Top ledge (protrudes in +Y beyond step face).</span>
+      <span class="n">ledge_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">box_offset</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">ledge_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">ledge_size</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">ledge_along_x</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">ledge_size</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">ledge_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ledge_rgba</span><span class="p">)</span>
+
+      <span class="c1"># Bottom ledge (protrudes in -Y).</span>
+      <span class="n">ledge_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">box_offset</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">ledge_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">ledge_size</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">ledge_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ledge_rgba</span><span class="p">)</span>
+
+      <span class="c1"># Right ledge (protrudes in +X).</span>
+      <span class="n">ledge_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">box_offset</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">ledge_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">ledge_size_side</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">ledge_along_y</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">ledge_size_side</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">ledge_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ledge_rgba</span><span class="p">)</span>
+
+      <span class="c1"># Left ledge (protrudes in -X).</span>
+      <span class="n">ledge_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">box_offset</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">ledge_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">ledge_size_side</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">ledge_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ledge_rgba</span><span class="p">)</span>
+
+    <span class="c1"># Generate final box for the middle platform.</span>
+    <span class="n">platform_w</span> <span class="o">=</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">num_steps</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span>
+    <span class="n">platform_h</span> <span class="o">=</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">num_steps</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span>
+    <span class="n">platform_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">num_steps</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_height</span>
+    <span class="n">platform_center</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+      <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+      <span class="n">terrain_center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">num_steps</span> <span class="o">*</span> <span class="n">step_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+      <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">platform_w</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">platform_h</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">platform_height</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+      <span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="n">platform_center</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+    <span class="c1"># Platform ledges — same style as step ledges.</span>
+    <span class="n">platform_top_z</span> <span class="o">=</span> <span class="n">platform_center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">platform_height</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">plat_ledge_z</span> <span class="o">=</span> <span class="n">platform_top_z</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">plat_ledge_rgba</span> <span class="o">=</span> <span class="n">darken_rgba</span><span class="p">(</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">0.7</span><span class="p">)</span>
+
+    <span class="c1"># N ledge.</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+      <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="p">(</span><span class="n">platform_w</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">platform_h</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">plat_ledge_z</span><span class="p">,</span>
+      <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plat_ledge_rgba</span><span class="p">)</span>
+
+    <span class="c1"># S ledge.</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+      <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="p">(</span><span class="n">platform_w</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">platform_h</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">plat_ledge_z</span><span class="p">,</span>
+      <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plat_ledge_rgba</span><span class="p">)</span>
+
+    <span class="c1"># E ledge.</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+      <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="p">(</span><span class="n">platform_h</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">platform_w</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">plat_ledge_z</span><span class="p">,</span>
+      <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plat_ledge_rgba</span><span class="p">)</span>
+
+    <span class="c1"># W ledge.</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+      <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="p">(</span><span class="n">platform_h</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">platform_w</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">plat_ledge_z</span><span class="p">,</span>
+      <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plat_ledge_rgba</span><span class="p">)</span>
+
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+      <span class="p">[</span><span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">num_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_height</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">geometries</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">box_colors</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">TerrainOutput</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="BoxInvertedLedgedStairsTerrainCfg">
+<a class="viewcode-back" href="../../../source/api/terrains.html#mjlab.terrains.BoxInvertedLedgedStairsTerrainCfg">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BoxInvertedLedgedStairsTerrainCfg</span><span class="p">(</span><span class="n">BoxLedgedStairsTerrainCfg</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Inverted ledged stairs — descends toward the center (bowl) with ledges.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BoxInvertedLedgedStairsTerrainCfg.function">
+<a class="viewcode-back" href="../../../source/api/terrains.html#mjlab.terrains.BoxInvertedLedgedStairsTerrainCfg.function">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">difficulty</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="n">mujoco</span><span class="o">.</span><span class="n">MjSpec</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TerrainOutput</span><span class="p">:</span>
+    <span class="k">del</span> <span class="n">rng</span>  <span class="c1"># Unused.</span>
+    <span class="n">boxes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">box_colors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">body</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">body</span><span class="p">(</span><span class="s2">&quot;terrain&quot;</span><span class="p">)</span>
+
+    <span class="n">step_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_height_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">difficulty</span> <span class="o">*</span> <span class="p">(</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">step_height_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_height_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Compute number of steps.</span>
+    <span class="n">num_steps_x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span><span class="p">)</span>
+      <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">num_steps_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span><span class="p">)</span>
+      <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">num_steps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">num_steps_x</span><span class="p">,</span> <span class="n">num_steps_y</span><span class="p">)))</span>
+    <span class="n">total_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">num_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_height</span>
+
+    <span class="n">first_step_rgba</span> <span class="o">=</span> <span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">border_rgba</span> <span class="o">=</span> <span class="n">darken_rgba</span><span class="p">(</span><span class="n">first_step_rgba</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+      <span class="n">border_center</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">step_height</span><span class="p">)</span>
+      <span class="n">border_inner_size</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">border_boxes</span> <span class="o">=</span> <span class="n">make_border</span><span class="p">(</span>
+        <span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">border_inner_size</span><span class="p">,</span> <span class="n">step_height</span><span class="p">,</span> <span class="n">border_center</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">border_boxes</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">border_boxes</span><span class="p">)):</span>
+        <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">border_rgba</span><span class="p">)</span>
+
+    <span class="n">terrain_center</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="n">terrain_size</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span><span class="p">,</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">rgba</span> <span class="o">=</span> <span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_steps</span><span class="p">):</span>
+      <span class="n">t</span> <span class="o">=</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">num_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="n">rgba</span> <span class="o">=</span> <span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+      <span class="n">ledge_rgba</span> <span class="o">=</span> <span class="n">darken_rgba</span><span class="p">(</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="mf">0.7</span><span class="p">)</span>
+
+      <span class="n">box_size</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">,</span>
+        <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">,</span>
+      <span class="p">)</span>
+
+      <span class="c1"># Inverted: boxes go downward.</span>
+      <span class="n">box_z</span> <span class="o">=</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">total_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_height</span> <span class="o">/</span> <span class="mf">2.0</span>
+      <span class="n">box_offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span>
+      <span class="n">box_height</span> <span class="o">=</span> <span class="n">total_height</span> <span class="o">-</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_height</span>
+
+      <span class="c1"># -- Riser boxes --</span>
+      <span class="n">riser_size_top</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">box_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">box_height</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+      <span class="p">)</span>
+      <span class="c1"># Top riser.</span>
+      <span class="n">box_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">box_offset</span><span class="p">,</span>
+        <span class="n">box_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">riser_size_top</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">box_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+      <span class="c1"># Bottom riser.</span>
+      <span class="n">box_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">box_offset</span><span class="p">,</span>
+        <span class="n">box_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">riser_size_top</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">box_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+      <span class="n">riser_size_side</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="p">(</span><span class="n">box_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">box_height</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+      <span class="p">)</span>
+
+      <span class="c1"># Right riser.</span>
+      <span class="n">box_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">box_offset</span><span class="p">,</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">box_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">riser_size_side</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">box_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+      <span class="c1"># Left riser.</span>
+      <span class="n">box_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">box_offset</span><span class="p">,</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">box_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">riser_size_side</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">box_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+      <span class="c1"># -- Ledge boxes (protrude INWARD for inverted stairs) --</span>
+      <span class="n">step_top_z</span> <span class="o">=</span> <span class="n">box_z</span> <span class="o">+</span> <span class="n">box_height</span> <span class="o">/</span> <span class="mf">2.0</span>
+      <span class="n">ledge_z</span> <span class="o">=</span> <span class="n">step_top_z</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span>
+      <span class="n">ledge_along_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">box_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+      <span class="n">ledge_along_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">box_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+      <span class="c1"># Top ledge (protrudes inward, -Y from riser).</span>
+      <span class="n">ledge_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">box_offset</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">ledge_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">ledge_size</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">ledge_along_x</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">ledge_size</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">ledge_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ledge_rgba</span><span class="p">)</span>
+
+      <span class="c1"># Bottom ledge (protrudes inward, +Y from riser).</span>
+      <span class="n">ledge_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">box_offset</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">ledge_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">ledge_size</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">ledge_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ledge_rgba</span><span class="p">)</span>
+
+      <span class="c1"># Right ledge (protrudes inward, -X from riser).</span>
+      <span class="n">ledge_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">box_offset</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">ledge_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">ledge_size_side</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">ledge_along_y</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">ledge_size_side</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">ledge_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ledge_rgba</span><span class="p">)</span>
+
+      <span class="c1"># Left ledge (protrudes inward, +X from riser).</span>
+      <span class="n">ledge_pos</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">box_offset</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">ledge_z</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">ledge_size_side</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">ledge_pos</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+      <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ledge_rgba</span><span class="p">)</span>
+
+    <span class="c1"># Bottom platform.</span>
+    <span class="n">platform_w</span> <span class="o">=</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">num_steps</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span>
+    <span class="n">platform_h</span> <span class="o">=</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">num_steps</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span>
+    <span class="n">platform_height</span> <span class="o">=</span> <span class="n">step_height</span>
+    <span class="n">platform_center</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+      <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+      <span class="n">terrain_center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">total_height</span> <span class="o">-</span> <span class="n">step_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+      <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">platform_w</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">platform_h</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">platform_height</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+      <span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="n">platform_center</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span>
+
+    <span class="c1"># Platform ledges.</span>
+    <span class="n">platform_top_z</span> <span class="o">=</span> <span class="n">platform_center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">platform_height</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">plat_ledge_z</span> <span class="o">=</span> <span class="n">platform_top_z</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">plat_ledge_rgba</span> <span class="o">=</span> <span class="n">darken_rgba</span><span class="p">(</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">0.7</span><span class="p">)</span>
+
+    <span class="c1"># N ledge.</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+      <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="p">(</span><span class="n">platform_w</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">platform_h</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">plat_ledge_z</span><span class="p">,</span>
+      <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plat_ledge_rgba</span><span class="p">)</span>
+
+    <span class="c1"># S ledge.</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+      <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="p">(</span><span class="n">platform_w</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">platform_h</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">plat_ledge_z</span><span class="p">,</span>
+      <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plat_ledge_rgba</span><span class="p">)</span>
+
+    <span class="c1"># E ledge.</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+      <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="p">(</span><span class="n">platform_h</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">platform_w</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">plat_ledge_z</span><span class="p">,</span>
+      <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plat_ledge_rgba</span><span class="p">)</span>
+
+    <span class="c1"># W ledge.</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
+      <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="p">(</span><span class="n">platform_h</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ledge_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+      <span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">platform_w</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ledge_depth</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">platform_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">plat_ledge_z</span><span class="p">,</span>
+      <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">box_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plat_ledge_rgba</span><span class="p">)</span>
+
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+      <span class="p">[</span><span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="p">(</span><span class="n">num_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_height</span><span class="p">]</span>
+    <span class="p">)</span>
 
     <span class="n">geometries</span> <span class="o">=</span> <span class="p">[</span>
       <span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
@@ -1133,12 +1801,13 @@ document.write(`
       <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">floor_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)))</span>
 
     <span class="c1"># Platform</span>
+    <span class="n">platform_rgba</span> <span class="o">=</span> <span class="n">_get_platform_color</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">)</span>
     <span class="n">platform_geom</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
       <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
       <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">terrain_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
       <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">terrain_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">platform_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)))</span>
+    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">platform_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">platform_rgba</span><span class="p">))</span>
 
     <span class="n">platform_half</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">terrain_center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
@@ -1151,8 +1820,8 @@ document.write(`
       <span class="n">size_y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">box_length_range</span><span class="p">)</span>
       <span class="n">height</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">box_height_range</span><span class="p">)</span>
 
-      <span class="c1"># Scale height by difficulty.</span>
-      <span class="n">height</span> <span class="o">=</span> <span class="n">height</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.2</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">difficulty</span><span class="p">)</span>
+      <span class="c1"># Scale height by difficulty (zero at difficulty=0 → flat terrain).</span>
+      <span class="n">height</span> <span class="o">=</span> <span class="n">height</span> <span class="o">*</span> <span class="n">difficulty</span>
 
       <span class="c1"># Random position within inner area.</span>
       <span class="n">pos_x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
@@ -1359,7 +2028,8 @@ document.write(`
       <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">platform_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">platform_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_thickness</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
       <span class="n">pos</span><span class="o">=</span><span class="n">platform_pos</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">rgba</span><span class="p">))</span>
+    <span class="n">platform_rgba</span> <span class="o">=</span> <span class="n">_get_platform_color</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">)</span>
+    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">platform_rgba</span><span class="p">))</span>
 
     <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
       <span class="p">[</span>
@@ -1427,7 +2097,7 @@ document.write(`
       <span class="n">rgba</span> <span class="o">=</span> <span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 
       <span class="n">h_low</span><span class="p">,</span> <span class="n">h_high</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_height_range</span>
-      <span class="n">step_h</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">h_low</span><span class="p">,</span> <span class="n">h_high</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">difficulty</span><span class="p">)</span>
+      <span class="n">step_h</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">h_low</span><span class="p">,</span> <span class="n">h_high</span><span class="p">)</span> <span class="o">*</span> <span class="n">difficulty</span>
       <span class="n">total_h</span> <span class="o">=</span> <span class="n">current_z</span> <span class="o">+</span> <span class="n">step_h</span>
 
       <span class="n">box_size</span> <span class="o">=</span> <span class="p">(</span>
@@ -1437,6 +2107,10 @@ document.write(`
 
       <span class="n">z_pos</span> <span class="o">=</span> <span class="n">total_h</span> <span class="o">/</span> <span class="mi">2</span>
       <span class="n">box_offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span>
+
+      <span class="c1"># For solid staircase, we can use a single box that is high enough for each &quot;ring&quot;.</span>
+      <span class="c1"># But to correctly follow the &quot;random height&quot; requirement per step,</span>
+      <span class="c1"># we should use 4 boxes per level.</span>
 
       <span class="c1"># Top.</span>
       <span class="n">box_pos</span> <span class="o">=</span> <span class="p">(</span>
@@ -1508,24 +2182,30 @@ document.write(`
 
       <span class="n">current_z</span> <span class="o">=</span> <span class="n">total_h</span>
 
-    <span class="c1"># Platform</span>
+    <span class="c1"># Platform — one step higher than the outermost (last) step so the robot</span>
+    <span class="c1"># spawns on a raised platform, matching BoxPyramidStairsTerrainCfg.</span>
+    <span class="n">h_low</span><span class="p">,</span> <span class="n">h_high</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_height_range</span>
+    <span class="n">platform_extra_h</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">h_low</span><span class="p">,</span> <span class="n">h_high</span><span class="p">)</span> <span class="o">*</span> <span class="n">difficulty</span>
+    <span class="n">platform_z</span> <span class="o">=</span> <span class="n">current_z</span> <span class="o">+</span> <span class="n">platform_extra_h</span>
+
     <span class="n">platform_size</span> <span class="o">=</span> <span class="p">(</span>
       <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">num_steps</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">),</span>
       <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">terrain_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">num_steps</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_width</span><span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">platform_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">current_z</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">platform_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">platform_z</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
       <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
       <span class="n">size</span><span class="o">=</span><span class="p">(</span>
         <span class="n">platform_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
         <span class="n">platform_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">current_z</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">platform_z</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
       <span class="p">),</span>
       <span class="n">pos</span><span class="o">=</span><span class="n">platform_pos</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">rgba</span><span class="p">))</span>
+    <span class="n">platform_rgba</span> <span class="o">=</span> <span class="n">_get_platform_color</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">)</span>
+    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">platform_rgba</span><span class="p">))</span>
 
-    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">current_z</span><span class="p">])</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">platform_z</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">TerrainOutput</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">)</span></div>
 </div>
 
@@ -1576,7 +2256,9 @@ document.write(`
     <span class="n">offset_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">+</span> <span class="p">(</span><span class="n">inner_h</span> <span class="o">-</span> <span class="p">(</span><span class="n">num_y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">spacing</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
     <span class="n">border_rgba</span> <span class="o">=</span> <span class="n">darken_rgba</span><span class="p">(</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_GREEN</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mf">0.85</span><span class="p">)</span>
-    <span class="n">z_center</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stone_height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="c1"># Shift everything down so the walking surface sits at z=0.</span>
+    <span class="n">z_shift</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">stone_height</span>
+    <span class="n">z_center</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stone_height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span>
     <span class="n">half_height</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stone_height</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -1596,11 +2278,16 @@ document.write(`
     <span class="n">floor_geom</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
       <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
       <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-      <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">-</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">-</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span><span class="p">,</span>
+      <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">floor_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)))</span>
 
     <span class="c1"># Platform Column.</span>
+    <span class="n">platform_rgba</span> <span class="o">=</span> <span class="n">_get_platform_color</span><span class="p">(</span><span class="n">_MUJOCO_GREEN</span><span class="p">)</span>
     <span class="n">platform_geom</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
       <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
       <span class="n">size</span><span class="o">=</span><span class="p">(</span>
@@ -1610,9 +2297,7 @@ document.write(`
       <span class="p">),</span>
       <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">z_center</span><span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-      <span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">platform_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_GREEN</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
-    <span class="p">)</span>
+    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">platform_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">platform_rgba</span><span class="p">))</span>
 
     <span class="n">platform_half</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">terrain_center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
@@ -1670,7 +2355,7 @@ document.write(`
           <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">stone_height</span>
           <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="n">stone_height_variation</span><span class="p">,</span> <span class="n">stone_height_variation</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">pos_z</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">+</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">pos_z</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">+</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span>
 
         <span class="n">rgba</span> <span class="o">=</span> <span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_GREEN</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">))</span>
 
@@ -1685,7 +2370,7 @@ document.write(`
         <span class="p">)</span>
         <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">rgba</span><span class="p">))</span>
 
-    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stone_height</span><span class="p">])</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">TerrainOutput</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">)</span></div>
 </div>
 
@@ -1719,7 +2404,9 @@ document.write(`
     <span class="n">beam_width</span> <span class="o">=</span> <span class="n">w_max</span> <span class="o">-</span> <span class="n">difficulty</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_max</span> <span class="o">-</span> <span class="n">w_min</span><span class="p">)</span>
 
     <span class="n">border_rgba</span> <span class="o">=</span> <span class="n">darken_rgba</span><span class="p">(</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mf">0.85</span><span class="p">)</span>
-    <span class="n">z_center</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beam_height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="c1"># Shift everything down so the walking surface sits at z=0.</span>
+    <span class="n">z_shift</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">beam_height</span>
+    <span class="n">z_center</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beam_height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span>
     <span class="n">half_height</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beam_height</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -1739,11 +2426,16 @@ document.write(`
     <span class="n">floor_geom</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
       <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
       <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-      <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">-</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">-</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span><span class="p">,</span>
+      <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">floor_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)))</span>
 
     <span class="c1"># Platform Column. Top at beam_height.</span>
+    <span class="n">platform_rgba</span> <span class="o">=</span> <span class="n">_get_platform_color</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">)</span>
     <span class="n">platform_geom</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
       <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
       <span class="n">size</span><span class="o">=</span><span class="p">(</span>
@@ -1753,9 +2445,7 @@ document.write(`
       <span class="p">),</span>
       <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">z_center</span><span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-      <span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">platform_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
-    <span class="p">)</span>
+    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">platform_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">platform_rgba</span><span class="p">))</span>
 
     <span class="n">inner_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span>
     <span class="n">center_x</span><span class="p">,</span> <span class="n">center_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
@@ -1794,7 +2484,7 @@ document.write(`
       <span class="n">geom</span><span class="o">.</span><span class="n">quat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
       <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)))</span>
 
-    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">beam_height</span><span class="p">])</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">TerrainOutput</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">)</span></div>
 </div>
 
@@ -1832,7 +2522,10 @@ document.write(`
 
     <span class="n">border_rgba</span> <span class="o">=</span> <span class="n">darken_rgba</span><span class="p">(</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_GREEN</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mf">0.85</span><span class="p">)</span>
     <span class="n">base_h</span> <span class="o">=</span> <span class="mf">0.2</span>
-    <span class="n">z_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">base_h</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="c1"># Shift everything down by base_h so the walking surface sits at z=0,</span>
+    <span class="c1"># matching neighboring sub-terrains.</span>
+    <span class="n">z_shift</span> <span class="o">=</span> <span class="o">-</span><span class="n">base_h</span>
+    <span class="n">z_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">base_h</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span>
     <span class="n">half_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">base_h</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
     <span class="c1"># Border.</span>
@@ -1853,21 +2546,31 @@ document.write(`
     <span class="n">floor_geom</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
       <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
       <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-      <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">-</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">-</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span><span class="p">,</span>
+      <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">floor_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)))</span>
 
     <span class="c1"># Platform.</span>
+    <span class="n">platform_rgba</span> <span class="o">=</span> <span class="n">_get_platform_color</span><span class="p">(</span><span class="n">_MUJOCO_GREEN</span><span class="p">)</span>
+    <span class="c1"># Snap the platform to cover an integer number of grid cells so there is</span>
+    <span class="c1"># no gap between the platform edge and the nearest tiles.</span>
+    <span class="n">platform_cells</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_width</span><span class="p">))</span>
+    <span class="c1"># Ensure at least 1 cell and odd count so the platform is centered.</span>
+    <span class="k">if</span> <span class="n">platform_cells</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">platform_cells</span> <span class="o">&lt;</span> <span class="n">num_boxes_x</span><span class="p">:</span>
+      <span class="n">platform_cells</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">snapped_platform</span> <span class="o">=</span> <span class="n">platform_cells</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_width</span>
     <span class="n">platform_geom</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
       <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
-      <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">half_height</span><span class="p">),</span>
+      <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">snapped_platform</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">snapped_platform</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">half_height</span><span class="p">),</span>
       <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">z_center</span><span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-      <span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">platform_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_GREEN</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
-    <span class="p">)</span>
+    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">platform_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">platform_rgba</span><span class="p">))</span>
 
-    <span class="n">platform_half</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_width</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">platform_half</span> <span class="o">=</span> <span class="n">snapped_platform</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">terrain_center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">platform_min</span> <span class="o">=</span> <span class="n">terrain_center</span> <span class="o">-</span> <span class="n">platform_half</span>
     <span class="n">platform_max</span> <span class="o">=</span> <span class="n">terrain_center</span> <span class="o">+</span> <span class="n">platform_half</span>
@@ -1898,14 +2601,16 @@ document.write(`
         <span class="c1"># Bottom verts 0-3 (at -floor_depth)</span>
         <span class="k">for</span> <span class="n">vx</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">]:</span>
           <span class="k">for</span> <span class="n">vy</span> <span class="ow">in</span> <span class="p">[</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">]:</span>
-            <span class="n">verts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">])</span>
+            <span class="n">verts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">+</span> <span class="n">z_shift</span><span class="p">])</span>
         <span class="c1"># Top verts 4-7 (tilted)</span>
         <span class="k">for</span> <span class="n">vx</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">]:</span>
           <span class="k">for</span> <span class="n">vy</span> <span class="ow">in</span> <span class="p">[</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">]:</span>
-            <span class="n">vz</span> <span class="o">=</span> <span class="n">total_h</span> <span class="o">+</span> <span class="n">tilt_x</span> <span class="o">*</span> <span class="p">(</span><span class="n">vx</span> <span class="o">-</span> <span class="n">bx_center</span><span class="p">)</span> <span class="o">+</span> <span class="n">tilt_y</span> <span class="o">*</span> <span class="p">(</span><span class="n">vy</span> <span class="o">-</span> <span class="n">by_center</span><span class="p">)</span>
+            <span class="n">vz</span> <span class="o">=</span> <span class="p">(</span>
+              <span class="n">total_h</span> <span class="o">+</span> <span class="n">tilt_x</span> <span class="o">*</span> <span class="p">(</span><span class="n">vx</span> <span class="o">-</span> <span class="n">bx_center</span><span class="p">)</span> <span class="o">+</span> <span class="n">tilt_y</span> <span class="o">*</span> <span class="p">(</span><span class="n">vy</span> <span class="o">-</span> <span class="n">by_center</span><span class="p">)</span> <span class="o">+</span> <span class="n">z_shift</span>
+            <span class="p">)</span>
             <span class="n">verts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="n">vz</span><span class="p">])</span>
 
-        <span class="c1"># Faces ccw from outside.</span>
+        <span class="c1"># Faces CCW (Counter-Clockwise) from outside.</span>
         <span class="c1"># 0:(min,min), 1:(min,max), 2:(max,min), 3:(max,max)</span>
         <span class="c1"># 4-7 are same x,y as 0-3 but at top.</span>
         <span class="c1"># fmt: off</span>
@@ -1934,7 +2639,7 @@ document.write(`
         <span class="p">)</span>
         <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">rgba</span><span class="p">))</span>
 
-    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">base_h</span><span class="p">])</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">TerrainOutput</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">)</span></div>
 </div>
 
@@ -1966,15 +2671,16 @@ document.write(`
     <span class="n">ring_width</span> <span class="o">=</span> <span class="n">w_max</span> <span class="o">-</span> <span class="n">difficulty</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_max</span> <span class="o">-</span> <span class="n">w_min</span><span class="p">)</span>
 
     <span class="n">border_rgba</span> <span class="o">=</span> <span class="n">darken_rgba</span><span class="p">(</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mf">0.85</span><span class="p">)</span>
-    <span class="c1"># Use ground level z=0 as top of border/beams for consistency with NarrowBeams.</span>
-    <span class="c1"># In beam terrain, border top was at beam_height.</span>
+    <span class="c1"># Shift everything down so the platform surface sits at z=0.</span>
+    <span class="n">platform_h</span> <span class="o">=</span> <span class="mf">0.2</span>
+    <span class="n">z_shift</span> <span class="o">=</span> <span class="o">-</span><span class="n">platform_h</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
       <span class="n">border_h</span> <span class="o">=</span> <span class="mf">0.5</span>
       <span class="n">border_center</span> <span class="o">=</span> <span class="p">(</span>
         <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
         <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-        <span class="p">(</span><span class="n">border_h</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">border_h</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span><span class="p">,</span>
       <span class="p">)</span>
       <span class="n">border_boxes</span> <span class="o">=</span> <span class="n">make_border</span><span class="p">(</span>
         <span class="n">body</span><span class="p">,</span>
@@ -1991,7 +2697,11 @@ document.write(`
     <span class="n">floor_geom</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
       <span class="nb">type</span><span class="o">=</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtGeom</span><span class="o">.</span><span class="n">mjGEOM_BOX</span><span class="p">,</span>
       <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-      <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">-</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+      <span class="n">pos</span><span class="o">=</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span> <span class="o">-</span> <span class="n">floor_h</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span><span class="p">,</span>
+      <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">floor_geom</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)))</span>
 
@@ -2029,7 +2739,7 @@ document.write(`
       <span class="c1"># Position each ring segment based on current_outer_size.</span>
 
       <span class="n">half_h</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-      <span class="n">z_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+      <span class="n">z_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span>
 
       <span class="c1"># Four segments for the ring.</span>
       <span class="c1"># Top/Bottom</span>
@@ -2079,10 +2789,8 @@ document.write(`
       <span class="p">),</span>  <span class="c1"># Fill the ring hole + gap area.</span>
       <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">current_outer_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gap</span><span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">platform_h</span> <span class="o">=</span> <span class="mf">0.2</span>
-
     <span class="n">platform_half_h</span> <span class="o">=</span> <span class="p">(</span><span class="n">platform_h</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-    <span class="n">platform_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">platform_h</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">platform_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">platform_h</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_depth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z_shift</span>
 
     <span class="n">platform_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">platform_z</span><span class="p">)</span>
     <span class="n">box</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">add_geom</span><span class="p">(</span>
@@ -2090,9 +2798,10 @@ document.write(`
       <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">platform_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">platform_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">platform_half_h</span><span class="p">),</span>
       <span class="n">pos</span><span class="o">=</span><span class="n">platform_pos</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">brand_ramp</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)))</span>
+    <span class="n">platform_rgba</span> <span class="o">=</span> <span class="n">_get_platform_color</span><span class="p">(</span><span class="n">_MUJOCO_BLUE</span><span class="p">)</span>
+    <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TerrainGeometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">platform_rgba</span><span class="p">))</span>
 
-    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">platform_h</span><span class="p">])</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">terrain_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">terrain_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">TerrainOutput</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">)</span></div>
 </div>
 

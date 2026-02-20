@@ -1,0 +1,1357 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mjlab.sensor.height_sensor &#8212; mjlab Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/twemoji.css" />
+    <link rel="stylesheet" type="text/css" href="/home/runner/work/mjlab/mjlab/.venv/lib/python3.13/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <script src="../../../_static/twemoji.js"></script>
+    <script src="/home/runner/work/mjlab/mjlab/.venv/lib/python3.13/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/mjlab/sensor/height_sensor';</script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="Feb 20, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">The mjlab Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="mjlab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/mjlab-1.1.0-silver.svg" class="icon-link-image" alt="mjlab"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mujocolab.github.io/mjlab/nightly/" title="Benchmarks" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/Nightly-Benchmarks-blue" class="icon-link-image" alt="Benchmarks"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../source/installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/migration_isaac_lab.html">Migrating from Isaac Lab</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About the Project</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../source/motivation.html">Why mjlab?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/faq.html">FAQ &amp; Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../source/api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/api/envs.html">mjlab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/api/scene.html">mjlab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/api/sim.html">mjlab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/api/entity.html">mjlab.entity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/api/actuator.html">mjlab.actuator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/api/sensor.html">mjlab.sensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/api/managers.html">mjlab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/api/terrains.html">mjlab.terrains</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Concepts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../source/randomization.html">Domain Randomization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/nan_guard.html">NaN Guard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/observation.html">Observation History and Delay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/actuators.html">Actuators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/sensors.html">Sensors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/raycast_sensor.html">RayCast Sensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/distributed_training.html">Distributed Training</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/mujocolab/mjlab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/mujocolab/mjlab/issues/new?title=Issue%20on%20page%20%2F_modules/mjlab/sensor/height_sensor.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for mjlab.sensor.height_sensor</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Height sensor for per-site ground height and surface normal measurement.</span>
+
+<span class="sd">Casts downward rays per site to measure the height above ground and</span>
+<span class="sd">the surface normal at the ground contact point. This is useful for:</span>
+
+<span class="sd">- Foot height above terrain (for clearance rewards, swing height tracking)</span>
+<span class="sd">- Base height above terrain (for posture control, terminations)</span>
+<span class="sd">- Terrain normal at each site (for foot/base alignment on rough terrain)</span>
+<span class="sd">- Local terrain height map as observation (concentric ring scan)</span>
+
+<span class="sd">Usage::</span>
+
+<span class="sd">    from mjlab.sensor import HeightSensorCfg, ObjRef</span>
+
+<span class="sd">    # Single ray per site (simplest):</span>
+<span class="sd">    cfg = HeightSensorCfg(</span>
+<span class="sd">        name=&quot;foot_height&quot;,</span>
+<span class="sd">        sites=(</span>
+<span class="sd">            ObjRef(type=&quot;site&quot;, name=&quot;foot_fl&quot;, entity=&quot;robot&quot;),</span>
+<span class="sd">            ObjRef(type=&quot;site&quot;, name=&quot;foot_fr&quot;, entity=&quot;robot&quot;),</span>
+<span class="sd">        ),</span>
+<span class="sd">    )</span>
+
+<span class="sd">    # Multi-ray sampling with reduction (e.g., min height in 50cm radius):</span>
+<span class="sd">    cfg = HeightSensorCfg(</span>
+<span class="sd">        name=&quot;foot_height&quot;,</span>
+<span class="sd">        sites=(...),</span>
+<span class="sd">        sampling=HeightSensorCfg.SamplingCfg(</span>
+<span class="sd">            radius=0.5,</span>
+<span class="sd">            num_samples=8,</span>
+<span class="sd">        ),</span>
+<span class="sd">        reduction=&quot;min&quot;,  # or &quot;mean&quot;, &quot;max&quot;, &quot;median&quot;</span>
+<span class="sd">    )</span>
+
+<span class="sd">    # Concentric ring terrain scan (raw per-ray heights as observation):</span>
+<span class="sd">    cfg = HeightSensorCfg(</span>
+<span class="sd">        name=&quot;foot_terrain_scan&quot;,</span>
+<span class="sd">        sites=(...),</span>
+<span class="sd">        sampling=HeightSensorCfg.SamplingCfg(</span>
+<span class="sd">            rings=(</span>
+<span class="sd">                HeightSensorCfg.RingCfg(radius=0.05, num_samples=4),</span>
+<span class="sd">                HeightSensorCfg.RingCfg(radius=0.10, num_samples=6),</span>
+<span class="sd">                HeightSensorCfg.RingCfg(radius=0.20, num_samples=8),</span>
+<span class="sd">                HeightSensorCfg.RingCfg(radius=0.35, num_samples=10),</span>
+<span class="sd">                HeightSensorCfg.RingCfg(radius=0.50, num_samples=12),</span>
+<span class="sd">            ),</span>
+<span class="sd">        ),</span>
+<span class="sd">        reduction=&quot;none&quot;,  # raw per-ray data for observation</span>
+<span class="sd">    )</span>
+
+<span class="sd">Output Data</span>
+<span class="sd">-----------</span>
+
+<span class="sd">Access sensor data via the ``data`` property, which returns ``HeightSensorData``:</span>
+
+<span class="sd">- ``heights``: [B, S] Height of each site above ground (positive = above). -1 if</span>
+<span class="sd">  no ground hit or beyond max_distance. After reduction when using multi-ray sampling.</span>
+<span class="sd">  Shape [B, S, K] when reduction=&quot;none&quot;.</span>
+<span class="sd">- ``normals_w``: [B, S, 3] Surface normal at the ground point below each site</span>
+<span class="sd">  (world frame). Zero if no hit. Shape [B, S, K, 3] when reduction=&quot;none&quot;.</span>
+<span class="sd">- ``hit_pos_w``: [B, S, 3] Ground hit position in world frame (center ray only).</span>
+<span class="sd">- ``site_pos_w``: [B, S, 3] World-space site positions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">mujoco</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mujoco_warp</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mjwarp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warp</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">wp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mujoco_warp</span><span class="w"> </span><span class="kn">import</span> <span class="n">rays</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">mjlab.entity</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mjlab.sensor.builtin_sensor</span><span class="w"> </span><span class="kn">import</span> <span class="n">ObjRef</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mjlab.sensor.sensor</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sensor</span><span class="p">,</span> <span class="n">SensorCfg</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+  <span class="kn">from</span><span class="w"> </span><span class="nn">mjlab.sensor.sensor_context</span><span class="w"> </span><span class="kn">import</span> <span class="n">SensorContext</span>
+  <span class="kn">from</span><span class="w"> </span><span class="nn">mjlab.viewer.debug_visualizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">DebugVisualizer</span>
+
+<span class="c1"># NOTE: Need to define this here because it&#39;s not publicly exposed by mujoco_warp.</span>
+<span class="n">vec6</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># Type aliases for configuration choices.</span>
+<span class="n">RayAlignment</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="s2">&quot;yaw&quot;</span><span class="p">,</span> <span class="s2">&quot;world&quot;</span><span class="p">]</span>
+<span class="n">Reduction</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="HeightSensorData">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensorData">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">HeightSensorData</span><span class="p">:</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Height sensor output data.</span>
+
+<span class="sd">  Note:</span>
+<span class="sd">    Fields are views into GPU buffers and are valid until the next</span>
+<span class="sd">    ``sense()`` call.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">heights</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;[B, S] or [B, S, K] Height of each site above ground.</span>
+
+<span class="sd">  Shape is [B, S] when reduction is applied (default), or [B, S, K] when</span>
+<span class="sd">  reduction=&quot;none&quot; (K = num_samples per site). -1 for misses.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">normals_w</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;[B, S, 3] or [B, S, K, 3] Surface normal at ground point (world frame).</span>
+
+<span class="sd">  Shape is [B, S, 3] when reduction is applied, or [B, S, K, 3] when</span>
+<span class="sd">  reduction=&quot;none&quot;. Zero for misses.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">hit_pos_w</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;[B, S, 3] Ground hit position for center ray (world frame).</span>
+
+<span class="sd">  Always shape [B, S, 3] regardless of reduction (uses center/first ray).</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">site_pos_w</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;[B, S, 3] Site position in world frame.&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="HeightSensorCfg">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensorCfg">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">HeightSensorCfg</span><span class="p">(</span><span class="n">SensorCfg</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Height sensor configuration.</span>
+
+<span class="sd">  Casts downward rays per site to measure ground-relative height and</span>
+<span class="sd">  surface normal. Supports multi-ray sampling with aggregation.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HeightSensorCfg.VizCfg">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensorCfg.VizCfg">[docs]</a>
+  <span class="nd">@dataclass</span>
+  <span class="k">class</span><span class="w"> </span><span class="nc">VizCfg</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualization settings for debug rendering.&quot;&quot;&quot;</span>
+
+    <span class="n">hit_color</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;RGBA color for rays that hit a surface.&quot;&quot;&quot;</span>
+
+    <span class="n">miss_color</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;RGBA color for rays that miss.&quot;&quot;&quot;</span>
+
+    <span class="n">hit_sphere_color</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;RGBA color for spheres drawn at hit points.&quot;&quot;&quot;</span>
+
+    <span class="n">hit_sphere_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Radius of spheres drawn at hit points (multiplier of meansize).&quot;&quot;&quot;</span>
+
+    <span class="n">show_rays</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to draw ray arrows.&quot;&quot;&quot;</span>
+
+    <span class="n">show_normals</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to draw surface normals at hit points.&quot;&quot;&quot;</span>
+
+    <span class="n">normal_color</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;RGBA color for surface normal arrows.&quot;&quot;&quot;</span>
+
+    <span class="n">normal_length</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Length of surface normal arrows (multiplier of meansize).&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="HeightSensorCfg.RingCfg">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensorCfg.RingCfg">[docs]</a>
+  <span class="nd">@dataclass</span>
+  <span class="k">class</span><span class="w"> </span><span class="nc">RingCfg</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for a single ring in a concentric pattern.&quot;&quot;&quot;</span>
+
+    <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Radius of this ring in meters.&quot;&quot;&quot;</span>
+
+    <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of evenly spaced sample points on this ring.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="HeightSensorCfg.SamplingCfg">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensorCfg.SamplingCfg">[docs]</a>
+  <span class="nd">@dataclass</span>
+  <span class="k">class</span><span class="w"> </span><span class="nc">SamplingCfg</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Multi-ray sampling pattern around each site.</span>
+
+<span class="sd">    Supports two modes:</span>
+
+<span class="sd">    1. **Single ring**: Set ``radius`` and ``num_samples`` for one ring.</span>
+<span class="sd">    2. **Concentric rings**: Set ``rings`` to a tuple of :class:`RingCfg`</span>
+<span class="sd">       for multiple concentric rings at different radii.</span>
+
+<span class="sd">    When ``rings`` is provided, ``radius`` and ``num_samples`` are ignored.</span>
+
+<span class="sd">    With ``include_center=True`` (default), a center ray is always included.</span>
+
+<span class="sd">    Example (concentric rings around each foot)::</span>
+
+<span class="sd">        SamplingCfg(</span>
+<span class="sd">            rings=(</span>
+<span class="sd">                HeightSensorCfg.RingCfg(radius=0.05, num_samples=4),</span>
+<span class="sd">                HeightSensorCfg.RingCfg(radius=0.10, num_samples=6),</span>
+<span class="sd">                HeightSensorCfg.RingCfg(radius=0.20, num_samples=8),</span>
+<span class="sd">                HeightSensorCfg.RingCfg(radius=0.35, num_samples=10),</span>
+<span class="sd">                HeightSensorCfg.RingCfg(radius=0.50, num_samples=12),</span>
+<span class="sd">            ),</span>
+<span class="sd">        )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Radius for single-ring mode. Ignored when ``rings`` is set.&quot;&quot;&quot;</span>
+
+    <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Samples for single-ring mode. Ignored when ``rings`` is set.&quot;&quot;&quot;</span>
+
+    <span class="n">rings</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">HeightSensorCfg</span><span class="o">.</span><span class="n">RingCfg</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Concentric ring definitions. Overrides ``radius``/``num_samples``.&quot;&quot;&quot;</span>
+
+    <span class="n">include_center</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to include a ray at the site center (in addition to rings).&quot;&quot;&quot;</span></div>
+
+
+  <span class="n">sites</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ObjRef</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Sites to measure height for.&quot;&quot;&quot;</span>
+
+  <span class="n">direction</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Ray direction in frame-local coordinates (default: straight down).&quot;&quot;&quot;</span>
+
+  <span class="n">ray_alignment</span><span class="p">:</span> <span class="n">RayAlignment</span> <span class="o">=</span> <span class="s2">&quot;world&quot;</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;How the ray direction aligns with the frame.</span>
+
+<span class="sd">  - &quot;world&quot;: Fixed in world frame (always shoots -Z). Default — best for</span>
+<span class="sd">    ground height measurement regardless of body orientation.</span>
+<span class="sd">  - &quot;yaw&quot;: Position + yaw only, ignores pitch/roll.</span>
+<span class="sd">  - &quot;base&quot;: Full position + rotation. Ray direction rotates with body.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">sampling</span><span class="p">:</span> <span class="n">SamplingCfg</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Optional multi-ray sampling pattern.</span>
+
+<span class="sd">  When None (default), one ray is cast per site. When specified, multiple</span>
+<span class="sd">  rays are cast around each site in a ring pattern and aggregated using</span>
+<span class="sd">  the ``reduction`` method.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">reduction</span><span class="p">:</span> <span class="n">Reduction</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;How to aggregate multi-ray samples per site.</span>
+
+<span class="sd">  Only used when ``sampling`` is specified. Options:</span>
+<span class="sd">  - &quot;mean&quot;: Average of all sample heights/normals.</span>
+<span class="sd">  - &quot;min&quot;: Minimum height per site (useful for foot clearance).</span>
+<span class="sd">  - &quot;max&quot;: Maximum height per site.</span>
+<span class="sd">  - &quot;median&quot;: Median height per site.</span>
+<span class="sd">  - &quot;none&quot;: No reduction — output raw per-ray data [B, S, K].</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">max_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Maximum ray distance. Rays beyond this report -1.&quot;&quot;&quot;</span>
+
+  <span class="n">exclude_parent_body</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Exclude parent body from ray intersection tests.&quot;&quot;&quot;</span>
+
+  <span class="n">include_geom_groups</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Geom groups (0-5) to include in raycasting.</span>
+
+<span class="sd">  Defaults to (0, 1, 2). Set to None to include all groups.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">debug_vis</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Enable debug visualization.&quot;&quot;&quot;</span>
+
+  <span class="n">viz</span><span class="p">:</span> <span class="n">VizCfg</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">VizCfg</span><span class="p">)</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Visualization settings.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HeightSensorCfg.build">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensorCfg.build">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HeightSensor</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">HeightSensor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="HeightSensor">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HeightSensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">[</span><span class="n">HeightSensorData</span><span class="p">]):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Height sensor that measures per-site ground height via raycasting.&quot;&quot;&quot;</span>
+
+  <span class="n">requires_sensor_context</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="HeightSensor.__init__">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensor.__init__">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">HeightSensorCfg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span> <span class="n">mjwarp</span><span class="o">.</span><span class="n">Data</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">:</span> <span class="n">mjwarp</span><span class="o">.</span><span class="n">Model</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mj_model</span><span class="p">:</span> <span class="n">mujoco</span><span class="o">.</span><span class="n">MjModel</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_wp_device</span><span class="p">:</span> <span class="n">wp</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">Device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_site_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_site_body_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples_per_site</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># 1 = single ray (no sampling)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_num_total_rays</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Ray direction (normalized).</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_direction</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Horizontal offsets for multi-ray sampling [K, 3].</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_sample_offsets</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Warp arrays for raycasting.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_pnt</span><span class="p">:</span> <span class="n">wp</span><span class="o">.</span><span class="n">array</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_vec</span><span class="p">:</span> <span class="n">wp</span><span class="o">.</span><span class="n">array</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_dist</span><span class="p">:</span> <span class="n">wp</span><span class="o">.</span><span class="n">array</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_geomid</span><span class="p">:</span> <span class="n">wp</span><span class="o">.</span><span class="n">array</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_normal</span><span class="p">:</span> <span class="n">wp</span><span class="o">.</span><span class="n">array</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_bodyexclude</span><span class="p">:</span> <span class="n">wp</span><span class="o">.</span><span class="n">array</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_geomgroup</span> <span class="o">=</span> <span class="n">vec6</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Output tensors.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_heights</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_normals_w</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_hit_pos_w</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_site_pos_w</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Cache for post-processing.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_origins</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_rays</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ctx</span><span class="p">:</span> <span class="n">SensorContext</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_warned_normal_reduction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="HeightSensor.edit_spec">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensor.edit_spec">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">edit_spec</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">scene_spec</span><span class="p">:</span> <span class="n">mujoco</span><span class="o">.</span><span class="n">MjSpec</span><span class="p">,</span>
+    <span class="n">entities</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Entity</span><span class="p">],</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">del</span> <span class="n">scene_spec</span><span class="p">,</span> <span class="n">entities</span></div>
+
+
+<div class="viewcode-block" id="HeightSensor.initialize">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensor.initialize">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">mj_model</span><span class="p">:</span> <span class="n">mujoco</span><span class="o">.</span><span class="n">MjModel</span><span class="p">,</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">mjwarp</span><span class="o">.</span><span class="n">Model</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">mjwarp</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span>
+    <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mj_model</span> <span class="o">=</span> <span class="n">mj_model</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_wp_device</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">get_device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">num_envs</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">nworld</span>
+
+    <span class="c1"># Resolve site IDs.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_site_ids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_site_body_ids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">site_ref</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">sites</span><span class="p">:</span>
+      <span class="n">site_name</span> <span class="o">=</span> <span class="n">site_ref</span><span class="o">.</span><span class="n">prefixed_name</span><span class="p">()</span>
+      <span class="n">site_id</span> <span class="o">=</span> <span class="n">mj_model</span><span class="o">.</span><span class="n">site</span><span class="p">(</span><span class="n">site_name</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_site_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">site_id</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_site_body_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">mj_model</span><span class="o">.</span><span class="n">site_bodyid</span><span class="p">[</span><span class="n">site_id</span><span class="p">]))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_site_ids</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">return</span>
+
+    <span class="c1"># Compute sampling pattern.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_sample_offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_sample_offsets</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples_per_site</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_offsets</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_num_total_rays</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples_per_site</span>
+
+    <span class="c1"># Normalize ray direction.</span>
+    <span class="n">direction</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_direction</span> <span class="o">=</span> <span class="n">direction</span> <span class="o">/</span> <span class="n">direction</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+
+    <span class="c1"># Allocate warp arrays: [B, S*K] where K = samples per site.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_pnt</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+      <span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_total_rays</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">wp</span><span class="o">.</span><span class="n">vec3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_vec</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+      <span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_total_rays</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">wp</span><span class="o">.</span><span class="n">vec3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_dist</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+      <span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_total_rays</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_geomid</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+      <span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_total_rays</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_normal</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+      <span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_total_rays</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">wp</span><span class="o">.</span><span class="n">vec3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Body exclusion: each ray excludes its site&#39;s parent body.</span>
+    <span class="c1"># Repeat each body ID K times for multi-ray.</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">exclude_parent_body</span><span class="p">:</span>
+      <span class="n">body_excludes</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="k">for</span> <span class="n">body_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_site_body_ids</span><span class="p">:</span>
+        <span class="n">body_excludes</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">body_id</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples_per_site</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">body_excludes</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_total_rays</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ray_bodyexclude</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+      <span class="n">body_excludes</span><span class="p">,</span>
+      <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+      <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Convert include_geom_groups to vec6 format (-1 = include, 0 = exclude).</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">include_geom_groups</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+      <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">include_geom_groups</span><span class="p">:</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">g</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+          <span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_geomgroup</span> <span class="o">=</span> <span class="n">vec6</span><span class="p">(</span><span class="o">*</span><span class="n">groups</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_geomgroup</span> <span class="o">=</span> <span class="n">vec6</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Pre-allocate output tensors.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_heights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_normals_w</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_hit_pos_w</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_site_pos_w</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wp_device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">_build_sample_offsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build horizontal offsets for multi-ray sampling.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      Tensor of shape [K, 3] — offsets in XY plane (Z=0).</span>
+<span class="sd">      When no sampling is configured, returns a single zero offset [1, 3].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">sampling</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="c1"># Single ray at center.</span>
+      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="n">sampling</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">sampling</span>
+    <span class="n">offsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">sampling</span><span class="o">.</span><span class="n">include_center</span><span class="p">:</span>
+      <span class="n">offsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+    <span class="c1"># Normalize single-ring to a list so the loop is the same.</span>
+    <span class="n">rings</span> <span class="o">=</span> <span class="n">sampling</span><span class="o">.</span><span class="n">rings</span> <span class="ow">or</span> <span class="p">(</span>
+      <span class="n">HeightSensorCfg</span><span class="o">.</span><span class="n">RingCfg</span><span class="p">(</span><span class="n">sampling</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="n">sampling</span><span class="o">.</span><span class="n">num_samples</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">ring</span> <span class="ow">in</span> <span class="n">rings</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">num_samples</span><span class="p">):</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="n">ring</span><span class="o">.</span><span class="n">num_samples</span>
+        <span class="n">offsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+          <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">ring</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span> <span class="n">ring</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">],</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+          <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">offsets</span><span class="p">)</span>  <span class="c1"># [K, 3]</span>
+
+<div class="viewcode-block" id="HeightSensor.set_context">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensor.set_context">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">set_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">SensorContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wire this sensor to a SensorContext for BVH-accelerated raycasting.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ctx</span> <span class="o">=</span> <span class="n">ctx</span></div>
+
+
+  <span class="nd">@property</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">num_sites</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">num_samples_per_site</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples_per_site</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">_compute_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HeightSensorData</span><span class="p">:</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ctx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+        <span class="s2">&quot;HeightSensor requires a SensorContext. &quot;</span>
+        <span class="s2">&quot;Ensure the sensor is part of a scene with &quot;</span>
+        <span class="s2">&quot;sim.sense() calls.&quot;</span>
+      <span class="p">)</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_heights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normals_w</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hit_pos_w</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_site_pos_w</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">HeightSensorData</span><span class="p">(</span>
+      <span class="n">heights</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_heights</span><span class="p">,</span>
+      <span class="n">normals_w</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_normals_w</span><span class="p">,</span>
+      <span class="n">hit_pos_w</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hit_pos_w</span><span class="p">,</span>
+      <span class="n">site_pos_w</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_site_pos_w</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="HeightSensor.debug_vis">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensor.debug_vis">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">debug_vis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visualizer</span><span class="p">:</span> <span class="n">DebugVisualizer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">debug_vis</span><span class="p">:</span>
+      <span class="k">return</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">env_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">visualizer</span><span class="o">.</span><span class="n">get_env_indices</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">heights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">env_indices</span><span class="p">:</span>
+      <span class="k">return</span>
+
+    <span class="n">meansize</span> <span class="o">=</span> <span class="n">visualizer</span><span class="o">.</span><span class="n">meansize</span>
+    <span class="n">ray_width</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">meansize</span>
+    <span class="n">sphere_radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">hit_sphere_radius</span> <span class="o">*</span> <span class="n">meansize</span>
+    <span class="n">normal_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">normal_length</span> <span class="o">*</span> <span class="n">meansize</span>
+    <span class="n">normal_width</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">meansize</span>
+    <span class="n">miss_extent</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">max_distance</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="n">site_pos</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">site_pos_w</span><span class="p">[</span><span class="n">env_indices</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">hit_pos</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">hit_pos_w</span><span class="p">[</span><span class="n">env_indices</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">heights</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">heights</span><span class="p">[</span><span class="n">env_indices</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">normals</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">normals_w</span><span class="p">[</span><span class="n">env_indices</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">direction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ray_direction</span>
+    <span class="k">assert</span> <span class="n">direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">dir_np</span> <span class="o">=</span> <span class="n">direction</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">env_indices</span><span class="p">)):</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span><span class="p">):</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">site_pos</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="n">hit</span> <span class="o">=</span> <span class="n">heights</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">hit</span><span class="p">:</span>
+          <span class="n">end</span> <span class="o">=</span> <span class="n">hit_pos</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+          <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">hit_color</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">end</span> <span class="o">=</span> <span class="n">origin</span> <span class="o">+</span> <span class="n">dir_np</span> <span class="o">*</span> <span class="n">miss_extent</span>
+          <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">miss_color</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">show_rays</span><span class="p">:</span>
+          <span class="n">visualizer</span><span class="o">.</span><span class="n">add_arrow</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span>
+            <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">ray_width</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_ray_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">hit</span><span class="p">:</span>
+          <span class="n">visualizer</span><span class="o">.</span><span class="n">add_sphere</span><span class="p">(</span>
+            <span class="n">center</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
+            <span class="n">radius</span><span class="o">=</span><span class="n">sphere_radius</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">hit_sphere_color</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_hit_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="p">)</span>
+          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">show_normals</span><span class="p">:</span>
+            <span class="n">normal_end</span> <span class="o">=</span> <span class="n">end</span> <span class="o">+</span> <span class="n">normals</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">normal_length</span>
+            <span class="n">visualizer</span><span class="o">.</span><span class="n">add_arrow</span><span class="p">(</span>
+              <span class="n">start</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
+              <span class="n">end</span><span class="o">=</span><span class="n">normal_end</span><span class="p">,</span>
+              <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">normal_color</span><span class="p">,</span>
+              <span class="n">width</span><span class="o">=</span><span class="n">normal_width</span><span class="p">,</span>
+              <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_normal_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+
+  <span class="c1"># Private methods.</span>
+
+<div class="viewcode-block" id="HeightSensor.prepare_rays">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensor.prepare_rays">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">prepare_rays</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;PRE-GRAPH: Read site positions and compute world-frame ray origins/dirs.&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ray_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_offsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">return</span>
+
+    <span class="n">num_envs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">nworld</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples_per_site</span>
+
+    <span class="c1"># Gather site positions [B, S, 3].</span>
+    <span class="n">site_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_site_ids</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+    <span class="n">site_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">site_xpos</span><span class="p">[:,</span> <span class="n">site_ids</span><span class="p">]</span>  <span class="c1"># [B, S, 3]</span>
+
+    <span class="c1"># Expand site positions to include sample offsets → [B, S, K, 3].</span>
+    <span class="c1"># offsets is [K, 3], broadcast to [1, 1, K, 3].</span>
+    <span class="n">offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_offsets</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># [1, 1, K, 3]</span>
+    <span class="n">site_pos_expanded</span> <span class="o">=</span> <span class="n">site_pos</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">offsets</span>  <span class="c1"># [B, S, K, 3]</span>
+
+    <span class="c1"># Flatten to [B, S*K, 3] for raycasting.</span>
+    <span class="n">all_origins</span> <span class="o">=</span> <span class="n">site_pos_expanded</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span> <span class="o">*</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># Compute ray direction based on alignment.</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ray_alignment</span> <span class="o">==</span> <span class="s2">&quot;world&quot;</span><span class="p">:</span>
+      <span class="c1"># Fixed world-frame direction for all rays.</span>
+      <span class="n">world_rays</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ray_direction</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span> <span class="o">*</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+      <span class="p">)</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ray_alignment</span> <span class="o">==</span> <span class="s2">&quot;base&quot;</span><span class="p">:</span>
+      <span class="c1"># Rotate direction by each site&#39;s parent body rotation.</span>
+      <span class="n">site_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">site_xmat</span><span class="p">[:,</span> <span class="n">site_ids</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+        <span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span>
+      <span class="p">)</span>  <span class="c1"># [B, S, 3, 3]</span>
+      <span class="n">world_rays_per_site</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+        <span class="s2">&quot;bsij,j-&gt;bsi&quot;</span><span class="p">,</span> <span class="n">site_mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ray_direction</span>
+      <span class="p">)</span>  <span class="c1"># [B, S, 3]</span>
+      <span class="c1"># Repeat for each sample.</span>
+      <span class="n">world_rays</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">world_rays_per_site</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span> <span class="o">*</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+      <span class="p">)</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ray_alignment</span> <span class="o">==</span> <span class="s2">&quot;yaw&quot;</span><span class="p">:</span>
+      <span class="c1"># Use yaw-only rotation from each site&#39;s parent body.</span>
+      <span class="n">site_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">site_xmat</span><span class="p">[:,</span> <span class="n">site_ids</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+        <span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span>
+      <span class="p">)</span>  <span class="c1"># [B, S, 3, 3]</span>
+      <span class="n">yaw_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_yaw_rotation_batched</span><span class="p">(</span><span class="n">site_mat</span><span class="p">)</span>
+      <span class="n">world_rays_per_site</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;bsij,j-&gt;bsi&quot;</span><span class="p">,</span> <span class="n">yaw_mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ray_direction</span><span class="p">)</span>
+      <span class="n">world_rays</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">world_rays_per_site</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span> <span class="o">*</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+      <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown ray_alignment: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ray_alignment</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Write to warp arrays.</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ray_pnt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ray_vec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">pnt_torch</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">to_torch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ray_pnt</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span> <span class="o">*</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">vec_torch</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">to_torch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ray_vec</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span> <span class="o">*</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">pnt_torch</span><span class="o">.</span><span class="n">copy_</span><span class="p">(</span><span class="n">all_origins</span><span class="p">)</span>
+    <span class="n">vec_torch</span><span class="o">.</span><span class="n">copy_</span><span class="p">(</span><span class="n">world_rays</span><span class="p">)</span>
+
+    <span class="c1"># Cache for postprocess.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_origins</span> <span class="o">=</span> <span class="n">all_origins</span>  <span class="c1"># [B, S*K, 3]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_rays</span> <span class="o">=</span> <span class="n">world_rays</span>  <span class="c1"># [B, S*K, 3]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_site_pos_w</span> <span class="o">=</span> <span class="n">site_pos</span>  <span class="c1"># [B, S, 3] (un-expanded)</span></div>
+
+
+<div class="viewcode-block" id="HeightSensor.raycast_kernel">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensor.raycast_kernel">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">raycast_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rc</span><span class="p">:</span> <span class="n">mjwarp</span><span class="o">.</span><span class="n">RenderContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;IN-GRAPH: Execute BVH-accelerated raycast kernel.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">return</span>
+    <span class="n">rays</span><span class="p">(</span>
+      <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">struct</span><span class="p">,</span>  <span class="c1"># type: ignore[attr-defined]</span>
+      <span class="n">d</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">struct</span><span class="p">,</span>  <span class="c1"># type: ignore[attr-defined]</span>
+      <span class="n">pnt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ray_pnt</span><span class="p">,</span>
+      <span class="n">vec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ray_vec</span><span class="p">,</span>
+      <span class="n">geomgroup</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_geomgroup</span><span class="p">,</span>  <span class="c1"># pyright: ignore[reportArgumentType]</span>
+      <span class="n">flg_static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+      <span class="n">bodyexclude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ray_bodyexclude</span><span class="p">,</span>
+      <span class="n">dist</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ray_dist</span><span class="p">,</span>
+      <span class="n">geomid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ray_geomid</span><span class="p">,</span>
+      <span class="n">normal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ray_normal</span><span class="p">,</span>
+      <span class="n">rc</span><span class="o">=</span><span class="n">rc</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HeightSensor.postprocess_rays">
+<a class="viewcode-back" href="../../../source/api/sensor.html#mjlab.sensor.HeightSensor.postprocess_rays">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">postprocess_rays</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;POST-GRAPH: Convert Warp outputs to PyTorch, compute heights, reduce.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">return</span>
+
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_origins</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_rays</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="n">num_envs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_origins</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_sites</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples_per_site</span>
+
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ray_dist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ray_normal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="c1"># Raw flat arrays [B, S*K].</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">to_torch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ray_dist</span><span class="p">)</span>
+    <span class="n">normals_flat</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">to_torch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ray_normal</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span> <span class="o">*</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">distances</span><span class="p">[</span><span class="n">distances</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">max_distance</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+
+    <span class="n">hit_mask</span> <span class="o">=</span> <span class="n">distances</span> <span class="o">&gt;=</span> <span class="mi">0</span>  <span class="c1"># [B, S*K]</span>
+    <span class="n">hit_pos_flat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_origins</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>  <span class="c1"># [B, S*K, 3]</span>
+    <span class="n">hit_pos_flat</span><span class="p">[</span><span class="n">hit_mask</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_origins</span><span class="p">[</span>
+      <span class="n">hit_mask</span>
+    <span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_rays</span><span class="p">[</span><span class="n">hit_mask</span><span class="p">]</span> <span class="o">*</span> <span class="n">distances</span><span class="p">[</span><span class="n">hit_mask</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Zero out normals for misses.</span>
+    <span class="n">normals_flat</span><span class="p">[</span><span class="o">~</span><span class="n">hit_mask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="c1"># Compute raw per-ray heights [B, S*K].</span>
+    <span class="n">raw_heights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+      <span class="n">hit_mask</span><span class="p">,</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_cached_world_origins</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">hit_pos_flat</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">distances</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Hit position for center ray (first ray per site) → [B, S, 3].</span>
+    <span class="n">hit_pos_per_site</span> <span class="o">=</span> <span class="n">hit_pos_flat</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_hit_pos_w</span> <span class="o">=</span> <span class="n">hit_pos_per_site</span>
+
+    <span class="c1"># Apply reduction.</span>
+    <span class="k">if</span> <span class="n">K</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="c1"># Single ray — no reduction needed.</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_heights</span> <span class="o">=</span> <span class="n">raw_heights</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_normals_w</span> <span class="o">=</span> <span class="n">normals_flat</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+      <span class="c1"># Raw per-ray data: [B, S, K] and [B, S, K, 3].</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_heights</span> <span class="o">=</span> <span class="n">raw_heights</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_normals_w</span> <span class="o">=</span> <span class="n">normals_flat</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">heights_per_site</span> <span class="o">=</span> <span class="n">raw_heights</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>  <span class="c1"># [B, S, K]</span>
+      <span class="n">normals_per_site</span> <span class="o">=</span> <span class="n">normals_flat</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+      <span class="c1"># For reductions that need to handle misses (-1):</span>
+      <span class="c1"># Replace misses with appropriate sentinel values.</span>
+      <span class="n">valid_mask</span> <span class="o">=</span> <span class="n">heights_per_site</span> <span class="o">&gt;=</span> <span class="mi">0</span>  <span class="c1"># [B, S, K]</span>
+
+      <span class="bp">self</span><span class="o">.</span><span class="n">_heights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduce_heights</span><span class="p">(</span><span class="n">heights_per_site</span><span class="p">,</span> <span class="n">valid_mask</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_normals_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduce_normals</span><span class="p">(</span>
+        <span class="n">normals_per_site</span><span class="p">,</span> <span class="n">valid_mask</span><span class="p">,</span> <span class="n">heights_per_site</span>
+      <span class="p">)</span></div>
+
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">_reduce_heights</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">heights</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">valid_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reduce [B, S, K] heights to [B, S] using configured reduction.</span>
+
+<span class="sd">    Handles misses (height=-1) by excluding them from the aggregation.</span>
+<span class="sd">    If all rays miss for a site, the result is -1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">B</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">heights</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">heights</span><span class="o">.</span><span class="n">device</span>
+    <span class="n">any_valid</span> <span class="o">=</span> <span class="n">valid_mask</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, S]</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span>
+      <span class="c1"># Replace misses with +inf so they don&#39;t affect min.</span>
+      <span class="n">filled</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">valid_mask</span><span class="p">,</span> <span class="n">heights</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+      <span class="p">)</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="n">filled</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span>
+      <span class="c1"># Replace misses with -inf so they don&#39;t affect max.</span>
+      <span class="n">filled</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">valid_mask</span><span class="p">,</span> <span class="n">heights</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;-inf&quot;</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+      <span class="p">)</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="n">filled</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;mean&quot;</span><span class="p">:</span>
+      <span class="c1"># Zero-fill misses and divide by count of valid rays.</span>
+      <span class="n">filled</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">valid_mask</span><span class="p">,</span> <span class="n">heights</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">heights</span><span class="p">))</span>
+      <span class="n">count</span> <span class="o">=</span> <span class="n">valid_mask</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="n">filled</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">count</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span>
+      <span class="c1"># Replace misses with +inf, then take median.</span>
+      <span class="n">filled</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">valid_mask</span><span class="p">,</span> <span class="n">heights</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+      <span class="p">)</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="n">filled</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown reduction: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Where all rays missed, return -1.</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">any_valid</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">))</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">_reduce_normals</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">normals</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">valid_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">heights</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reduce [B, S, K, 3] normals to [B, S, 3] using configured reduction.</span>
+
+<span class="sd">    For &quot;mean&quot;, computes the average normal and re-normalizes.</span>
+<span class="sd">    For &quot;min&quot;/&quot;max&quot;/&quot;median&quot;, picks the normal at the ray selected by the</span>
+<span class="sd">    corresponding height reduction (argmin/argmax/median index).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">B</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">normals</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">normals</span><span class="o">.</span><span class="n">device</span>
+    <span class="n">any_valid</span> <span class="o">=</span> <span class="n">valid_mask</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, S]</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;mean&quot;</span><span class="p">:</span>
+      <span class="n">filled</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">valid_mask</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">normals</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">normals</span><span class="p">))</span>
+      <span class="n">count</span> <span class="o">=</span> <span class="n">valid_mask</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+      <span class="n">avg</span> <span class="o">=</span> <span class="n">filled</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">count</span>
+      <span class="c1"># Re-normalize.</span>
+      <span class="n">norm</span> <span class="o">=</span> <span class="n">avg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="n">avg</span> <span class="o">/</span> <span class="n">norm</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="c1"># Emit one-time warning for non-mean normal reductions.</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warned_normal_reduction</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+          <span class="s2">&quot;HeightSensor &#39;</span><span class="si">%s</span><span class="s2">&#39;: reduction=&#39;</span><span class="si">%s</span><span class="s2">&#39; selects the normal at the &quot;</span>
+          <span class="s2">&quot;ray with the </span><span class="si">%s</span><span class="s2"> height. For geometrically meaningful terrain &quot;</span>
+          <span class="s2">&quot;normals, consider using reduction=&#39;mean&#39;.&quot;</span><span class="p">,</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span><span class="p">,</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warned_normal_reduction</span> <span class="o">=</span> <span class="kc">True</span>
+
+      <span class="c1"># Compute the selection index from heights.</span>
+      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span>
+        <span class="n">filled</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+          <span class="n">valid_mask</span><span class="p">,</span>
+          <span class="n">heights</span><span class="p">,</span>
+          <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">filled</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, S]</span>
+      <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span>
+        <span class="n">filled</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+          <span class="n">valid_mask</span><span class="p">,</span>
+          <span class="n">heights</span><span class="p">,</span>
+          <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;-inf&quot;</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">filled</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, S]</span>
+      <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span>
+        <span class="n">filled</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+          <span class="n">valid_mask</span><span class="p">,</span>
+          <span class="n">heights</span><span class="p">,</span>
+          <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="c1"># argsort and pick the middle index.</span>
+        <span class="n">sorted_idx</span> <span class="o">=</span> <span class="n">filled</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="n">K</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">sorted_idx</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>  <span class="c1"># [B, S]</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown reduction: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">reduction</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+      <span class="c1"># Gather normals at the selected index: [B, S, 3].</span>
+      <span class="n">idx_expanded</span> <span class="o">=</span> <span class="n">idx</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="n">normals</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">idx_expanded</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Zero out normals where all rays missed.</span>
+    <span class="n">result</span><span class="p">[</span><span class="o">~</span><span class="n">any_valid</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">_extract_yaw_rotation_batched</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rot_mat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract yaw-only rotation from [B, S, 3, 3] rotation matrices.&quot;&quot;&quot;</span>
+    <span class="n">B</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="n">rot_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">rot_mat</span><span class="o">.</span><span class="n">device</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">rot_mat</span><span class="o">.</span><span class="n">dtype</span>
+
+    <span class="c1"># Project X-axis onto XY plane.</span>
+    <span class="n">x_axis</span> <span class="o">=</span> <span class="n">rot_mat</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># [B, S, 3]</span>
+    <span class="n">x_proj</span> <span class="o">=</span> <span class="n">x_axis</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="n">x_proj</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">x_norm</span> <span class="o">=</span> <span class="n">x_proj</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, S]</span>
+
+    <span class="c1"># Handle singularity.</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="n">singular</span> <span class="o">=</span> <span class="n">x_norm</span> <span class="o">&lt;</span> <span class="n">threshold</span>
+
+    <span class="k">if</span> <span class="n">singular</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+      <span class="n">y_axis</span> <span class="o">=</span> <span class="n">rot_mat</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+      <span class="n">y_proj</span> <span class="o">=</span> <span class="n">y_axis</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+      <span class="n">y_proj</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="n">y_norm</span> <span class="o">=</span> <span class="n">y_proj</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+      <span class="n">y_proj</span> <span class="o">=</span> <span class="n">y_proj</span> <span class="o">/</span> <span class="n">y_norm</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+      <span class="n">x_from_y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y_proj</span><span class="p">)</span>
+      <span class="n">x_from_y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_proj</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+      <span class="n">x_from_y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">y_proj</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+      <span class="n">x_proj</span><span class="p">[</span><span class="n">singular</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_from_y</span><span class="p">[</span><span class="n">singular</span><span class="p">]</span>
+      <span class="n">x_norm</span><span class="p">[</span><span class="n">singular</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="n">x_norm</span> <span class="o">=</span> <span class="n">x_norm</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+    <span class="n">x_proj</span> <span class="o">=</span> <span class="n">x_proj</span> <span class="o">/</span> <span class="n">x_norm</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">yaw_mat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">B</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">yaw_mat</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_proj</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">yaw_mat</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_proj</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">yaw_mat</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">x_proj</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">yaw_mat</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_proj</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">yaw_mat</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">yaw_mat</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The mjlab Developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, The mjlab Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 20, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

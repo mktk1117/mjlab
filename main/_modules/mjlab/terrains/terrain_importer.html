@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="/home/runner/work/mjlab/mjlab/.venv/lib/python3.13/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=3ea80bc3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -147,6 +147,54 @@
     <p class="title logo__title">The mjlab Documentation</p>
   
 </a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="mjlab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/mjlab-1.1.0-silver.svg" class="icon-link-image" alt="mjlab"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mujocolab.github.io/mjlab/nightly/" title="Benchmarks" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/Nightly-Benchmarks-blue" class="icon-link-image" alt="Benchmarks"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
         <div class="sidebar-primary-item">
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
@@ -164,14 +212,6 @@
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
-        <div class="sidebar-primary-item">
-<div class="sidebar-version-switcher">
-  <label class="sidebar-version-label" for="version-select">Version</label>
-  <select id="version-select" class="sidebar-version-select" onchange="location = this.value;">
-    <option value="terrain_importer.html" selected>main</option>
-  </select>
-</div>
-</div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -455,7 +495,9 @@ document.write(`
         <span class="p">)</span>
       <span class="n">terrain_generator</span> <span class="o">=</span> <span class="n">TerrainGenerator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">terrain_generator</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
       <span class="n">terrain_generator</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spec</span><span class="p">)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">configure_env_origins</span><span class="p">(</span><span class="n">terrain_generator</span><span class="o">.</span><span class="n">terrain_origins</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">configure_env_origins</span><span class="p">(</span>
+        <span class="n">terrain_generator</span><span class="o">.</span><span class="n">terrain_origins</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">terrain_generator</span>
+      <span class="p">)</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">_flat_patches</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">name</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">terrain_generator</span><span class="o">.</span><span class="n">flat_patches</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
@@ -575,7 +617,11 @@ document.write(`
 
 <div class="viewcode-block" id="TerrainImporter.configure_env_origins">
 <a class="viewcode-back" href="../../../source/api/terrains.html#mjlab.terrains.TerrainImporter.configure_env_origins">[docs]</a>
-  <span class="k">def</span><span class="w"> </span><span class="nf">configure_env_origins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origins</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">configure_env_origins</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">origins</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">terrain_generator_cfg</span><span class="p">:</span> <span class="n">TerrainGeneratorCfg</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+  <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configure the origins of the environments based on the added terrain.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">origins</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origins</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
@@ -584,7 +630,7 @@ document.write(`
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origins</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">terrain_origins</span> <span class="o">=</span> <span class="n">origins</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">env_origins</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_env_origins_curriculum</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">terrain_origins</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">num_envs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">terrain_origins</span><span class="p">,</span> <span class="n">terrain_generator_cfg</span>
       <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">terrain_origins</span> <span class="o">=</span> <span class="kc">None</span>
@@ -642,26 +688,19 @@ document.write(`
 
 
   <span class="k">def</span><span class="w"> </span><span class="nf">_compute_env_origins_curriculum</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">num_envs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">origins</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">num_envs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">origins</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">terrain_generator_cfg</span><span class="p">:</span> <span class="n">TerrainGeneratorCfg</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
   <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the origins of the environments defined by the sub-terrains origins.</span>
 
 <span class="sd">    Allocation strategy:</span>
-<span class="sd">      - Columns (terrain_types): Evenly distributed across environments using</span>
-<span class="sd">        integer division. Each column gets floor(num_envs / num_cols) or</span>
-<span class="sd">        ceil(num_envs / num_cols) envs.</span>
+<span class="sd">      - Columns (terrain_types): Distributed across environments **by proportion**.</span>
+<span class="sd">        Each column (terrain type) receives</span>
+<span class="sd">        ``max(1, round(proportion / total * num_envs))`` environments.</span>
 <span class="sd">      - Rows (terrain_levels): Randomly sampled from [0, max_init_terrain_level].</span>
 <span class="sd">        Supports curriculum learning where rows represent difficulty levels.</span>
-
-<span class="sd">    .. note::</span>
-<span class="sd">      Multiple environments can be assigned to the same (row, col) patch, leaving</span>
-<span class="sd">      other patches unoccupied, even when num_envs &gt; num_patches. This is because</span>
-<span class="sd">      row assignment is random while column assignment is deterministic.</span>
-
-<span class="sd">    Example: 5x5 terrain grid (25 patches), 100 environments:</span>
-<span class="sd">      - Each of 5 columns gets exactly 20 environments</span>
-<span class="sd">      - Those 20 are randomly distributed across 5 rows</span>
-<span class="sd">      - Result: Some patches get 0 envs, others might get 5+</span>
 
 <span class="sd">    See FAQ: &quot;How does env_origins determine robot layout?&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -674,11 +713,44 @@ document.write(`
     <span class="bp">self</span><span class="o">.</span><span class="n">terrain_levels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
       <span class="mi">0</span><span class="p">,</span> <span class="n">max_init_level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">num_envs</span><span class="p">,),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
     <span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">terrain_types</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">div</span><span class="p">(</span>
-      <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
-      <span class="p">(</span><span class="n">num_envs</span> <span class="o">/</span> <span class="n">num_cols</span><span class="p">),</span>
-      <span class="n">rounding_mode</span><span class="o">=</span><span class="s2">&quot;floor&quot;</span><span class="p">,</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+
+    <span class="c1"># Distribute robots across columns by proportion.</span>
+    <span class="k">if</span> <span class="p">(</span>
+      <span class="n">terrain_generator_cfg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+      <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">terrain_generator_cfg</span><span class="o">.</span><span class="n">sub_terrains</span><span class="p">)</span> <span class="o">==</span> <span class="n">num_cols</span>
+    <span class="p">):</span>
+      <span class="n">proportions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">proportion</span> <span class="k">for</span> <span class="n">cfg</span> <span class="ow">in</span> <span class="n">terrain_generator_cfg</span><span class="o">.</span><span class="n">sub_terrains</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+      <span class="p">)</span>
+      <span class="n">proportions</span> <span class="o">=</span> <span class="n">proportions</span> <span class="o">/</span> <span class="n">proportions</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+      <span class="c1"># Compute per-column environment counts (at least 1 per column if possible).</span>
+      <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">proportions</span> <span class="o">*</span> <span class="n">num_envs</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="c1"># Adjust to match num_envs exactly.</span>
+      <span class="n">diff</span> <span class="o">=</span> <span class="n">num_envs</span> <span class="o">-</span> <span class="n">counts</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+      <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Add extra envs to the columns with the largest proportions.</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">proportions</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">diff</span><span class="p">):</span>
+          <span class="n">counts</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">num_cols</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="k">elif</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Remove envs from the columns with the smallest proportions (keep &gt;= 1).</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">proportions</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">diff</span><span class="p">):</span>
+          <span class="n">idx</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">num_cols</span><span class="p">]</span>
+          <span class="k">if</span> <span class="n">counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">terrain_types</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">c</span><span class="p">,),</span> <span class="n">col</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+      <span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="c1"># Fallback: even distribution.</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">terrain_types</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">div</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">num_envs</span> <span class="o">/</span> <span class="n">num_cols</span><span class="p">),</span>
+        <span class="n">rounding_mode</span><span class="o">=</span><span class="s2">&quot;floor&quot;</span><span class="p">,</span>
+      <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+
     <span class="n">env_origins</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_envs</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
     <span class="n">env_origins</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">origins</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">terrain_levels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">terrain_types</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">env_origins</span>

@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="/home/runner/work/mjlab/mjlab/.venv/lib/python3.13/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=3ea80bc3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -147,6 +147,54 @@
     <p class="title logo__title">The mjlab Documentation</p>
   
 </a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mujocolab/mjlab" title="mjlab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/mjlab-1.1.0-silver.svg" class="icon-link-image" alt="mjlab"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mujocolab.github.io/mjlab/nightly/" title="Benchmarks" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/Nightly-Benchmarks-blue" class="icon-link-image" alt="Benchmarks"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/mujocolab/mjlab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
         <div class="sidebar-primary-item">
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
@@ -164,14 +212,6 @@
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
-        <div class="sidebar-primary-item">
-<div class="sidebar-version-switcher">
-  <label class="sidebar-version-label" for="version-select">Version</label>
-  <select id="version-select" class="sidebar-version-select" onchange="location = this.value;">
-    <option value="heightfield_terrains.html" selected>main</option>
-  </select>
-</div>
-</div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -460,6 +500,33 @@ document.write(`
   <span class="n">material</span><span class="o">.</span><span class="n">textures</span><span class="p">[</span><span class="n">mujoco</span><span class="o">.</span><span class="n">mjtTextureRole</span><span class="o">.</span><span class="n">mjTEXROLE_RGB</span><span class="p">]</span> <span class="o">=</span> <span class="n">texture_name</span>
 
   <span class="k">return</span> <span class="n">material_name</span>
+
+
+<span class="n">_EDGE_FADE_METERS</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="sd">&quot;&quot;&quot;Physical width of the cosine fade applied at inner-region edges.&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_apply_edge_fade</span><span class="p">(</span>
+  <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+  <span class="n">grid_spacing</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Multiply *data* by a separable cosine ramp that fades to 0 at edges.&quot;&quot;&quot;</span>
+  <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+  <span class="n">fade_pixels</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">_EDGE_FADE_METERS</span> <span class="o">/</span> <span class="n">grid_spacing</span><span class="p">),</span>
+    <span class="n">rows</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">cols</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="p">)</span>
+  <span class="k">if</span> <span class="n">fade_pixels</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">data</span>
+  <span class="n">ramp</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">fade_pixels</span><span class="p">))</span>
+  <span class="n">fx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+  <span class="n">fy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+  <span class="n">fx</span><span class="p">[:</span><span class="n">fade_pixels</span><span class="p">]</span> <span class="o">=</span> <span class="n">ramp</span>
+  <span class="n">fx</span><span class="p">[</span><span class="o">-</span><span class="n">fade_pixels</span><span class="p">:]</span> <span class="o">=</span> <span class="n">ramp</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+  <span class="n">fy</span><span class="p">[:</span><span class="n">fade_pixels</span><span class="p">]</span> <span class="o">=</span> <span class="n">ramp</span>
+  <span class="n">fy</span><span class="p">[</span><span class="o">-</span><span class="n">fade_pixels</span><span class="p">:]</span> <span class="o">=</span> <span class="n">ramp</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+  <span class="k">return</span> <span class="n">data</span> <span class="o">*</span> <span class="n">fx</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">fy</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_fractal_perlin_noise_2d</span><span class="p">(</span>
@@ -752,8 +819,6 @@ document.write(`
   <span class="k">def</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">difficulty</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="n">mujoco</span><span class="o">.</span><span class="n">MjSpec</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span>
   <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TerrainOutput</span><span class="p">:</span>
-    <span class="k">del</span> <span class="n">difficulty</span>  <span class="c1"># Unused.</span>
-
     <span class="n">body</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">body</span><span class="p">(</span><span class="s2">&quot;terrain&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_scale</span><span class="p">:</span>
@@ -778,6 +843,12 @@ document.write(`
 
     <span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">width_pixels</span><span class="p">,</span> <span class="n">length_pixels</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
 
+    <span class="c1"># Scale noise range by difficulty (flat at difficulty=0).</span>
+    <span class="n">scaled_noise_range</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">noise_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">difficulty</span><span class="p">,</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">noise_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">difficulty</span><span class="p">,</span>
+    <span class="p">)</span>
+
     <span class="k">if</span> <span class="n">border_pixels</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
       <span class="n">inner_width_pixels</span> <span class="o">=</span> <span class="n">width_pixels</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">border_pixels</span>
       <span class="n">inner_length_pixels</span> <span class="o">=</span> <span class="n">length_pixels</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">border_pixels</span>
@@ -789,8 +860,8 @@ document.write(`
       <span class="n">width_downsampled</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">inner_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">downsampled_scale</span><span class="p">)</span>
       <span class="n">length_downsampled</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">inner_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">downsampled_scale</span><span class="p">)</span>
 
-      <span class="n">height_min</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_scale</span><span class="p">)</span>
-      <span class="n">height_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_scale</span><span class="p">)</span>
+      <span class="n">height_min</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scaled_noise_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_scale</span><span class="p">)</span>
+      <span class="n">height_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scaled_noise_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_scale</span><span class="p">)</span>
       <span class="n">height_step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_step</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_scale</span><span class="p">)</span>
 
       <span class="n">height_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">height_min</span><span class="p">,</span> <span class="n">height_max</span> <span class="o">+</span> <span class="n">height_step</span><span class="p">,</span> <span class="n">height_step</span><span class="p">)</span>
@@ -805,6 +876,7 @@ document.write(`
       <span class="n">x_upsampled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inner_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">inner_width_pixels</span><span class="p">)</span>
       <span class="n">y_upsampled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inner_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">inner_length_pixels</span><span class="p">)</span>
       <span class="n">z_upsampled</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">x_upsampled</span><span class="p">,</span> <span class="n">y_upsampled</span><span class="p">)</span>
+      <span class="n">z_upsampled</span> <span class="o">=</span> <span class="n">_apply_edge_fade</span><span class="p">(</span><span class="n">z_upsampled</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_scale</span><span class="p">)</span>
 
       <span class="n">noise</span><span class="p">[</span>
         <span class="n">border_pixels</span> <span class="p">:</span> <span class="o">-</span><span class="n">border_pixels</span> <span class="k">if</span> <span class="n">border_pixels</span> <span class="k">else</span> <span class="n">width_pixels</span><span class="p">,</span>
@@ -813,8 +885,8 @@ document.write(`
     <span class="k">else</span><span class="p">:</span>
       <span class="n">width_downsampled</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">downsampled_scale</span><span class="p">)</span>
       <span class="n">length_downsampled</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">downsampled_scale</span><span class="p">)</span>
-      <span class="n">height_min</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_scale</span><span class="p">)</span>
-      <span class="n">height_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_scale</span><span class="p">)</span>
+      <span class="n">height_min</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scaled_noise_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_scale</span><span class="p">)</span>
+      <span class="n">height_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scaled_noise_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_scale</span><span class="p">)</span>
       <span class="n">height_step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_step</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_scale</span><span class="p">)</span>
 
       <span class="n">height_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">height_min</span><span class="p">,</span> <span class="n">height_max</span> <span class="o">+</span> <span class="n">height_step</span><span class="p">,</span> <span class="n">height_step</span><span class="p">)</span>
@@ -868,7 +940,7 @@ document.write(`
       <span class="n">material</span><span class="o">=</span><span class="n">material_name</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">spawn_height</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">noise_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">spawn_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">scaled_noise_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">scaled_noise_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">spawn_height</span><span class="p">])</span>
 
     <span class="n">flat_patches</span> <span class="o">=</span> <span class="n">_compute_flat_patches</span><span class="p">(</span>
@@ -945,6 +1017,7 @@ document.write(`
       <span class="n">yy</span> <span class="o">=</span> <span class="n">yy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">inner_length_pixels</span><span class="p">)</span>
 
       <span class="n">hf_raw</span> <span class="o">=</span> <span class="n">amplitude_pixels</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">yy</span> <span class="o">*</span> <span class="n">wave_number</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span> <span class="o">*</span> <span class="n">wave_number</span><span class="p">))</span>
+      <span class="n">hf_raw</span> <span class="o">=</span> <span class="n">_apply_edge_fade</span><span class="p">(</span><span class="n">hf_raw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_scale</span><span class="p">)</span>
 
       <span class="n">noise</span><span class="p">[</span>
         <span class="n">border_pixels</span> <span class="p">:</span> <span class="o">-</span><span class="n">border_pixels</span> <span class="k">if</span> <span class="n">border_pixels</span> <span class="k">else</span> <span class="n">width_pixels</span><span class="p">,</span>
@@ -1218,10 +1291,9 @@ document.write(`
   <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TerrainOutput</span><span class="p">:</span>
     <span class="n">body</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">body</span><span class="p">(</span><span class="s2">&quot;terrain&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_scale</span><span class="p">:</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_width</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span><span class="p">:</span>
       <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Border width (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">border_width</span><span class="si">}</span><span class="s2">) must be &gt;= &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;horizontal_scale (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">horizontal_scale</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Border width (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">border_width</span><span class="si">}</span><span class="s2">) must be &gt;= resolution (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resolution</span><span class="si">}</span><span class="s2">)&quot;</span>
       <span class="p">)</span>
 
     <span class="n">target_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">difficulty</span> <span class="o">*</span> <span class="p">(</span>
@@ -1251,16 +1323,18 @@ document.write(`
         <span class="n">lacunarity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lacunarity</span><span class="p">,</span>
         <span class="n">scale</span><span class="o">=</span><span class="n">effective_scale</span><span class="p">,</span>
       <span class="p">)</span>
-      <span class="c1"># Normalize to [0, 1]</span>
-      <span class="n">noise_min</span><span class="p">,</span> <span class="n">noise_max</span> <span class="o">=</span> <span class="n">noise_raw</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">noise_raw</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-      <span class="n">noise_range</span> <span class="o">=</span> <span class="n">noise_max</span> <span class="o">-</span> <span class="n">noise_min</span> <span class="k">if</span> <span class="n">noise_max</span> <span class="o">&gt;</span> <span class="n">noise_min</span> <span class="k">else</span> <span class="mf">1.0</span>
-      <span class="n">inner_normalized</span> <span class="o">=</span> <span class="p">(</span><span class="n">noise_raw</span> <span class="o">-</span> <span class="n">noise_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">noise_range</span>
+      <span class="n">noise_raw</span> <span class="o">=</span> <span class="n">_apply_edge_fade</span><span class="p">(</span><span class="n">noise_raw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span><span class="p">)</span>
 
-      <span class="n">normalized_elevation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">width_pixels</span><span class="p">,</span> <span class="n">length_pixels</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-      <span class="n">normalized_elevation</span><span class="p">[</span>
+      <span class="c1"># Embed raw noise (centered ~0) in a zero-initialized array so the</span>
+      <span class="c1"># border sits near the mean elevation, then normalize together.</span>
+      <span class="n">full_noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">width_pixels</span><span class="p">,</span> <span class="n">length_pixels</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+      <span class="n">full_noise</span><span class="p">[</span>
         <span class="n">border_pixels</span><span class="p">:</span><span class="o">-</span><span class="n">border_pixels</span><span class="p">,</span>
         <span class="n">border_pixels</span><span class="p">:</span><span class="o">-</span><span class="n">border_pixels</span><span class="p">,</span>
-      <span class="p">]</span> <span class="o">=</span> <span class="n">inner_normalized</span>
+      <span class="p">]</span> <span class="o">=</span> <span class="n">noise_raw</span>
+      <span class="n">noise_min</span><span class="p">,</span> <span class="n">noise_max</span> <span class="o">=</span> <span class="n">full_noise</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">full_noise</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+      <span class="n">noise_range</span> <span class="o">=</span> <span class="n">noise_max</span> <span class="o">-</span> <span class="n">noise_min</span> <span class="k">if</span> <span class="n">noise_max</span> <span class="o">&gt;</span> <span class="n">noise_min</span> <span class="k">else</span> <span class="mf">1.0</span>
+      <span class="n">normalized_elevation</span> <span class="o">=</span> <span class="p">((</span><span class="n">full_noise</span> <span class="o">-</span> <span class="n">noise_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">noise_range</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
       <span class="n">noise_raw</span> <span class="o">=</span> <span class="n">_fractal_perlin_noise_2d</span><span class="p">(</span>
         <span class="n">width_pixels</span><span class="p">,</span>
@@ -1277,6 +1351,12 @@ document.write(`
 
     <span class="n">max_physical_height</span> <span class="o">=</span> <span class="n">target_height</span>
     <span class="n">base_thickness</span> <span class="o">=</span> <span class="n">max_physical_height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_thickness_ratio</span>
+
+    <span class="c1"># Offset hfield so the border surface sits at z=0, matching neighbors.</span>
+    <span class="c1"># The border has raw noise=0; its normalized level tells us how high</span>
+    <span class="c1"># it would be without offset.</span>
+    <span class="n">border_level</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="mf">0.0</span> <span class="o">-</span> <span class="n">noise_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">noise_range</span><span class="p">)</span>
+    <span class="n">hfield_z_offset</span> <span class="o">=</span> <span class="o">-</span><span class="n">border_level</span> <span class="o">*</span> <span class="n">max_physical_height</span>
 
     <span class="n">unique_id</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
     <span class="n">field</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">add_hfield</span><span class="p">(</span>
@@ -1302,12 +1382,24 @@ document.write(`
       <span class="n">pos</span><span class="o">=</span><span class="p">[</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">hfield_z_offset</span><span class="p">,</span>
       <span class="p">],</span>
       <span class="n">material</span><span class="o">=</span><span class="n">material_name</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">spawn_height</span> <span class="o">=</span> <span class="n">max_physical_height</span>
+    <span class="c1"># Sample the max terrain height in a small patch around the center so that</span>
+    <span class="c1"># the robot&#39;s feet don&#39;t clip into nearby higher terrain.</span>
+    <span class="n">center_row</span> <span class="o">=</span> <span class="n">normalized_elevation</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">center_col</span> <span class="o">=</span> <span class="n">normalized_elevation</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">half_patch</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">/</span> <span class="n">grid_spacing</span><span class="p">))</span>  <span class="c1"># ~1 m × 1 m patch</span>
+    <span class="n">r0</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">center_row</span> <span class="o">-</span> <span class="n">half_patch</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">center_row</span> <span class="o">+</span> <span class="n">half_patch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">normalized_elevation</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">c0</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">center_col</span> <span class="o">-</span> <span class="n">half_patch</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">center_col</span> <span class="o">+</span> <span class="n">half_patch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">normalized_elevation</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">spawn_height</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="nb">float</span><span class="p">(</span><span class="n">normalized_elevation</span><span class="p">[</span><span class="n">r0</span><span class="p">:</span><span class="n">r1</span><span class="p">,</span> <span class="n">c0</span><span class="p">:</span><span class="n">c1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">*</span> <span class="n">max_physical_height</span>
+      <span class="o">+</span> <span class="n">hfield_z_offset</span>
+    <span class="p">)</span>
     <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">spawn_height</span><span class="p">])</span>
 
     <span class="c1"># For flat patches, we pass the absolute physical heights.</span>
@@ -1315,7 +1407,7 @@ document.write(`
       <span class="n">normalized_elevation</span> <span class="o">*</span> <span class="n">max_physical_height</span><span class="p">,</span>
       <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># vertical_scale is 1.0 because we already have physical heights</span>
       <span class="n">grid_spacing</span><span class="p">,</span>
-      <span class="mi">0</span><span class="p">,</span>
+      <span class="n">hfield_z_offset</span><span class="p">,</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">flat_patch_sampling</span><span class="p">,</span>
       <span class="n">rng</span><span class="p">,</span>
     <span class="p">)</span>
