@@ -25,6 +25,8 @@ class PlayConfig:
   agent: Literal["zero", "random", "trained"] = "trained"
   registry_name: str | None = None
   wandb_run_path: str | None = None
+  wandb_checkpoint_name: str | None = None
+  """Optional checkpoint name within the W&B run to load (e.g. 'model_4000.pt')."""
   checkpoint_file: str | None = None
   motion_file: str | None = None
   num_envs: int | None = None
@@ -186,7 +188,7 @@ def run_play(task_id: str, cfg: PlayConfig):
       print(f"[INFO]: Loading checkpoint: {resume_path.name}")
     elif cfg.wandb_run_path is not None:
       resume_path, was_cached = get_wandb_checkpoint_path(
-        log_root_path, Path(cfg.wandb_run_path)
+        log_root_path, Path(cfg.wandb_run_path), cfg.wandb_checkpoint_name
       )
       run_id = resume_path.parent.name
       checkpoint_name = resume_path.name

@@ -30,6 +30,9 @@ class EntityIndexing:
   geoms: tuple[mujoco.MjsGeom, ...]
   sites: tuple[mujoco.MjsSite, ...]
   tendons: tuple[mujoco.MjsTendon, ...]
+  cameras: tuple[mujoco.MjsCamera, ...]
+  lights: tuple[mujoco.MjsLight, ...]
+  materials: tuple[mujoco.MjsMaterial, ...]
   actuators: tuple[mujoco.MjsActuator, ...] | None
 
   # Indices.
@@ -37,6 +40,9 @@ class EntityIndexing:
   geom_ids: torch.Tensor
   site_ids: torch.Tensor
   tendon_ids: torch.Tensor
+  cam_ids: torch.Tensor
+  light_ids: torch.Tensor
+  mat_ids: torch.Tensor
   ctrl_ids: torch.Tensor
   joint_ids: torch.Tensor
   mocap_id: int | None
@@ -126,9 +132,17 @@ class Entity:
 
   def __init__(self, cfg: EntityCfg) -> None:
     self.cfg = cfg
-    self._spec = auto_wrap_fixed_base_mocap(cfg.spec_fn)()
+    self._actuators: list[actuator.Actuator] = []
+    self._build_spec()
+    self._identify_joints()
+    self._apply_spec_editors()
+    self._add_actuators()
+    self._add_initial_state_keyframe()
 
-    # Identify free joint and articulated joints.
+  def _build_spec(self) -> None:
+    self._spec = auto_wrap_fixed_base_mocap(self.cfg.spec_fn)()
+
+  def _identify_joints(self) -> None:
     self._all_joints = self._spec.joints
     self._free_joint = None
     self._non_free_joints = tuple(self._all_joints)
@@ -137,11 +151,6 @@ class Entity:
       if not self._free_joint.name:
         self._free_joint.name = "floating_base_joint"
       self._non_free_joints = tuple(self._all_joints[1:])
-    self._actuators: list[actuator.Actuator] = []
-
-    self._apply_spec_editors()
-    self._add_actuators()
-    self._add_initial_state_keyframe()
 
   def _apply_spec_editors(self) -> None:
     for cfg_list in [
@@ -323,6 +332,34 @@ class Entity:
     return len(self.actuator_names)
 
   @property
+  def num_tendons(self) -> int:
+    return len(self.tendon_names)
+
+  @property
+  def camera_names(self) -> tuple[str, ...]:
+    return tuple(c.name.split("/")[-1] for c in self.spec.cameras)
+
+  @property
+  def light_names(self) -> tuple[str, ...]:
+    return tuple(lt.name.split("/")[-1] for lt in self.spec.lights)
+
+  @property
+  def num_cameras(self) -> int:
+    return len(self.camera_names)
+
+  @property
+  def num_lights(self) -> int:
+    return len(self.light_names)
+
+  @property
+  def material_names(self) -> tuple[str, ...]:
+    return tuple(m.name.split("/")[-1] for m in self.spec.materials)
+
+  @property
+  def num_materials(self) -> int:
+    return len(self.material_names)
+
+  @property
   def root_body(self) -> mujoco.MjsBody:
     return self.spec.bodies[1]
 
@@ -406,6 +443,36 @@ class Entity:
     if site_subset is None:
       site_subset = self.site_names
     return resolve_matching_names(name_keys, site_subset, preserve_order)
+
+  def find_cameras(
+    self,
+    name_keys: str | Sequence[str],
+    camera_subset: Sequence[str] | None = None,
+    preserve_order: bool = False,
+  ) -> tuple[list[int], list[str]]:
+    if camera_subset is None:
+      camera_subset = self.camera_names
+    return resolve_matching_names(name_keys, camera_subset, preserve_order)
+
+  def find_lights(
+    self,
+    name_keys: str | Sequence[str],
+    light_subset: Sequence[str] | None = None,
+    preserve_order: bool = False,
+  ) -> tuple[list[int], list[str]]:
+    if light_subset is None:
+      light_subset = self.light_names
+    return resolve_matching_names(name_keys, light_subset, preserve_order)
+
+  def find_materials(
+    self,
+    name_keys: str | Sequence[str],
+    material_subset: Sequence[str] | None = None,
+    preserve_order: bool = False,
+  ) -> tuple[list[int], list[str]]:
+    if material_subset is None:
+      material_subset = self.material_names
+    return resolve_matching_names(name_keys, material_subset, preserve_order)
 
   def compile(self) -> mujoco.MjModel:
     """Compile the underlying MjSpec into an MjModel."""
@@ -919,11 +986,17 @@ class Entity:
     geoms = tuple(self.spec.geoms)
     sites = tuple(self.spec.sites)
     tendons = tuple(self.spec.tendons)
+    cameras = tuple(self.spec.cameras)
+    lights = tuple(self.spec.lights)
+    materials = tuple(self.spec.materials)
 
     body_ids = torch.tensor([b.id for b in bodies], dtype=torch.int, device=device)
     geom_ids = torch.tensor([g.id for g in geoms], dtype=torch.int, device=device)
     site_ids = torch.tensor([s.id for s in sites], dtype=torch.int, device=device)
     tendon_ids = torch.tensor([t.id for t in tendons], dtype=torch.int, device=device)
+    cam_ids = torch.tensor([c.id for c in cameras], dtype=torch.int, device=device)
+    light_ids = torch.tensor([lt.id for lt in lights], dtype=torch.int, device=device)
+    mat_ids = torch.tensor([m.id for m in materials], dtype=torch.int, device=device)
     joint_ids = torch.tensor([j.id for j in joints], dtype=torch.int, device=device)
 
     if self.is_actuated:
@@ -964,11 +1037,17 @@ class Entity:
       geoms=geoms,
       sites=sites,
       tendons=tendons,
+      cameras=cameras,
+      lights=lights,
+      materials=materials,
       actuators=actuators,
       body_ids=body_ids,
       geom_ids=geom_ids,
       site_ids=site_ids,
       tendon_ids=tendon_ids,
+      cam_ids=cam_ids,
+      light_ids=light_ids,
+      mat_ids=mat_ids,
       ctrl_ids=ctrl_ids,
       joint_ids=joint_ids,
       mocap_id=mocap_id,

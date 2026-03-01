@@ -80,6 +80,10 @@ class ViserMujocoScene(DebugVisualizer):
 
   Also implements DebugVisualizer protocol for environment-specific annotations
   like arrows, ghost meshes, and coordinate frames.
+
+  Design boundary:
+  - This class owns render-handle lifecycle and geometry update internals.
+  - Viewer/overlay managers orchestrate *when* to request updates.
   """
 
   # Core.
@@ -116,6 +120,7 @@ class ViserMujocoScene(DebugVisualizer):
   contact_force_color: tuple[int, int, int] = _DEFAULT_CONTACT_FORCE_COLOR
   meansize_override: float | None = None
   needs_update: bool = False
+  paused: bool = False
   _tracked_body_id: int | None = field(init=False, default=None)
 
   # Cached visualization state for re-rendering when settings change.
@@ -163,6 +168,11 @@ class ViserMujocoScene(DebugVisualizer):
   ] = field(default_factory=list, init=False)
   _cylinder_handle: viser.BatchedMeshHandle | None = field(default=None, init=False)
   _cylinder_mesh: trimesh.Trimesh | None = field(default=None, init=False)
+  _queued_ellipsoids: list[
+    tuple[np.ndarray, np.ndarray, np.ndarray, tuple[float, float, float, float]]
+  ] = field(default_factory=list, init=False)
+  _ellipsoid_handle: viser.BatchedMeshHandle | None = field(default=None, init=False)
+  _ellipsoid_mesh: trimesh.Trimesh | None = field(default=None, init=False)
   _fixed_site_handles: dict[tuple[int, int], viser.GlbHandle] = field(
     default_factory=dict, init=False
   )
@@ -497,8 +507,13 @@ class ViserMujocoScene(DebugVisualizer):
 
     body_xpos = wp_data.xpos.cpu().numpy()
     body_xmat = wp_data.xmat.cpu().numpy()
-    mocap_pos = wp_data.mocap_pos.cpu().numpy()
-    mocap_quat = wp_data.mocap_quat.cpu().numpy()
+    if self.mj_model.nmocap > 0:
+      mocap_pos = wp_data.mocap_pos.cpu().numpy()
+      mocap_quat = wp_data.mocap_quat.cpu().numpy()
+    else:
+      nworld = body_xpos.shape[0]
+      mocap_pos = np.zeros((nworld, 0, 3))
+      mocap_quat = np.zeros((nworld, 0, 4))
     scene_offset = np.zeros(3)
     if self.camera_tracking_enabled and self._tracked_body_id is not None:
       tracked_pos = body_xpos[env_idx, self._tracked_body_id, :].copy()
@@ -508,8 +523,9 @@ class ViserMujocoScene(DebugVisualizer):
     if self.show_contact_points or self.show_contact_forces:
       self.mj_data.qpos[:] = wp_data.qpos.cpu().numpy()[env_idx]
       self.mj_data.qvel[:] = wp_data.qvel.cpu().numpy()[env_idx]
-      self.mj_data.mocap_pos[:] = mocap_pos[env_idx]
-      self.mj_data.mocap_quat[:] = mocap_quat[env_idx]
+      if self.mj_model.nmocap > 0:
+        self.mj_data.mocap_pos[:] = mocap_pos[env_idx]
+        self.mj_data.mocap_quat[:] = mocap_quat[env_idx]
       mujoco.mj_forward(self.mj_model, self.mj_data)
       contacts = self._extract_contacts_from_mjdata(self.mj_data)
 
@@ -527,8 +543,12 @@ class ViserMujocoScene(DebugVisualizer):
     """
     body_xpos = mj_data.xpos[None, ...]
     body_xmat = mj_data.xmat.reshape(-1, 3, 3)[None, ...]
-    mocap_pos = mj_data.mocap_pos[None, ...]
-    mocap_quat = mj_data.mocap_quat[None, ...]
+    if self.mj_model.nmocap > 0:
+      mocap_pos = mj_data.mocap_pos[None, ...]
+      mocap_quat = mj_data.mocap_quat[None, ...]
+    else:
+      mocap_pos = np.zeros((1, 0, 3))
+      mocap_quat = np.zeros((1, 0, 4))
     env_idx = 0
     scene_offset = np.zeros(3)
     if self.camera_tracking_enabled and self._tracked_body_id is not None:
@@ -554,6 +574,7 @@ class ViserMujocoScene(DebugVisualizer):
     self._sync_arrows()
     self._sync_spheres()
     self._sync_cylinders()
+    self._sync_ellipsoids()
     self._sync_ghosts()
 
   def _update_visualization(
@@ -638,7 +659,7 @@ class ViserMujocoScene(DebugVisualizer):
     """Re-render the scene using cached visualization data.
 
     This is useful when visualization settings change (e.g., toggling contacts)
-    but the underlying simulation data hasn't changed. Clears the needs_update flag.
+    but the underlying simulation data hasn't changed.
     """
     if (
       self._last_body_xpos is None
@@ -674,7 +695,24 @@ class ViserMujocoScene(DebugVisualizer):
       scene_offset,
       contacts,
     )
-    self.needs_update = False
+    # Keep one live refresh pending when overlays depend on live sim state.
+    # This covers contact toggles and paused debug-viz toggles (e.g. ghosts),
+    # which otherwise can require stepping/unpausing to appear.
+    self.needs_update = self._requires_live_refresh(
+      show_contact_points=self.show_contact_points,
+      show_contact_forces=self.show_contact_forces,
+      debug_visualization_enabled=self.debug_visualization_enabled,
+    )
+
+  @staticmethod
+  def _requires_live_refresh(
+    *,
+    show_contact_points: bool,
+    show_contact_forces: bool,
+    debug_visualization_enabled: bool,
+  ) -> bool:
+    """Whether scene should request one live recompute after cached refresh."""
+    return show_contact_points or show_contact_forces or debug_visualization_enabled
 
   def _add_fixed_geometry(self) -> None:
     """Add fixed world geometry to the scene."""
@@ -715,16 +753,10 @@ class ViserMujocoScene(DebugVisualizer):
             geom_name = mj_id2name(self.mj_model, mjtObj.mjOBJ_GEOM, geom_id)
             self.server.scene.add_grid(
               f"/fixed_bodies/{body_name}/{geom_name}",
-              # For infinite grids in viser 1.0.10, the width and height
-              # parameters determined the region of the grid that can
-              # receive shadows. We'll just make this really big for now.
-              # In a future release of Viser these two args should ideally be
-              # unnecessary.
-              width=2000.0,
-              height=2000.0,
               infinite_grid=True,
               fade_distance=50.0,
               shadow_opacity=0.2,
+              plane_opacity=0.4,
               position=self.mj_model.geom_pos[geom_id],
               wxyz=self.mj_model.geom_quat[geom_id],
             )
@@ -748,7 +780,15 @@ class ViserMujocoScene(DebugVisualizer):
             )
 
   def _create_mesh_handles_by_group(self) -> None:
-    """Create mesh handles for each geom group separately to allow independent toggling."""
+    """Create mesh handles for each geom group separately to allow independent toggling.
+
+    Note: geom_rgba DR is not currently reflected in viser. All dynamic geoms go
+    through add_batched_meshes_trimesh (BatchedGlbHandle), which bakes vertex colors
+    into the GLB at construction time and has no runtime color update API.
+    To support it, color-only geoms would need to use add_batched_meshes_simple
+    (BatchedMeshHandle) instead, which exposes a batched_colors property. Deferred
+    for now.
+    """
     # Group geoms by (body_id, group_id).
     body_group_geoms: dict[tuple[int, int], list[int]] = {}
 
@@ -1220,6 +1260,37 @@ class ViserMujocoScene(DebugVisualizer):
     self._queued_cylinders.append((start.copy(), end.copy(), radius, color))
 
   @override
+  def add_ellipsoid(
+    self,
+    center: np.ndarray | torch.Tensor,
+    size: np.ndarray | torch.Tensor,
+    mat: np.ndarray | torch.Tensor,
+    color: tuple[float, float, float, float],
+    label: str | None = None,
+  ) -> None:
+    """Queue an ellipsoid for batched rendering."""
+    if not self.debug_visualization_enabled:
+      return
+
+    del label  # Unused.
+    if isinstance(center, torch.Tensor):
+      center = center.cpu().numpy()
+    if isinstance(size, torch.Tensor):
+      size = size.cpu().numpy()
+    if isinstance(mat, torch.Tensor):
+      mat = mat.cpu().numpy()
+
+    mat = np.asarray(mat, dtype=np.float32).reshape(3, 3)
+    self._queued_ellipsoids.append(
+      (
+        np.asarray(center, dtype=np.float32).copy(),
+        np.asarray(size, dtype=np.float32).copy(),
+        mat.copy(),
+        color,
+      )
+    )
+
+  @override
   def clear(self) -> None:
     """Clear all debug visualizations.
 
@@ -1229,6 +1300,7 @@ class ViserMujocoScene(DebugVisualizer):
     self._queued_arrows.clear()
     self._queued_spheres.clear()
     self._queued_cylinders.clear()
+    self._queued_ellipsoids.clear()
     self._queued_ghosts.clear()
 
   def clear_debug_all(self) -> None:
@@ -1256,10 +1328,14 @@ class ViserMujocoScene(DebugVisualizer):
       self._cylinder_handle.remove()
       self._cylinder_handle = None
 
-    # Remove ghost meshes
+    # Remove ellipsoid meshes
+    if self._ellipsoid_handle is not None:
+      self._ellipsoid_handle.remove()
+      self._ellipsoid_handle = None
+
+    # Hide ghost meshes (retain handles to avoid recreate hitch on re-enable)
     for handle in self._ghost_handles_batched.values():
-      handle.remove()
-    self._ghost_handles_batched.clear()
+      handle.visible = False
 
   def _create_geom_mesh_from_model(
     self, mj_model: mujoco.MjModel, geom_id: int
@@ -1565,6 +1641,61 @@ class ViserMujocoScene(DebugVisualizer):
       self._cylinder_handle.batched_scales = scales
       self._cylinder_handle.batched_colors = colors
 
+  def _sync_ellipsoids(self) -> None:
+    """Render all queued ellipsoids using batched meshes."""
+    if not self.debug_visualization_enabled:
+      return
+
+    if not self._queued_ellipsoids:
+      if self._ellipsoid_handle is not None:
+        self._ellipsoid_handle.remove()
+        self._ellipsoid_handle = None
+      return
+
+    if self._ellipsoid_mesh is None:
+      self._ellipsoid_mesh = trimesh.creation.icosphere(subdivisions=2, radius=1.0)
+
+    num_ellipsoids = len(self._queued_ellipsoids)
+    positions = np.zeros((num_ellipsoids, 3), dtype=np.float32)
+    wxyzs = np.zeros((num_ellipsoids, 4), dtype=np.float32)
+    scales = np.zeros((num_ellipsoids, 3), dtype=np.float32)
+    colors = np.zeros((num_ellipsoids, 3), dtype=np.uint8)
+    opacities = np.zeros(num_ellipsoids, dtype=np.float32)
+
+    for i, (center, size, mat, color) in enumerate(self._queued_ellipsoids):
+      positions[i] = center + self._scene_offset
+      wxyzs[i] = vtf.SO3.from_matrix(mat).wxyz
+      scales[i] = size
+      colors[i] = (np.array(color[:3]) * 255).astype(np.uint8)
+      opacities[i] = color[3]
+
+    needs_recreation = self._ellipsoid_handle is None or len(positions) != len(
+      self._ellipsoid_handle.batched_positions
+    )
+
+    if needs_recreation:
+      if self._ellipsoid_handle is not None:
+        self._ellipsoid_handle.remove()
+
+      self._ellipsoid_handle = self.server.scene.add_batched_meshes_simple(
+        f"/debug/env_{self.env_idx}/ellipsoids",
+        self._ellipsoid_mesh.vertices,
+        self._ellipsoid_mesh.faces,
+        batched_wxyzs=wxyzs,
+        batched_positions=positions,
+        batched_scales=scales,
+        batched_colors=colors,
+        opacity=opacities[0],
+        cast_shadow=False,
+        receive_shadow=False,
+      )
+    else:
+      assert self._ellipsoid_handle is not None
+      self._ellipsoid_handle.batched_positions = positions
+      self._ellipsoid_handle.batched_wxyzs = wxyzs
+      self._ellipsoid_handle.batched_scales = scales
+      self._ellipsoid_handle.batched_colors = colors
+
   def _sync_ghosts(self) -> None:
     """Render all queued ghosts using batched meshes.
 
@@ -1573,13 +1704,16 @@ class ViserMujocoScene(DebugVisualizer):
     combination, significantly reducing scene node count for multi-env rendering.
     """
     if not self.debug_visualization_enabled:
+      for handle in self._ghost_handles_batched.values():
+        handle.visible = False
       return
 
     if not self._queued_ghosts:
-      # Remove all ghost meshes if no ghosts to render
+      # While paused, keep last ghost snapshot visible so toggling debug does not
+      # require stepping to repopulate queues. While running, empty queue means
+      # ghosts should disappear this frame.
       for handle in self._ghost_handles_batched.values():
-        handle.remove()
-      self._ghost_handles_batched.clear()
+        handle.visible = self.paused
       return
 
     # Group ghosts by (model_hash, body_id) -> list of (qpos, model, alpha, label)
@@ -1679,17 +1813,8 @@ class ViserMujocoScene(DebugVisualizer):
 
       key = (model_hash, body_id)
 
-      # Check if we need to recreate handle (number of instances changed)
-      needs_recreation = key not in self._ghost_handles_batched or len(
-        positions
-      ) != len(self._ghost_handles_batched[key].batched_positions)
-
-      if needs_recreation:
-        # Remove old handle if exists
-        if key in self._ghost_handles_batched:
-          self._ghost_handles_batched[key].remove()
-
-        # Create new batched mesh
+      # Create handle if missing; otherwise update in place.
+      if key not in self._ghost_handles_batched:
         self._ghost_handles_batched[key] = self.server.scene.add_batched_meshes_simple(
           f"/debug/ghosts/body_{body_id}_{model_hash}",
           combined_mesh.vertices,
@@ -1702,11 +1827,29 @@ class ViserMujocoScene(DebugVisualizer):
           receive_shadow=False,
         )
       else:
-        # Update existing handle
+        # Update existing handle. Some viser versions allow dynamic batch sizes;
+        # if not, fallback to recreate for this key only.
         handle = self._ghost_handles_batched[key]
-        handle.batched_positions = positions
-        handle.batched_wxyzs = wxyzs
-        handle.batched_colors = colors
+        try:
+          handle.batched_positions = positions
+          handle.batched_wxyzs = wxyzs
+          handle.batched_colors = colors
+          handle.visible = True
+        except Exception:
+          handle.remove()
+          self._ghost_handles_batched[key] = (
+            self.server.scene.add_batched_meshes_simple(
+              f"/debug/ghosts/body_{body_id}_{model_hash}",
+              combined_mesh.vertices,
+              combined_mesh.faces,
+              batched_wxyzs=wxyzs,
+              batched_positions=positions,
+              batched_colors=colors,
+              opacity=alpha,
+              cast_shadow=False,
+              receive_shadow=False,
+            )
+          )
 
   @staticmethod
   def _mat_to_quat(mat: np.ndarray) -> np.ndarray:

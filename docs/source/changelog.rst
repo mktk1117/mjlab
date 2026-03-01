@@ -5,23 +5,124 @@ Changelog
 Upcoming version (not yet released)
 -----------------------------------
 
+.. admonition:: Breaking API changes
+   :class: attention
+
+   - ``randomize_field`` no longer exists. Replace calls with typed functions
+     from the new ``dr`` module (e.g. ``dr.geom_friction``, ``dr.body_mass``).
+   - ``EventTermCfg`` no longer accepts ``domain_randomization``. The
+     ``@requires_model_fields`` decorator on each ``dr`` function takes care
+     of field expansion automatically.
+
 Added
 ^^^^^
 
+- Cloud training support via `SkyPilot <https://skypilot.readthedocs.io/>`_
+  and Lambda Cloud, with documentation covering setup, monitoring, and
+  cost management.
+- W&B hyperparameter sweep scripts that distribute one agent per GPU
+  across a multi-GPU instance.
+- Contributing guide with documentation for shared Claude Code commands
+  (``/update-mjwarp``, ``/commit-push-pr``).
+- Added optional ``ViewerConfig.fovy`` and apply it in native viewer camera
+  setup when provided.
+- New ``dr`` module (``mjlab.envs.mdp.dr``) replacing ``randomize_field``
+  with typed per-field domain randomization functions. Each function
+  automatically recomputes derived fields via ``set_const``. Highlights:
+
+  - Camera and light randomization: ``dr.cam_fovy``, ``dr.cam_pos``,
+    ``dr.cam_quat``, ``dr.cam_intrinsic``, ``dr.light_pos``,
+    ``dr.light_dir``. Camera and light names are now supported in
+    ``SceneEntityCfg`` (``camera_names`` / ``light_names``).
+  - ``dr.pseudo_inertia`` for physics-consistent randomization of
+    ``body_mass``, ``body_ipos``, ``body_inertia``, and ``body_iquat``
+    via the pseudo-inertia matrix parameterization (Rucker & Wensing
+    2022). Replaces the removed ``dr.body_inertia`` /
+    ``dr.body_iquat``.
+  - ``dr.geom_size`` with automatic recomputation of ``geom_rbound``
+    and ``geom_aabb`` for broadphase consistency.
+  - ``dr.tendon_armature`` and ``dr.tendon_frictionloss``.
+  - ``dr.body_quat``, ``dr.geom_quat``, and ``dr.site_quat`` with RPY
+    perturbation composed onto the default quaternion.
+  - Extensible ``Operation`` and ``Distribution`` types. Users can define
+    custom operations and distributions as class instances and pass them
+    anywhere a string is accepted. Built-in instances (``dr.abs``,
+    ``dr.scale``, ``dr.add``, ``dr.uniform``, ``dr.log_uniform``,
+    ``dr.gaussian``) are exported from the ``dr`` module.
+  - ``dr.mat_rgba`` for per-world material color randomization. Tints
+    the texture color, useful for randomizing appearance of textured
+    surfaces. Material names are now supported in ``SceneEntityCfg``
+    (``material_names``).
+  - Fixed ``dr.effort_limits`` drifting on repeated randomization.
+  - Fixed ``dr.body_com_offset`` not triggering ``set_const``.
+
+- ``yam_lift_cube_vision_env_cfg`` now randomizes cube color (``dr.geom_rgba``)
+  on every reset when ``cam_type="rgb"``.
+
+- The native viewer now reflects per-world DR changes to visual model fields
+  on each reset. Geom appearance, body and site poses, camera parameters,
+  and light positions are all synced from the GPU model before rendering.
+  Inertia boxes (press ``I``) and camera frustums (press ``Q``) update
+  correctly when the corresponding fields are randomized. See
+  :doc:`randomization` for viewer-specific caveats.
+
+- ``MaterialCfg.geom_names_expr`` for assigning materials to geoms by
+  name pattern during ``edit_spec``.
+
+- ``TerrainEntityCfg`` now exposes ``textures``, ``materials``, and
+  ``lights`` as configurable fields (previously hardcoded). Set
+  ``textures=()``, ``materials=()`` to use flat ``dr.geom_rgba``
+  instead of the default checker texture.
+
+- ``DebugVisualizer`` now supports ellipsoid visualization via
+  ``add_ellipsoid``.
+
+- Viewer single-step mode: press RIGHT arrow (native) or click "Step"
+  (Viser) to advance exactly one physics step while paused.
+- Viewer error recovery: exceptions during stepping now pause the viewer
+  and log the traceback instead of crashing the process.
+- Native viewer runs forward kinematics while paused, keeping
+  perturbation visuals accurate.
+- Viewer speed multipliers use clean power-of-2 fractions (1/32x to 1x).
+
+- Visualizers display the realtime factor alongside FPS.
+
+- ``joint_torques_l2`` now respects ``SceneEntityCfg.actuator_ids``,
+  allowing penalization of a subset of actuators instead of all of them
+  (`#703 <https://github.com/mujocolab/mjlab/pull/703>`_). Contribution by
+  `@saikishor <https://github.com/saikishor>`_.
+
+- Terrain is now a proper ``Entity`` subclass (``TerrainEntity``). This
+  allows domain randomization functions to target terrain parameters
+  (friction, cameras, lights) via ``SceneEntityCfg("terrain", ...)``.
+  ``TerrainImporter`` / ``TerrainImporterCfg`` remain as aliases but will be
+  deprecated in a future version.
 - Added ``upload_model`` option to ``RslRlBaseRunnerCfg`` to control W&B model
   file uploads (``.pt`` and ``.onnx``) while keeping metric logging enabled
-  (:gh:`654`).
+  (`#654 <https://github.com/mujocolab/mjlab/pull/654>`_).
 
 Changed
 ^^^^^^^
 
+- Self collision and illegal contact sensors now use ``history_length`` to
+  catch contacts across decimation substeps. Reward and termination functions
+  read ``force_history`` with a configurable ``force_threshold``.
 - Replaced the single ``scale`` parameter in ``DifferentialIKActionCfg`` with
   separate ``delta_pos_scale`` and ``delta_ori_scale`` for independent scaling
   of position and orientation components.
+- Improved offscreen multi environment framing by selecting neighboring
+  environments around the focused env instead of first N envs.
+- Tuned tracking task viewer defaults for tighter camera framing.
+- Disabled shadow casting on the G1 tracking light to avoid duplicate
+  stacked shadows when robots are close.
 
 Fixed
 ^^^^^
 
+- Fixed viewer physics loop starving the renderer by replacing the single
+  sim-time budget with a two-clock design (tracked vs actual sim time).
+  Physics now self-corrects after overshooting, keeping FPS smooth at all
+  speed multipliers.
 - Bundled ``ffmpeg`` for ``mediapy`` via ``imageio-ffmpeg``, removing the
   requirement for a system ``ffmpeg`` install. Thanks to
   `@rdeits-bd <https://github.com/rdeits-bd>`_ for the suggestion.
@@ -32,6 +133,14 @@ Fixed
 - Fixed ghost mesh visualization for fixed-base entities by extending
   ``DebugVisualizer.add_ghost_mesh`` to optionally accept ``mocap_pos`` and
   ``mocap_quat`` (`#645 <https://github.com/mujocolab/mjlab/pull/645>`_).
+- Fixed viser viewer crashing on scenes with no mocap bodies by adding
+  an ``nmocap`` guard, matching the native viewer behavior.
+- Fixed offscreen rendering artifacts in large vectorized scenes by applying
+  a render local extent override in ``OffscreenRenderer`` and restoring the
+  original extent on close.
+- Fixed ``RslRlVecEnvWrapper.unwrapped`` to return the base environment,
+  ensuring checkpoint state restore and logging work correctly when wrappers
+  such as ``VideoRecorder`` are enabled.
 
 Version 1.1.1 (February 14, 2026)
 ---------------------------------

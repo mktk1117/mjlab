@@ -14,10 +14,19 @@ if TYPE_CHECKING:
 _DEFAULT_SCENE_CFG = SceneEntityCfg("robot")
 
 
-def illegal_contact(env: ManagerBasedRlEnv, sensor_name: str) -> torch.Tensor:
+def illegal_contact(
+  env: ManagerBasedRlEnv,
+  sensor_name: str,
+  force_threshold: float = 10.0,
+) -> torch.Tensor:
   sensor: ContactSensor = env.scene[sensor_name]
-  assert sensor.data.found is not None
-  return torch.any(sensor.data.found, dim=-1)
+  data = sensor.data
+  if data.force_history is not None:
+    # force_history: [B, N, H, 3]
+    force_mag = torch.norm(data.force_history, dim=-1)  # [B, N, H]
+    return (force_mag > force_threshold).any(dim=-1).any(dim=-1)  # [B]
+  assert data.found is not None
+  return torch.any(data.found, dim=-1)
 
 
 def out_of_terrain_bounds(
@@ -97,4 +106,3 @@ def terrain_edge_reached(
   at_edge &= env.episode_length_buf > 2
 
   return at_edge
-
