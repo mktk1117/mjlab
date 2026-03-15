@@ -253,6 +253,10 @@ def unitree_go1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     params={"limit_angle": math.radians(50.0)},
   )
 
+  # Disable rewards that reference removed height sensors.
+  cfg.rewards["terrain_clearance"].weight = 0.0
+  cfg.rewards["upright"].weight = 0.0
+
   # Disable terrain curriculum.
   cfg.curriculum.pop("terrain_levels", None)
 

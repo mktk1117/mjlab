@@ -33,6 +33,7 @@ class ViserPlayViewer(BaseViewer):
     policy: PolicyProtocol,
     frame_rate: float = 60.0,
     verbosity: VerbosityLevel = VerbosityLevel.SILENT,
+    viser_server: viser.ViserServer | None = None,
   ) -> None:
     super().__init__(env, policy, frame_rate, verbosity)
     self._reward_plotter: ViserTermPlotter | None = None
@@ -47,6 +48,8 @@ class ViserPlayViewer(BaseViewer):
     self._joystick_vx: viser.GuiInputHandle[float] | None = None
     self._joystick_vy: viser.GuiInputHandle[float] | None = None
     self._joystick_wz: viser.GuiInputHandle[float] | None = None
+    self._external_server = viser_server is not None
+    self._server = viser_server or viser.ViserServer(label="mjlab")
 
   @override
   def setup(self) -> None:
@@ -54,7 +57,6 @@ class ViserPlayViewer(BaseViewer):
     sim = self.env.unwrapped.sim
     assert isinstance(sim, Simulation)
 
-    self._server = viser.ViserServer(label="mjlab")
     self._threadpool = ThreadPoolExecutor(max_workers=1)
     self._counter = 0
     self._needs_update = False
@@ -114,6 +116,7 @@ class ViserPlayViewer(BaseViewer):
           else:
             self.request_speed_up()
 
+
       # Camera feeds: collect all camera sensors and add to controls tab.
       camera_sensors = [
         sensor
@@ -129,15 +132,27 @@ class ViserPlayViewer(BaseViewer):
       else:
         self._camera_viewers = []
 
+      # Let command terms create their own GUI controls.
+      env = self.env.unwrapped
+      if env.command_manager.active_terms:
+        with self._server.gui.add_folder("Commands"):
+          env.command_manager.create_gui(self._server, lambda: self._scene.env_idx)
+
       # Virtual joystick for velocity tasks.
       self._setup_joystick()
 
-      # Add standard visualization options from ViserMujocoScene (Environment, Visualization, Contacts, Camera Tracking, Debug Visualization).
-      self._scene.create_visualization_gui(
-        camera_distance=self.cfg.distance,
-        camera_azimuth=self.cfg.azimuth,
-        camera_elevation=self.cfg.elevation,
-      )
+      # Add standard visualization options from ViserMujocoScene.
+      def _debug_viz_extra() -> None:
+        env.command_manager.create_debug_vis_gui(self._server)
+
+      with self._server.gui.add_folder("Scene"):
+        self._scene.create_visualization_gui(
+          camera_distance=self.cfg.distance,
+          camera_azimuth=self.cfg.azimuth,
+          camera_elevation=self.cfg.elevation,
+          debug_viz_extra_gui=_debug_viz_extra,
+        )
+
 
     self._prev_env_idx = self._scene.env_idx
 
@@ -363,7 +378,8 @@ class ViserPlayViewer(BaseViewer):
     for camera_viewer in self._camera_viewers:
       camera_viewer.cleanup()
     self._threadpool.shutdown(wait=True)
-    self._server.stop()
+    if not self._external_server:
+      self._server.stop()
 
   @override
   def is_running(self) -> bool:
@@ -372,7 +388,7 @@ class ViserPlayViewer(BaseViewer):
 
   def _update_status_display(self) -> None:
     """Update the HTML status display."""
-    fps_display = f"{self._smoothed_fps:.1f}" if self._smoothed_fps > 0 else "—"
+    fps_display = f"{self._fps:.1f}" if self._fps > 0 else "—"
     self._status_html.content = f"""
       <div style="font-size: 0.85em; line-height: 1.25; padding: 0 1em 0.5em 1em;">
         <strong>Status:</strong> {"Paused" if self._is_paused else "Running"}<br/>

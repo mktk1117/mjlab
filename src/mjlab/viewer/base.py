@@ -69,6 +69,7 @@ close(), and is_running().
 
 from __future__ import annotations
 
+import signal
 import time
 import traceback
 from abc import ABC, abstractmethod
@@ -336,6 +337,9 @@ class BaseViewer(ABC):
 
   def reset_environment(self) -> None:
     self.env.reset()
+    reset_fn = getattr(self.policy, "reset", None)
+    if reset_fn is not None:
+      reset_fn()
     self._step_count = 0
     self._sim_budget = 0.0
     self._last_error = None
@@ -389,18 +393,39 @@ class BaseViewer(ABC):
     self._stats_frames += 1
     return True
 
-  def run(self, num_steps: Optional[int] = None) -> None:
+  def run(self, num_steps: Optional[int] = None, catch_sigint: bool = True) -> None:
+    self._interrupted = False
     self.setup()
     now = time.perf_counter()
     self._stats_last_time = now
     self._last_tick_time = now
+
+    prev_handler = None
     try:
-      while self.is_running() and (num_steps is None or self._step_count < num_steps):
+      if catch_sigint:
+        try:
+          prev_handler = signal.signal(signal.SIGINT, self._sigint_handler)
+        except ValueError:
+          pass  # Non-main thread; skip gracefully.
+
+      while (
+        self.is_running()
+        and (num_steps is None or self._step_count < num_steps)
+        and not self._interrupted
+      ):
         if not self.tick():
           time.sleep(0.001)
         self._update_stats()
     finally:
       self.close()
+      if prev_handler is not None:
+        signal.signal(signal.SIGINT, prev_handler)
+
+  def _sigint_handler(self, signum, frame) -> None:
+    self._interrupted = True
+    print("\nCtrl+C received. Shutting down viewer...")
+    # Restore default so a second Ctrl+C kills immediately.
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
 
   # Stats.
 

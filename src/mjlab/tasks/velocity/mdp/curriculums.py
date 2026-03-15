@@ -122,7 +122,7 @@ def commands_vel(
   assert command_term is not None
   cfg = cast(UniformVelocityCommandCfg, command_term.cfg)
   for stage in velocity_stages:
-    if env.common_step_counter > stage["step"]:
+    if env.common_step_counter >= stage["step"]:
       if "lin_vel_x" in stage and stage["lin_vel_x"] is not None:
         cfg.ranges.lin_vel_x = stage["lin_vel_x"]
       if "lin_vel_y" in stage and stage["lin_vel_y"] is not None:
