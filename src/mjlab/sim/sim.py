@@ -169,6 +169,21 @@ class Simulation:
     self._default_model_fields: dict[str, torch.Tensor] = {}
     self._expanded_fields: set[str] = set()
 
+    # Suppress the noisy "opt.ccd_iterations needs to be increased" warning.
+    # The CCD solver sometimes can't converge for complex mesh-mesh contacts,
+    # but this is benign for RL training.
+    _orig_warning = mujoco.get_mju_user_warning()
+
+    def _filter_warning(msg: str) -> None:
+      if "ccd_iterations" in msg:
+        return
+      if _orig_warning is not None:
+        _orig_warning(msg)
+      else:
+        print(f"MuJoCo warning: {msg}")
+
+    mujoco.set_mju_user_warning(_filter_warning)
+
     # MuJoCo model and data.
     self._mj_model = model
     cfg.mujoco.apply(self._mj_model)

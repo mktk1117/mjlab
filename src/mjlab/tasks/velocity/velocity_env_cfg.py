@@ -346,6 +346,13 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     "joint_vel_l2": RewardTermCfg(func=mdp.joint_vel_l2, weight=-1.0e-6),
     "joint_acc_l2": RewardTermCfg(func=mdp.joint_acc_l2, weight=-1.0e-8),
     "joint_torques_l2": RewardTermCfg(func=mdp.joint_torques_l2, weight=-1.0e-10),
+    "electrical_power": RewardTermCfg(
+      func=mdp.electrical_power_cost,
+      weight=0.0,  # Override per-robot.
+      params={
+        "asset_cfg": SceneEntityCfg("robot", joint_names=(".*",)),
+      },
+    ),
     "air_time": RewardTermCfg(
       func=mdp.feet_air_time,
       weight=0.0,  # Override per-robot.

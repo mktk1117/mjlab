@@ -62,7 +62,7 @@ def pyramid_stairs(**overrides) -> terrain_gen.BoxPyramidStairsTerrainCfg:
 @terrain_preset
 def ledged_stairs(**overrides) -> terrain_gen.BoxLedgedStairsTerrainCfg:
   defaults: dict[str, Any] = dict(
-    step_height_range=(0.0, 0.2),
+    step_height_range=(0.0, 0.15),
     step_width=0.3,
     platform_width=3.0,
     border_width=1.0,
@@ -76,7 +76,7 @@ def ledged_stairs(**overrides) -> terrain_gen.BoxLedgedStairsTerrainCfg:
 @terrain_preset
 def ledged_stairs_inv(**overrides) -> terrain_gen.BoxInvertedLedgedStairsTerrainCfg:
   defaults: dict[str, Any] = dict(
-    step_height_range=(0.0, 0.2),
+    step_height_range=(0.0, 0.15),
     step_width=0.3,
     platform_width=3.0,
     border_width=1.0,
@@ -356,8 +356,8 @@ ROUGH_TERRAINS_CFG = TerrainGeneratorCfg(
     "perlin_terrain_smooth": perlin_terrain_smooth(proportion=0.1),
     "perlin_terrain_rough": perlin_terrain_rough(proportion=0.1),
     "random_spread_boxes": random_spread_boxes(proportion=0.05),
-    "open_stairs": open_stairs(proportion=0.05),
-    "inverted_open_stairs": inverted_open_stairs(proportion=0.05),
+    # "open_stairs": open_stairs(proportion=0.05),
+    # "inverted_open_stairs": inverted_open_stairs(proportion=0.05),
     "random_stairs": random_stairs(proportion=0.05),
     "tilted_grid": tilted_grid(proportion=0.05),
     "tilted_grid_narrow": tilted_grid(proportion=0.05, grid_width=1.0),
