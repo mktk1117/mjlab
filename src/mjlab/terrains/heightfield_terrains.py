@@ -102,6 +102,33 @@ def color_by_height(
   return material_name
 
 
+_EDGE_FADE_METERS = 1.0
+"""Physical width of the cosine fade applied at inner-region edges."""
+
+
+def _apply_edge_fade(
+  data: np.ndarray,
+  grid_spacing: float,
+) -> np.ndarray:
+  """Multiply *data* by a separable cosine ramp that fades to 0 at edges."""
+  rows, cols = data.shape
+  fade_pixels = min(
+    int(_EDGE_FADE_METERS / grid_spacing),
+    rows // 2,
+    cols // 2,
+  )
+  if fade_pixels < 2:
+    return data
+  ramp = 0.5 - 0.5 * np.cos(np.linspace(0, np.pi, fade_pixels))
+  fx = np.ones(rows, dtype=np.float64)
+  fy = np.ones(cols, dtype=np.float64)
+  fx[:fade_pixels] = ramp
+  fx[-fade_pixels:] = ramp[::-1]
+  fy[:fade_pixels] = ramp
+  fy[-fade_pixels:] = ramp[::-1]
+  return data * fx[:, np.newaxis] * fy[np.newaxis, :]
+
+
 def _fractal_perlin_noise_2d(
   x_size: int,
   y_size: int,
@@ -382,8 +409,6 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
   def function(
     self, difficulty: float, spec: mujoco.MjSpec, rng: np.random.Generator
   ) -> TerrainOutput:
-    del difficulty  # Unused.
-
     body = spec.body("terrain")
 
     if self.border_width > 0 and self.border_width < self.horizontal_scale:
@@ -408,6 +433,12 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
 
     noise = np.zeros((width_pixels, length_pixels), dtype=np.int16)
 
+    # Scale noise range by difficulty (flat at difficulty=0).
+    scaled_noise_range = (
+      self.noise_range[0] * difficulty,
+      self.noise_range[1] * difficulty,
+    )
+
     if border_pixels > 0:
       inner_width_pixels = width_pixels - 2 * border_pixels
       inner_length_pixels = length_pixels - 2 * border_pixels
@@ -419,8 +450,8 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
       width_downsampled = int(inner_size[0] / downsampled_scale)
       length_downsampled = int(inner_size[1] / downsampled_scale)
 
-      height_min = int(self.noise_range[0] / self.vertical_scale)
-      height_max = int(self.noise_range[1] / self.vertical_scale)
+      height_min = int(scaled_noise_range[0] / self.vertical_scale)
+      height_max = int(scaled_noise_range[1] / self.vertical_scale)
       height_step = int(self.noise_step / self.vertical_scale)
 
       height_range = np.arange(height_min, height_max + height_step, height_step)
@@ -435,6 +466,7 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
       x_upsampled = np.linspace(0, inner_size[0], inner_width_pixels)
       y_upsampled = np.linspace(0, inner_size[1], inner_length_pixels)
       z_upsampled = func(x_upsampled, y_upsampled)
+      z_upsampled = _apply_edge_fade(z_upsampled, self.horizontal_scale)
 
       noise[
         border_pixels : -border_pixels if border_pixels else width_pixels,
@@ -443,8 +475,8 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
     else:
       width_downsampled = int(self.size[0] / downsampled_scale)
       length_downsampled = int(self.size[1] / downsampled_scale)
-      height_min = int(self.noise_range[0] / self.vertical_scale)
-      height_max = int(self.noise_range[1] / self.vertical_scale)
+      height_min = int(scaled_noise_range[0] / self.vertical_scale)
+      height_max = int(scaled_noise_range[1] / self.vertical_scale)
       height_step = int(self.noise_step / self.vertical_scale)
 
       height_range = np.arange(height_min, height_max + height_step, height_step)
@@ -498,7 +530,7 @@ class HfRandomUniformTerrainCfg(SubTerrainCfg):
       material=material_name,
     )
 
-    spawn_height = (self.noise_range[0] + self.noise_range[1]) / 2
+    spawn_height = (scaled_noise_range[0] + scaled_noise_range[1]) / 2
     origin = np.array([self.size[0] / 2, self.size[1] / 2, spawn_height])
 
     flat_patches = _compute_flat_patches(
@@ -569,6 +601,7 @@ class HfWaveTerrainCfg(SubTerrainCfg):
       yy = yy.reshape(1, inner_length_pixels)
 
       hf_raw = amplitude_pixels * (np.cos(yy * wave_number) + np.sin(xx * wave_number))
+      hf_raw = _apply_edge_fade(hf_raw, self.horizontal_scale)
 
       noise[
         border_pixels : -border_pixels if border_pixels else width_pixels,
@@ -830,10 +863,9 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
   ) -> TerrainOutput:
     body = spec.body("terrain")
 
-    if self.border_width > 0 and self.border_width < self.horizontal_scale:
+    if self.border_width > 0 and self.border_width < self.resolution:
       raise ValueError(
-        f"Border width ({self.border_width}) must be >= "
-        f"horizontal_scale ({self.horizontal_scale})"
+        f"Border width ({self.border_width}) must be >= resolution ({self.resolution})"
       )
 
     target_height = self.height_range[0] + difficulty * (
@@ -863,16 +895,18 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
         lacunarity=self.lacunarity,
         scale=effective_scale,
       )
-      # Normalize to [0, 1]
-      noise_min, noise_max = noise_raw.min(), noise_raw.max()
-      noise_range = noise_max - noise_min if noise_max > noise_min else 1.0
-      inner_normalized = (noise_raw - noise_min) / noise_range
+      noise_raw = _apply_edge_fade(noise_raw, self.resolution)
 
-      normalized_elevation = np.zeros((width_pixels, length_pixels), dtype=np.float32)
-      normalized_elevation[
+      # Embed raw noise (centered ~0) in a zero-initialized array so the
+      # border sits near the mean elevation, then normalize together.
+      full_noise = np.zeros((width_pixels, length_pixels), dtype=np.float64)
+      full_noise[
         border_pixels:-border_pixels,
         border_pixels:-border_pixels,
-      ] = inner_normalized
+      ] = noise_raw
+      noise_min, noise_max = full_noise.min(), full_noise.max()
+      noise_range = noise_max - noise_min if noise_max > noise_min else 1.0
+      normalized_elevation = ((full_noise - noise_min) / noise_range).astype(np.float32)
     else:
       noise_raw = _fractal_perlin_noise_2d(
         width_pixels,
@@ -889,6 +923,12 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
 
     max_physical_height = target_height
     base_thickness = max_physical_height * self.base_thickness_ratio
+
+    # Offset hfield so the border surface sits at z=0, matching neighbors.
+    # The border has raw noise=0; its normalized level tells us how high
+    # it would be without offset.
+    border_level = float((0.0 - noise_min) / noise_range)
+    hfield_z_offset = -border_level * max_physical_height
 
     unique_id = uuid.uuid4().hex
     field = spec.add_hfield(
@@ -914,12 +954,24 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
       pos=[
         self.size[0] / 2,
         self.size[1] / 2,
-        0,
+        hfield_z_offset,
       ],
       material=material_name,
     )
 
-    spawn_height = max_physical_height
+    # Sample the max terrain height in a small patch around the center so that
+    # the robot's feet don't clip into nearby higher terrain.
+    center_row = normalized_elevation.shape[0] // 2
+    center_col = normalized_elevation.shape[1] // 2
+    half_patch = max(1, int(0.5 / grid_spacing))  # ~1 m × 1 m patch
+    r0 = max(center_row - half_patch, 0)
+    r1 = min(center_row + half_patch + 1, normalized_elevation.shape[0])
+    c0 = max(center_col - half_patch, 0)
+    c1 = min(center_col + half_patch + 1, normalized_elevation.shape[1])
+    spawn_height = (
+      float(normalized_elevation[r0:r1, c0:c1].max()) * max_physical_height
+      + hfield_z_offset
+    )
     origin = np.array([self.size[0] / 2, self.size[1] / 2, spawn_height])
 
     # For flat patches, we pass the absolute physical heights.
@@ -927,7 +979,7 @@ class HfPerlinNoiseTerrainCfg(SubTerrainCfg):
       normalized_elevation * max_physical_height,
       1.0,  # vertical_scale is 1.0 because we already have physical heights
       grid_spacing,
-      0,
+      hfield_z_offset,
       self.flat_patch_sampling,
       rng,
     )

@@ -66,6 +66,7 @@ export-scene = "mjlab.scripts.export_scene:main"
 dev = [
   "ipdb>=0.13.13",
   "pre-commit>=4.3.0",
+  "pygame>=2.6.1",
   "pyright>=1.1.408",
   "onnxruntime>=1.19.0; python_version >= '3.11'",
   "pytest>=v9.0.2",
@@ -89,6 +90,7 @@ docs = [
 ]
 
 [project.optional-dependencies]
+controllers = ["pygame>=2.6.1"]
 cu128 = ["torch>=2.7.0"]
 cpu = ["torch>=2.7.0"]
 

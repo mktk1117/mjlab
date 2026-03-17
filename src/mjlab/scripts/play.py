@@ -13,6 +13,7 @@ from mjlab.envs import ManagerBasedRlEnv
 from mjlab.rl import MjlabOnPolicyRunner, RslRlVecEnvWrapper
 from mjlab.tasks.registry import list_tasks, load_env_cfg, load_rl_cfg, load_runner_cls
 from mjlab.tasks.tracking.mdp import MotionCommandCfg
+from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
 from mjlab.utils.os import get_wandb_checkpoint_path
 from mjlab.utils.torch import configure_torch_backends
 from mjlab.utils.wrappers import VideoRecorder
@@ -38,9 +39,45 @@ class PlayConfig:
   viewer: Literal["auto", "native", "viser"] = "auto"
   no_terminations: bool = False
   """Disable all termination conditions (useful for viewing motions with dummy agents)."""
+  controller: Literal["ps5", "f710"] | None = None
+  """Gamepad type for velocity commands. If None, uses the task's default command."""
+  controller_env_idx: int = 0
+  """Which environment to control with the controller."""
 
   # Internal flag used by demo script.
   _demo_mode: tyro.conf.Suppress[bool] = False
+
+
+def _find_newest_checkpoint(log_root: Path) -> Path:
+  """Find the newest checkpoint from local log directories.
+
+  Scans `log_root/{run_dirs}/model_*.pt` and returns the highest-numbered
+  checkpoint from the most recent run directory.
+  """
+  if not log_root.exists():
+    raise FileNotFoundError(
+      f"No log directory found at: {log_root}\n"
+      "Provide --checkpoint-file or --wandb-run-path explicitly."
+    )
+  # Find the most recent run directory (sorted by timestamp name).
+  run_dirs = sorted([d for d in log_root.iterdir() if d.is_dir()], key=lambda d: d.name)
+  if not run_dirs:
+    raise FileNotFoundError(
+      f"No run directories found in: {log_root}\n"
+      "Provide --checkpoint-file or --wandb-run-path explicitly."
+    )
+  # Search from newest run backwards until we find one with checkpoints.
+  for run_dir in reversed(run_dirs):
+    checkpoints = sorted(run_dir.glob("model_*.pt"))
+    if checkpoints:
+      # Pick the highest-numbered checkpoint.
+      best = max(checkpoints, key=lambda p: int(p.stem.split("_")[1]))
+      print(f"[INFO]: Auto-discovered checkpoint: {best.name} (run: {run_dir.name})")
+      return best
+  raise FileNotFoundError(
+    f"No model_*.pt checkpoints found in: {log_root}\n"
+    "Provide --checkpoint-file or --wandb-run-path explicitly."
+  )
 
 
 def run_play(task_id: str, cfg: PlayConfig):
@@ -116,6 +153,30 @@ def run_play(task_id: str, cfg: PlayConfig):
             raise RuntimeError("No motion artifact found in the run.")
           motion_cmd.motion_file = str(Path(art.download()) / "motion.npz")
 
+  # Swap the velocity command for gamepad input if a controller is specified.
+  is_velocity_task = "twist" in env_cfg.commands and isinstance(
+    env_cfg.commands["twist"], UniformVelocityCommandCfg
+  )
+  if cfg.controller is not None:
+    if not is_velocity_task:
+      raise ValueError("--controller is only supported for velocity tasks")
+    from mjlab.tasks.velocity.mdp import GamepadVelocityCommandCfg
+
+    orig_cmd_cfg = env_cfg.commands["twist"]
+    assert isinstance(orig_cmd_cfg, UniformVelocityCommandCfg)
+    env_cfg.commands["twist"] = GamepadVelocityCommandCfg(
+      entity_name=orig_cmd_cfg.entity_name,
+      resampling_time_range=(1000.0, 1000.0),
+      debug_vis=orig_cmd_cfg.debug_vis,
+      ranges=orig_cmd_cfg.ranges,
+      controller_type=cfg.controller,
+      env_idx=cfg.controller_env_idx,
+    )
+    print(
+      f"[INFO]: Using {cfg.controller} controller for velocity commands"
+      f" (env {cfg.controller_env_idx})"
+    )
+
   log_dir: Path | None = None
   resume_path: Path | None = None
   if TRAINED_MODE:
@@ -125,21 +186,19 @@ def run_play(task_id: str, cfg: PlayConfig):
       if not resume_path.exists():
         raise FileNotFoundError(f"Checkpoint file not found: {resume_path}")
       print(f"[INFO]: Loading checkpoint: {resume_path.name}")
-    else:
-      if cfg.wandb_run_path is None:
-        raise ValueError(
-          "`wandb_run_path` is required when `checkpoint_file` is not provided."
-        )
+    elif cfg.wandb_run_path is not None:
       resume_path, was_cached = get_wandb_checkpoint_path(
         log_root_path, Path(cfg.wandb_run_path), cfg.wandb_checkpoint_name
       )
-      # Extract run_id and checkpoint name from path for display.
       run_id = resume_path.parent.name
       checkpoint_name = resume_path.name
       cached_str = "cached" if was_cached else "downloaded"
       print(
         f"[INFO]: Loading checkpoint: {checkpoint_name} (run: {run_id}, {cached_str})"
       )
+    else:
+      # Auto-discover the newest checkpoint from local logs.
+      resume_path = _find_newest_checkpoint(log_root_path)
     log_dir = resume_path.parent
 
   if cfg.num_envs is not None:

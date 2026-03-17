@@ -22,12 +22,17 @@ class VelocityStage(TypedDict):
   ang_vel_z: tuple[float, float] | None
 
 
+class RewardWeightStage(TypedDict):
+  step: int
+  weight: float
+
+
 def terrain_levels_vel(
   env: ManagerBasedRlEnv,
   env_ids: torch.Tensor,
   command_name: str,
   asset_cfg: SceneEntityCfg = _DEFAULT_SCENE_CFG,
-) -> torch.Tensor:
+) -> dict[str, torch.Tensor]:
   asset: Entity = env.scene[asset_cfg.name]
 
   terrain = env.scene.terrain
@@ -44,7 +49,7 @@ def terrain_levels_vel(
   )
 
   # Robots that walked far enough progress to harder terrains.
-  move_up = distance > terrain_generator.size[0] / 2
+  move_up = distance > terrain_generator.size[0] / 2 * 1.5
 
   # Robots that walked less than half of their required distance go to simpler
   # terrains.
@@ -56,7 +61,53 @@ def terrain_levels_vel(
   # Update terrain levels.
   terrain.update_env_origins(env_ids, move_up, move_down)
 
-  return torch.mean(terrain.terrain_levels.float())
+  # Compute per-terrain-type mean levels.
+  levels = terrain.terrain_levels.float()
+  result: dict[str, torch.Tensor] = {
+    "mean": torch.mean(levels),
+    "max": torch.max(levels),
+  }
+
+  # Store raw terrain levels for histogram logging.
+  histogram = env.extras.setdefault("histogram", {})
+  histogram["Histogram/terrain_levels"] = levels
+
+  # Map terrain type indices to sub-terrain names.
+  # When num_cols == num_terrains (one column per type), the mapping is 1:1.
+  # Otherwise, fall back to the generator's column allocation.
+  sub_terrain_names = list(terrain_generator.sub_terrains.keys())
+  num_cols = terrain.terrain_origins.shape[1]
+
+  name_to_cols: dict[str, set[int]] = {}
+  if num_cols == len(sub_terrain_names):
+    # 1:1 mapping: column i is terrain i.
+    for i, name in enumerate(sub_terrain_names):
+      name_to_cols[name] = {i}
+  else:
+    from mjlab.terrains.terrain_generator import TerrainGenerator
+
+    proportions = [cfg.proportion for cfg in terrain_generator.sub_terrains.values()]
+    col_to_idx = TerrainGenerator.compute_col_to_terrain_index(proportions, num_cols)
+    for col, idx in enumerate(col_to_idx):
+      name = sub_terrain_names[idx]
+      name_to_cols.setdefault(name, set()).add(col)
+
+  # Compute per-type mean level.
+  types = terrain.terrain_types
+  for name, cols in name_to_cols.items():
+    mask = torch.zeros_like(types, dtype=torch.bool)
+    for c in cols:
+      mask |= types == c
+    if mask.any():
+      result[name] = torch.mean(levels[mask])
+      histogram[f"Histogram/terrain_levels/{name}"] = levels[mask]
+
+  return result
+
+
+# ---------------------------------------------------------------------------
+# Velocity command curriculum
+# ---------------------------------------------------------------------------
 
 
 def commands_vel(
@@ -65,6 +116,7 @@ def commands_vel(
   command_name: str,
   velocity_stages: list[VelocityStage],
 ) -> dict[str, torch.Tensor]:
+  """Widen velocity command ranges according to training step stages."""
   del env_ids  # Unused.
   command_term = env.command_manager.get_term(command_name)
   assert command_term is not None
@@ -85,3 +137,23 @@ def commands_vel(
     "ang_vel_z_min": torch.tensor(cfg.ranges.ang_vel_z[0]),
     "ang_vel_z_max": torch.tensor(cfg.ranges.ang_vel_z[1]),
   }
+
+
+# ---------------------------------------------------------------------------
+# Reward weight curriculum
+# ---------------------------------------------------------------------------
+
+
+def reward_weight(
+  env: ManagerBasedRlEnv,
+  env_ids: torch.Tensor,
+  reward_name: str,
+  weight_stages: list[RewardWeightStage],
+) -> torch.Tensor:
+  """Update a reward term's weight based on training step stages."""
+  del env_ids  # Unused.
+  reward_term_cfg = env.reward_manager.get_term_cfg(reward_name)
+  for stage in weight_stages:
+    if env.common_step_counter > stage["step"]:
+      reward_term_cfg.weight = stage["weight"]
+  return torch.tensor([reward_term_cfg.weight])

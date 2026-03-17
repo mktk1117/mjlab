@@ -12,6 +12,7 @@ import warp as wp
 
 if TYPE_CHECKING:
   from mjlab.sensor.camera_sensor import CameraSensor
+  from mjlab.sensor.height_sensor import HeightSensor
   from mjlab.sensor.raycast_sensor import RayCastSensor
 
 
@@ -51,6 +52,7 @@ class SensorContext:
     camera_sensors: list[CameraSensor],
     raycast_sensors: list[RayCastSensor],
     device: str,
+    height_sensors: list[HeightSensor] | None = None,
   ):
     self._model = model
     self._data = data
@@ -59,6 +61,7 @@ class SensorContext:
     # Sort camera sensors by camera index for consistent ordering.
     self.camera_sensors = sorted(camera_sensors, key=lambda s: s.camera_idx)
     self.raycast_sensors = raycast_sensors
+    self.height_sensors = height_sensors or []
 
     # MuJoCo camera ID -> sorted list index.
     self._cam_idx_to_list_idx = {
@@ -81,6 +84,8 @@ class SensorContext:
       sensor.set_context(self)
     for sensor in self.raycast_sensors:
       sensor.set_context(self)
+    for sensor in self.height_sensors:
+      sensor.set_context(self)
 
   @property
   def has_cameras(self) -> bool:
@@ -88,7 +93,7 @@ class SensorContext:
 
   @property
   def has_raycasts(self) -> bool:
-    return len(self.raycast_sensors) > 0
+    return len(self.raycast_sensors) > 0 or len(self.height_sensors) > 0
 
   @property
   def render_context(self) -> mjwarp.RenderContext:
@@ -111,10 +116,14 @@ class SensorContext:
     """Pre-graph: transform rays to world frame."""
     for sensor in self.raycast_sensors:
       sensor.prepare_rays()
+    for sensor in self.height_sensors:
+      sensor.prepare_rays()
 
   def finalize(self) -> None:
     """Post-graph: compute raycast hit positions."""
     for sensor in self.raycast_sensors:
+      sensor.postprocess_rays()
+    for sensor in self.height_sensors:
       sensor.postprocess_rays()
 
   def get_rgb(self, cam_idx: int) -> torch.Tensor:
@@ -214,9 +223,13 @@ class SensorContext:
         )
 
   def _raycast_geom_groups(self) -> set[int]:
-    """Compute the union of geom groups across all raycast sensors."""
+    """Compute the union of geom groups across all raycast and height sensors."""
     groups: set[int] = set()
     for s in self.raycast_sensors:
+      if s.cfg.include_geom_groups is None:
+        return {0, 1, 2, 3, 4, 5}
+      groups.update(s.cfg.include_geom_groups)
+    for s in self.height_sensors:
       if s.cfg.include_geom_groups is None:
         return {0, 1, 2, 3, 4, 5}
       groups.update(s.cfg.include_geom_groups)

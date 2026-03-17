@@ -399,6 +399,9 @@ class Simulation:
     for sensor in ctx.raycast_sensors:
       sensor.raycast_kernel(rc=rc)
 
+    for sensor in ctx.height_sensors:
+      sensor.raycast_kernel(rc=rc)
+
   def _should_use_cuda_graph(self) -> bool:
     """Determine if CUDA graphs can be used based on device and driver version."""
     if not self.wp_device.is_cuda:
