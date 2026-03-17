@@ -170,10 +170,10 @@ def unitree_go1_rough_env_cfg(
   cfg.rewards["action_rate_l2"].weight = -0.1
   cfg.rewards["body_ang_vel"].weight = -1.0e-4
   cfg.rewards["angular_momentum"].weight = -1.0e-4
-  cfg.rewards["air_time"].weight = 0.1
+  cfg.rewards["air_time"].weight = 0.2
   cfg.rewards["air_time"].params["threshold_min"] = 0.05
-  cfg.rewards["air_time"].params["threshold_mid"] = 0.15
-  cfg.rewards["air_time"].params["threshold_max"] = 0.3
+  cfg.rewards["air_time"].params["threshold_mid"] = 0.20
+  cfg.rewards["air_time"].params["threshold_max"] = 0.4
   cfg.rewards["stance_time"].weight = 0.0
   cfg.rewards["stance_time"].params["threshold_min"] = 0.05
   cfg.rewards["stance_time"].params["threshold_mid"] = 0.15
@@ -195,11 +195,11 @@ def unitree_go1_rough_env_cfg(
     weight=-0.5,
     params={"sensor_name": thigh_ground_cfg.name},
   )
-  cfg.rewards["foot_slip"].weight = -0.2
+  cfg.rewards["foot_slip"].weight = -0.3
   cfg.rewards["joint_vel_l2"].weight = -1.0e-6
   cfg.rewards["joint_acc_l2"].weight = -1.0e-8
   cfg.rewards["joint_torques_l2"].weight = -1.0e-10
-  cfg.rewards["electrical_power"].weight = -0.001
+  cfg.rewards["electrical_power"].weight = -0.0001
 
   cfg.terminations["illegal_contact"] = TerminationTermCfg(
     func=mdp.illegal_contact,
