@@ -256,7 +256,6 @@ class TerrainGenerator:
   def _generate_curriculum_terrains(self, spec: mujoco.MjSpec) -> None:
     # One column per terrain type — proportion is only for spawning.
     sub_terrains_cfgs = list(self.cfg.sub_terrains.values())
-    sub_indices = np.arange(len(sub_terrains_cfgs), dtype=np.int32)
 
     for sub_col in range(self._num_cols):
       for sub_row in range(self.cfg.num_rows):

@@ -340,7 +340,9 @@ class BoxLedgedStairsTerrainCfg(SubTerrainCfg):
         box_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_top, pos=box_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=riser_size_top,
+        pos=box_pos,
       )
       boxes.append(box)
       box_colors.append(rgba)
@@ -352,7 +354,9 @@ class BoxLedgedStairsTerrainCfg(SubTerrainCfg):
         box_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_top, pos=box_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=riser_size_top,
+        pos=box_pos,
       )
       boxes.append(box)
       box_colors.append(rgba)
@@ -370,7 +374,9 @@ class BoxLedgedStairsTerrainCfg(SubTerrainCfg):
         box_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_side, pos=box_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=riser_size_side,
+        pos=box_pos,
       )
       boxes.append(box)
       box_colors.append(rgba)
@@ -382,7 +388,9 @@ class BoxLedgedStairsTerrainCfg(SubTerrainCfg):
         box_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_side, pos=box_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=riser_size_side,
+        pos=box_pos,
       )
       boxes.append(box)
       box_colors.append(rgba)
@@ -401,8 +409,11 @@ class BoxLedgedStairsTerrainCfg(SubTerrainCfg):
       # Top ledge (protrudes in +Y beyond step face).
       ledge_pos = (
         terrain_center[0],
-        terrain_center[1] + terrain_size[1] / 2.0 - box_offset
-            + self.step_width / 2.0 + self.ledge_depth / 2.0,
+        terrain_center[1]
+        + terrain_size[1] / 2.0
+        - box_offset
+        + self.step_width / 2.0
+        + self.ledge_depth / 2.0,
         ledge_z,
       )
       ledge_size = (
@@ -411,7 +422,9 @@ class BoxLedgedStairsTerrainCfg(SubTerrainCfg):
         self.ledge_thickness / 2.0,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size, pos=ledge_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=ledge_size,
+        pos=ledge_pos,
       )
       boxes.append(box)
       box_colors.append(ledge_rgba)
@@ -419,20 +432,28 @@ class BoxLedgedStairsTerrainCfg(SubTerrainCfg):
       # Bottom ledge (protrudes in -Y).
       ledge_pos = (
         terrain_center[0],
-        terrain_center[1] - terrain_size[1] / 2.0 + box_offset
-            - self.step_width / 2.0 - self.ledge_depth / 2.0,
+        terrain_center[1]
+        - terrain_size[1] / 2.0
+        + box_offset
+        - self.step_width / 2.0
+        - self.ledge_depth / 2.0,
         ledge_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size, pos=ledge_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=ledge_size,
+        pos=ledge_pos,
       )
       boxes.append(box)
       box_colors.append(ledge_rgba)
 
       # Right ledge (protrudes in +X).
       ledge_pos = (
-        terrain_center[0] + terrain_size[0] / 2.0 - box_offset
-            + self.step_width / 2.0 + self.ledge_depth / 2.0,
+        terrain_center[0]
+        + terrain_size[0] / 2.0
+        - box_offset
+        + self.step_width / 2.0
+        + self.ledge_depth / 2.0,
         terrain_center[1],
         ledge_z,
       )
@@ -442,20 +463,27 @@ class BoxLedgedStairsTerrainCfg(SubTerrainCfg):
         self.ledge_thickness / 2.0,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size_side, pos=ledge_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=ledge_size_side,
+        pos=ledge_pos,
       )
       boxes.append(box)
       box_colors.append(ledge_rgba)
 
       # Left ledge (protrudes in -X).
       ledge_pos = (
-        terrain_center[0] - terrain_size[0] / 2.0 + box_offset
-            - self.step_width / 2.0 - self.ledge_depth / 2.0,
+        terrain_center[0]
+        - terrain_size[0] / 2.0
+        + box_offset
+        - self.step_width / 2.0
+        - self.ledge_depth / 2.0,
         terrain_center[1],
         ledge_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size_side, pos=ledge_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=ledge_size_side,
+        pos=ledge_pos,
       )
       boxes.append(box)
       box_colors.append(ledge_rgba)
@@ -645,7 +673,9 @@ class BoxInvertedLedgedStairsTerrainCfg(BoxLedgedStairsTerrainCfg):
         box_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_top, pos=box_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=riser_size_top,
+        pos=box_pos,
       )
       boxes.append(box)
       box_colors.append(rgba)
@@ -657,7 +687,9 @@ class BoxInvertedLedgedStairsTerrainCfg(BoxLedgedStairsTerrainCfg):
         box_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_top, pos=box_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=riser_size_top,
+        pos=box_pos,
       )
       boxes.append(box)
       box_colors.append(rgba)
@@ -675,7 +707,9 @@ class BoxInvertedLedgedStairsTerrainCfg(BoxLedgedStairsTerrainCfg):
         box_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_side, pos=box_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=riser_size_side,
+        pos=box_pos,
       )
       boxes.append(box)
       box_colors.append(rgba)
@@ -687,7 +721,9 @@ class BoxInvertedLedgedStairsTerrainCfg(BoxLedgedStairsTerrainCfg):
         box_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=riser_size_side, pos=box_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=riser_size_side,
+        pos=box_pos,
       )
       boxes.append(box)
       box_colors.append(rgba)
@@ -701,8 +737,11 @@ class BoxInvertedLedgedStairsTerrainCfg(BoxLedgedStairsTerrainCfg):
       # Top ledge (protrudes inward, -Y from riser).
       ledge_pos = (
         terrain_center[0],
-        terrain_center[1] + terrain_size[1] / 2.0 - box_offset
-            - self.step_width / 2.0 - self.ledge_depth / 2.0,
+        terrain_center[1]
+        + terrain_size[1] / 2.0
+        - box_offset
+        - self.step_width / 2.0
+        - self.ledge_depth / 2.0,
         ledge_z,
       )
       ledge_size = (
@@ -711,7 +750,9 @@ class BoxInvertedLedgedStairsTerrainCfg(BoxLedgedStairsTerrainCfg):
         self.ledge_thickness / 2.0,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size, pos=ledge_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=ledge_size,
+        pos=ledge_pos,
       )
       boxes.append(box)
       box_colors.append(ledge_rgba)
@@ -719,20 +760,28 @@ class BoxInvertedLedgedStairsTerrainCfg(BoxLedgedStairsTerrainCfg):
       # Bottom ledge (protrudes inward, +Y from riser).
       ledge_pos = (
         terrain_center[0],
-        terrain_center[1] - terrain_size[1] / 2.0 + box_offset
-            + self.step_width / 2.0 + self.ledge_depth / 2.0,
+        terrain_center[1]
+        - terrain_size[1] / 2.0
+        + box_offset
+        + self.step_width / 2.0
+        + self.ledge_depth / 2.0,
         ledge_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size, pos=ledge_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=ledge_size,
+        pos=ledge_pos,
       )
       boxes.append(box)
       box_colors.append(ledge_rgba)
 
       # Right ledge (protrudes inward, -X from riser).
       ledge_pos = (
-        terrain_center[0] + terrain_size[0] / 2.0 - box_offset
-            - self.step_width / 2.0 - self.ledge_depth / 2.0,
+        terrain_center[0]
+        + terrain_size[0] / 2.0
+        - box_offset
+        - self.step_width / 2.0
+        - self.ledge_depth / 2.0,
         terrain_center[1],
         ledge_z,
       )
@@ -742,20 +791,27 @@ class BoxInvertedLedgedStairsTerrainCfg(BoxLedgedStairsTerrainCfg):
         self.ledge_thickness / 2.0,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size_side, pos=ledge_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=ledge_size_side,
+        pos=ledge_pos,
       )
       boxes.append(box)
       box_colors.append(ledge_rgba)
 
       # Left ledge (protrudes inward, +X from riser).
       ledge_pos = (
-        terrain_center[0] - terrain_size[0] / 2.0 + box_offset
-            + self.step_width / 2.0 + self.ledge_depth / 2.0,
+        terrain_center[0]
+        - terrain_size[0] / 2.0
+        + box_offset
+        + self.step_width / 2.0
+        + self.ledge_depth / 2.0,
         terrain_center[1],
         ledge_z,
       )
       box = body.add_geom(
-        type=mujoco.mjtGeom.mjGEOM_BOX, size=ledge_size_side, pos=ledge_pos,
+        type=mujoco.mjtGeom.mjGEOM_BOX,
+        size=ledge_size_side,
+        pos=ledge_pos,
       )
       boxes.append(box)
       box_colors.append(ledge_rgba)

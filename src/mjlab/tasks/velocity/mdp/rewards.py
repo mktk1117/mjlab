@@ -237,9 +237,9 @@ def feet_stance_time(
   reward = torch.sum(per_foot_reward, dim=1)
   in_contact = current_contact_time > 0
   num_in_contact = torch.sum(in_contact.float())
-  mean_contact_time = torch.sum(current_contact_time * in_contact.float()) / torch.clamp(
-    num_in_contact, min=1
-  )
+  mean_contact_time = torch.sum(
+    current_contact_time * in_contact.float()
+  ) / torch.clamp(num_in_contact, min=1)
   env.extras["log"]["Metrics/stance_time_mean"] = mean_contact_time
   if command_name is not None:
     command = env.command_manager.get_command(command_name)

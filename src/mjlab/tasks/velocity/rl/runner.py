@@ -15,7 +15,9 @@ from mjlab.rl.runner import MjlabOnPolicyRunner
 class VelocityOnPolicyRunner(MjlabOnPolicyRunner):
   env: RslRlVecEnvWrapper
 
-  def learn(self, num_learning_iterations: int, init_at_random_ep_len: bool = False) -> None:
+  def learn(
+    self, num_learning_iterations: int, init_at_random_ep_len: bool = False
+  ) -> None:
     """Override learn to add histogram logging from env.extras['histogram']."""
     # Randomize initial episode lengths (for exploration)
     if init_at_random_ep_len:
@@ -40,9 +42,15 @@ class VelocityOnPolicyRunner(MjlabOnPolicyRunner):
         for _ in range(self.cfg["num_steps_per_env"]):
           actions = self.alg.act(obs)
           obs, rewards, dones, extras = self.env.step(actions.to(self.env.device))
-          obs, rewards, dones = (obs.to(self.device), rewards.to(self.device), dones.to(self.device))
+          obs, rewards, dones = (
+            obs.to(self.device),
+            rewards.to(self.device),
+            dones.to(self.device),
+          )
           self.alg.process_env_step(obs, rewards, dones, extras)
-          intrinsic_rewards = self.alg.intrinsic_rewards if self.cfg["algorithm"]["rnd_cfg"] else None
+          intrinsic_rewards = (
+            self.alg.intrinsic_rewards if self.cfg["algorithm"]["rnd_cfg"] else None
+          )
           self.logger.process_env_step(rewards, dones, extras, intrinsic_rewards)
 
         stop = time.time()
@@ -72,8 +80,12 @@ class VelocityOnPolicyRunner(MjlabOnPolicyRunner):
       if histogram_data and self.logger.writer is not None:
         if self.logger.logger_type == "wandb":
           import wandb as _wandb
+
           _wandb.log(
-            {tag: _wandb.Histogram(tensor.cpu().numpy()) for tag, tensor in histogram_data.items()},
+            {
+              tag: _wandb.Histogram(tensor.cpu().numpy())
+              for tag, tensor in histogram_data.items()
+            },
             step=it,
           )
         else:
@@ -84,7 +96,9 @@ class VelocityOnPolicyRunner(MjlabOnPolicyRunner):
         self.save(os.path.join(self.logger.log_dir, f"model_{it}.pt"))
 
     if self.logger.writer is not None:
-      self.save(os.path.join(self.logger.log_dir, f"model_{self.current_learning_iteration}.pt"))
+      self.save(
+        os.path.join(self.logger.log_dir, f"model_{self.current_learning_iteration}.pt")
+      )
       self.logger.stop_logging_writer()
 
   def save(self, path: str, infos=None):

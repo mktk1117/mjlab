@@ -13,10 +13,10 @@ from mjlab.terrains.heightfield_terrains import (
 from mjlab.terrains.heightfield_terrains import HfWaveTerrainCfg as HfWaveTerrainCfg
 from mjlab.terrains.primitive_terrains import BoxFlatTerrainCfg as BoxFlatTerrainCfg
 from mjlab.terrains.primitive_terrains import (
-  BoxInvertedPyramidStairsTerrainCfg as BoxInvertedPyramidStairsTerrainCfg,
+  BoxInvertedLedgedStairsTerrainCfg as BoxInvertedLedgedStairsTerrainCfg,
 )
 from mjlab.terrains.primitive_terrains import (
-  BoxInvertedLedgedStairsTerrainCfg as BoxInvertedLedgedStairsTerrainCfg,
+  BoxInvertedPyramidStairsTerrainCfg as BoxInvertedPyramidStairsTerrainCfg,
 )
 from mjlab.terrains.primitive_terrains import (
   BoxLedgedStairsTerrainCfg as BoxLedgedStairsTerrainCfg,

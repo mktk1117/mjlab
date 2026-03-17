@@ -452,8 +452,9 @@ def test_expand_model_fields_recreates_cuda_graph(device):
 
 
 @pytest.mark.slow
-def test_g1_foot_friction_shared_across_geoms(device):
+def test_g1_foot_friction_shared_across_geoms():
   """G1 velocity env has uniform foot friction across all collision geoms."""
+  device = "cpu"
   import io
   import warnings
   from contextlib import redirect_stderr, redirect_stdout

@@ -17,6 +17,7 @@ from dataclasses import dataclass
 
 import tyro
 
+import mjlab
 from mjlab.utils.controllers import ControllerType, create_controller
 
 
@@ -88,4 +89,4 @@ def main(args: Args) -> None:
 
 
 if __name__ == "__main__":
-  main(tyro.cli(Args))
+  main(tyro.cli(Args, config=mjlab.TYRO_FLAGS))

@@ -15,7 +15,6 @@ class RslRlModelCfg:
   obs_normalization: bool = False
   """Whether to normalize the observations. Default is False."""
 
-
   cnn_cfg: dict[str, Any] | None = None
   """CNN encoder config. When set, class_name should be "CNNModel".
 

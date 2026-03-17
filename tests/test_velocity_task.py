@@ -78,8 +78,8 @@ def test_go1_velocity_has_required_sensors(go1_velocity_task_ids: list[str]) -> 
     assert "feet_ground_contact" in sensor_names, (
       f"Task {task_id} missing feet_ground_contact sensor"
     )
-    assert "nonfoot_ground_touch" in sensor_names, (
-      f"Task {task_id} missing nonfoot_ground_touch sensor"
+    assert "unwanted_contact_ground_touch" in sensor_names, (
+      f"Task {task_id} missing unwanted_contact_ground_touch sensor"
     )
 
 

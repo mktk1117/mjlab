@@ -93,7 +93,7 @@ class UniformVelocityCommand(CommandTerm):
       # Resample lin_vel_x to be positive only.
       max_x = self.cfg.ranges.lin_vel_x[1]
       min_x = max(0.3, self.cfg.ranges.lin_vel_x[0])  # at least 0.3 m/s forward
-      self.vel_command_b[fwd_ids, 0] = r[:len(fwd_ids)].uniform_(min_x, max_x)
+      self.vel_command_b[fwd_ids, 0] = r[: len(fwd_ids)].uniform_(min_x, max_x)
       self.vel_command_b[fwd_ids, 1] = 0.0
       self.vel_command_b[fwd_ids, 2] = 0.0
       self.vel_command_w[fwd_ids] = self.vel_command_b[fwd_ids]

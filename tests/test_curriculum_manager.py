@@ -92,7 +92,7 @@ def test_lift_cube_env_cfg_stages_resolve():
   env_cfg = make_lift_cube_env_cfg()
   resolve_curriculum_iterations(env_cfg.curriculum, num_steps_per_env=24)
 
-  stages = env_cfg.curriculum["joint_vel_hinge_weight"].params["weight_stages"]
+  stages = env_cfg.curriculum["joint_vel_hinge_weight"].params["stages"]
   assert stages[0]["step"] == 0
   assert stages[1]["step"] == 500 * 24
   assert stages[2]["step"] == 1000 * 24

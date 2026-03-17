@@ -1,6 +1,5 @@
 """Unitree Go1 velocity environment configurations."""
 
-import math
 from dataclasses import replace
 from typing import Literal
 
@@ -178,8 +177,8 @@ def unitree_go1_rough_env_cfg(
   cfg.rewards["stance_time"].params["threshold_min"] = 0.05
   cfg.rewards["stance_time"].params["threshold_mid"] = 0.15
   cfg.rewards["stance_time"].params["threshold_max"] = 0.4
-  cfg.rewards["foot_swing_height"].weight = 0.0 # -0.1
-  cfg.rewards["foot_clearance"].weight = 0.0 # -0.1
+  cfg.rewards["foot_swing_height"].weight = 0.0  # -0.1
+  cfg.rewards["foot_clearance"].weight = 0.0  # -0.1
   cfg.rewards["self_collisions"] = RewardTermCfg(
     func=mdp.self_collision_cost,
     weight=-1.0,
