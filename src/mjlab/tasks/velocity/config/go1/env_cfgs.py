@@ -164,7 +164,7 @@ def unitree_go1_rough_env_cfg(
   cfg.rewards["upright"].weight = 0.0
   cfg.rewards["upright"].params["asset_cfg"].body_names = ("trunk",)
   cfg.rewards["body_ang_vel"].params["asset_cfg"].body_names = ("trunk",)
-  for reward_name in ["foot_clearance", "foot_swing_height", "foot_slip"]:
+  for reward_name in ["foot_clearance", "foot_swing_height", "foot_slip", "terrain_clearance"]:
     cfg.rewards[reward_name].params["asset_cfg"].site_names = site_names
   cfg.rewards["action_rate_l2"].weight = -0.1
   cfg.rewards["body_ang_vel"].weight = -1.0e-4

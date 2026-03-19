@@ -177,6 +177,10 @@ class Simulation:
     def _filter_warning(msg: str) -> None:
       if "ccd_iterations" in msg:
         return
+      if "narrowphase overflow" in msg:
+        return
+      if "broadphase overflow" in msg:
+        return
       if _orig_warning is not None:
         _orig_warning(msg)
       else:

@@ -1,5 +1,7 @@
 """Unitree G1 velocity environment configurations."""
 
+import math
+
 from mjlab.asset_zoo.robots import (
   G1_ACTION_SCALE,
   get_g1_robot_cfg,
@@ -9,7 +11,7 @@ from mjlab.envs import mdp as envs_mdp
 from mjlab.envs.mdp.actions import JointPositionActionCfg
 from mjlab.managers.event_manager import EventTermCfg
 from mjlab.managers.reward_manager import RewardTermCfg
-from mjlab.sensor import ContactMatch, ContactSensorCfg, RayCastSensorCfg
+from mjlab.sensor import ContactMatch, ContactSensorCfg, RayCastSensorCfg, HeightSensorCfg, ObjRef, GridPatternCfg
 from mjlab.tasks.velocity import mdp
 from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
 from mjlab.tasks.velocity.velocity_env_cfg import make_velocity_env_cfg
@@ -19,22 +21,35 @@ def unitree_g1_rough_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   """Create Unitree G1 rough terrain velocity configuration."""
   cfg = make_velocity_env_cfg()
 
-  cfg.sim.mujoco.ccd_iterations = 500
+  cfg.sim.mujoco.ccd_iterations = 50
   cfg.sim.contact_sensor_maxmatch = 500
-  cfg.sim.nconmax = 45
+  cfg.sim.nconmax = 200
 
   cfg.scene.entities = {"robot": get_g1_robot_cfg()}
-
-  # Set raycast sensor frame to G1 pelvis.
-  for sensor in cfg.scene.sensors or ():
-    if sensor.name == "terrain_scan":
-      assert isinstance(sensor, RayCastSensorCfg)
-      sensor.frame.name = "pelvis"
 
   site_names = ("left_foot", "right_foot")
   geom_names = tuple(
     f"{side}_foot{i}_collision" for side in ("left", "right") for i in range(1, 8)
   )
+
+  # Set per-robot sensor config.
+  for sensor in cfg.scene.sensors or ():
+    if sensor.name == "terrain_scan":
+      assert isinstance(sensor, RayCastSensorCfg)
+      sensor.frame.name = "pelvis"
+      
+      # Override terrain_scan pattern size to 1.8x1.8 for G1.
+      # Base config is GridPatternCfg(size=(1.4, 1.0), resolution=0.1, z_offset=1.0)
+      assert isinstance(sensor.pattern, GridPatternCfg)
+      sensor.pattern.size = (1.8, 1.8)
+    elif sensor.name in ("foot_clearance_scan", "foot_height_scan"):
+      assert isinstance(sensor, HeightSensorCfg)
+      sensor.sites = tuple(
+        ObjRef(type="site", name=name, entity="robot") for name in site_names
+      )
+    elif sensor.name == "base_normal_scan":
+      assert isinstance(sensor, HeightSensorCfg)
+      sensor.sites = (ObjRef(type="site", name="imu_in_pelvis", entity="robot"),)
 
   feet_ground_cfg = ContactSensorCfg(
     name="feet_ground_contact",
@@ -93,13 +108,14 @@ def unitree_g1_rough_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   # - Shoulders/elbows get moderate freedom for natural arm swing during walking.
   # - Wrists are loose (0.3) since they don't affect balance much.
   # Running values are ~1.5-2x walking values to accommodate larger motion range.
+  cfg.rewards["pose"].weight = 0.5
   cfg.rewards["pose"].params["std_standing"] = {".*": 0.05}
   cfg.rewards["pose"].params["std_walking"] = {
     # Lower body.
-    r".*hip_pitch.*": 0.3,
+    r".*hip_pitch.*": 0.4,
     r".*hip_roll.*": 0.15,
-    r".*hip_yaw.*": 0.15,
-    r".*knee.*": 0.35,
+    r".*hip_yaw.*": 0.25,
+    r".*knee.*": 0.45,
     r".*ankle_pitch.*": 0.25,
     r".*ankle_roll.*": 0.1,
     # Waist.
@@ -115,9 +131,9 @@ def unitree_g1_rough_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   }
   cfg.rewards["pose"].params["std_running"] = {
     # Lower body.
-    r".*hip_pitch.*": 0.5,
-    r".*hip_roll.*": 0.2,
-    r".*hip_yaw.*": 0.2,
+    r".*hip_pitch.*": 0.45,
+    r".*hip_roll.*": 0.20,
+    r".*hip_yaw.*": 0.3,
     r".*knee.*": 0.6,
     r".*ankle_pitch.*": 0.35,
     r".*ankle_roll.*": 0.15,
@@ -133,21 +149,53 @@ def unitree_g1_rough_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     r".*wrist.*": 0.3,
   }
 
+  cfg.rewards["track_linear_velocity"].weight = 1.0
+  cfg.rewards["track_angular_velocity"].weight = 4.0
+
+  cfg.rewards["track_velocity_direction"] = RewardTermCfg(
+    func=mdp.track_velocity_direction,
+    weight=1.0,
+    params={"command_name": "twist", "std": math.sqrt(0.5)},
+  )
   cfg.rewards["upright"].params["asset_cfg"].body_names = ("torso_link",)
   cfg.rewards["body_ang_vel"].params["asset_cfg"].body_names = ("torso_link",)
 
-  for reward_name in ["foot_clearance", "foot_swing_height", "foot_slip"]:
+  for reward_name in ["foot_clearance", "foot_swing_height", "foot_slip", "terrain_clearance"]:
     cfg.rewards[reward_name].params["asset_cfg"].site_names = site_names
 
-  cfg.rewards["body_ang_vel"].weight = -0.05
-  cfg.rewards["angular_momentum"].weight = -0.02
-  cfg.rewards["air_time"].weight = 0.0
+  cfg.rewards["body_ang_vel"].weight = -0.06
+  cfg.rewards["angular_momentum"].weight = -0.04
+
+  cfg.rewards["foot_clearance"].weight = 0.0
+  cfg.rewards["foot_swing_height"].weight = 0.0
+
+  cfg.rewards["terrain_clearance"].weight = 0.5
+  cfg.rewards["terrain_clearance"].params["target_height"] = 0.10
+
+
+  cfg.rewards["air_time"].weight = 0.4
+  cfg.rewards["air_time"].params["threshold_min"] = 0.0
+  cfg.rewards["air_time"].params["threshold_mid"] = 0.30
+  cfg.rewards["air_time"].params["threshold_max"] = 0.5
+
+  cfg.rewards["joint_vel_l2"].weight = -3.0e-6
+  cfg.rewards["joint_acc_l2"].weight = -3.0e-8
+  cfg.rewards["joint_torques_l2"].weight = -1.0e-10
+  cfg.rewards["electrical_power"].weight = -0.0001
 
   cfg.rewards["self_collisions"] = RewardTermCfg(
     func=mdp.self_collision_cost,
     weight=-1.0,
     params={"sensor_name": self_collision_cfg.name, "force_threshold": 10.0},
   )
+
+  cfg.curriculum.pop("command_vel", None)
+  twist_cmd = cfg.commands["twist"]
+  assert isinstance(twist_cmd, UniformVelocityCommandCfg)
+  twist_cmd.ranges.lin_vel_x = (-1.2, 1.2)
+  twist_cmd.ranges.lin_vel_y = (-0.5, 0.5)
+  twist_cmd.ranges.ang_vel_z = (-1.0, 1.0)
+
 
   # Apply play mode overrides.
   if play:
@@ -188,12 +236,12 @@ def unitree_g1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   cfg.scene.terrain.terrain_generator = None
 
   # Remove raycast sensor and height scan (no terrain to scan).
-  cfg.scene.sensors = tuple(
-    s for s in (cfg.scene.sensors or ()) if s.name != "terrain_scan"
-  )
-  del cfg.observations["actor"].terms["height_scan"]
-  del cfg.observations["critic"].terms["height_scan"]
-  cfg.observations["critic"].terms.pop("terrain_projected_gravity", None)
+  # cfg.scene.sensors = tuple(
+  #   s for s in (cfg.scene.sensors or ()) if s.name != "terrain_scan"
+  # )
+  # del cfg.observations["actor"].terms["height_scan"]
+  # del cfg.observations["critic"].terms["height_scan"]
+  # cfg.observations["critic"].terms.pop("terrain_projected_gravity", None)
 
   # Disable terrain curriculum (not present in play mode since rough clears all).
   cfg.curriculum.pop("terrain_levels", None)
@@ -204,7 +252,7 @@ def unitree_g1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
 
     twist_cmd = cfg.commands["twist"]
     assert isinstance(twist_cmd, UniformVelocityCommandCfg)
-    twist_cmd.ranges.lin_vel_x = (-1.5, 2.0)
+    twist_cmd.ranges.lin_vel_x = (-1.5, 1.5)
     twist_cmd.ranges.ang_vel_z = (-0.7, 0.7)
 
   return cfg

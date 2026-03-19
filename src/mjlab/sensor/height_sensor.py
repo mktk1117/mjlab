@@ -537,12 +537,12 @@ class HeightSensor(Sensor[HeightSensorData]):
 
   def prepare_rays(self) -> None:
     """PRE-GRAPH: Read site positions and compute world-frame ray origins/dirs."""
+    if self._num_sites == 0:
+      return
+
     assert self._data is not None and self._model is not None
     assert self._ray_direction is not None
     assert self._sample_offsets is not None
-
-    if self._num_sites == 0:
-      return
 
     num_envs = self._data.nworld
     S = self._num_sites

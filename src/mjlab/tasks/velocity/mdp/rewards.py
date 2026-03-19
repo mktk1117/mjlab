@@ -40,6 +40,58 @@ def track_linear_velocity(
   return torch.exp(-lin_vel_error / std**2)
 
 
+def track_velocity_direction(
+  env: ManagerBasedRlEnv,
+  std: float,
+  command_name: str,
+  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+  eps: float = 1e-6,
+) -> torch.Tensor:
+  """Reward for aligning the XY velocity direction with the commanded direction.
+
+  Computes the cosine similarity between the commanded XY velocity and the
+  actual base XY velocity.  Both vectors are normalized before the dot
+  product, so the reward is independent of speed — a slow robot walking in
+  the right direction gets full reward.
+
+  The reward is also softly reduced when the actual speed exceeds the
+  commanded speed: it is scaled by sqrt(min(|v_cmd| / |v_act|, 1)).  This
+  means the robot can freely slow down (e.g. before a step) without
+  penalty, but overshooting the commanded speed gently reduces the reward.
+
+  Returns exp(-(1 - cos_sim) / std²) * sqrt(min(|v_cmd|/|v_act|, 1))  ∈ (0, 1]:
+    1.0 = perfectly aligned and not overshooting.
+
+  When the commanded XY speed is near zero (below *eps*), falls back to
+  penalizing any actual movement: exp(-|v_act|² / std²), matching the
+  behavior of ``track_linear_velocity``.
+  """
+  asset: Entity = env.scene[asset_cfg.name]
+  command = env.command_manager.get_command(command_name)
+  assert command is not None, f"Command '{command_name}' not found."
+  actual = asset.data.root_link_lin_vel_b
+
+  cmd_xy = command[:, :2]  # [B, 2]
+  act_xy = actual[:, :2]  # [B, 2]
+
+  cmd_speed = torch.norm(cmd_xy, dim=1)  # [B]
+  act_speed = torch.norm(act_xy, dim=1)  # [B]
+
+  cmd_norm = cmd_speed.unsqueeze(1).clamp(min=eps)  # [B, 1]
+  act_norm = act_speed.unsqueeze(1).clamp(min=eps)  # [B, 1]
+
+  cos_sim = torch.sum((cmd_xy / cmd_norm) * (act_xy / act_norm), dim=1)  # [B]
+
+  # Soft penalty when actual speed exceeds commanded speed (sqrt for gentler decay).
+  speed_ratio = (cmd_speed / act_speed.clamp(min=eps)).clamp(max=1.0).sqrt()  # [B]
+
+  # When commanded speed is near zero, penalize any actual movement.
+  standing = (cmd_speed < eps).float()
+  standing_reward = torch.exp(-act_speed.square() / std**2)
+  moving_reward = torch.exp(-(1.0 - cos_sim) / std**2) * speed_ratio
+  return standing * standing_reward + (1.0 - standing) * moving_reward
+
+
 def track_angular_velocity(
   env: ManagerBasedRlEnv,
   std: float,
